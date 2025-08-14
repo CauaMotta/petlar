@@ -1,12 +1,23 @@
 package br.com.ocauamotta.PetLar.domain;
 
-import lombok.NoArgsConstructor;
+import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
+import br.com.ocauamotta.PetLar.enums.AnimalSex;
+import br.com.ocauamotta.PetLar.enums.AnimalSize;
+import br.com.ocauamotta.PetLar.enums.AnimalType;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@NoArgsConstructor
+import java.time.LocalDate;
+
 @SuperBuilder
 @Document(collection = "Dogs")
 public class Dog extends Animal{
+
+    public Dog(String id, String name, Integer yearsOld, AnimalType type, String breed, AnimalSex sex, Integer weight, AnimalSize size, LocalDate registrationDate, AdoptionStatus status, String description, String urlImage) {
+        super(id, name, yearsOld, type, breed, sex, weight, size, registrationDate, status, description, urlImage);
+    }
+
+    public Dog() {
+    }
 }
 
