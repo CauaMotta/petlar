@@ -37,7 +37,7 @@ mvn spring-boot:run
 
 - Iniciar o projeto Backend com Spring Boot ✅
 - Criar domínio de **Animais** ✅
-- Configurar o banco de dados **MongoDB**
+- Configurar o banco de dados **MongoDB** ✅
 - Implementar métodos **CRUD** para animais (Create, Read, Update, Delete)
 - Estruturar o projeto seguindo boas práticas de arquitetura (controller, service, repository)
 - Criar **Controller** para expor endpoints REST
