@@ -37,7 +37,7 @@ class DogServiceIT {
     }
 
     @Test
-    void save_ShouldPersistDogInDatabase() {
+    void testSave_ShouldPersistDogInDatabase() {
         DogDTO saved = service.save(createDogDTO());
 
         assertNotNull(saved.getId());
@@ -46,7 +46,7 @@ class DogServiceIT {
     }
 
     @Test
-    void update_ShouldUpdatedDogInDatabase() {
+    void testUpdate_ShouldUpdateDogInDatabase() {
         DogDTO saved = service.save(createDogDTO());
 
         assertNotNull(saved.getId());
@@ -62,7 +62,7 @@ class DogServiceIT {
     }
 
     @Test
-    void delete_ShouldDeleteDogInDatabase() {
+    void testDelete_ShouldDeleteDogInDatabase() {
         DogDTO saved = service.save(createDogDTO());
 
         assertNotNull(saved.getId());
@@ -75,7 +75,7 @@ class DogServiceIT {
     }
 
     @Test
-    void findById_ShouldFindADogInDatabase() {
+    void testFindById_ShouldFindDogInDatabase() {
         DogDTO saved = service.save(createDogDTO());
 
         assertNotNull(saved.getId());
@@ -90,12 +90,12 @@ class DogServiceIT {
     }
 
     @Test
-    void findById_ShouldThrowException_WhenNotFound() {
+    void testFindById_ShouldThrowException_WhenNotFound() {
         assertThrows(EntityNotFoundException.class, () -> service.findById("01"));
     }
 
     @Test
-    void findAll_ShouldReturnAllDogsInDatabase() {
+    void testFindAll_ShouldReturnAllDogsInDatabase() {
         service.save(createDogDTO());
         service.save(createDogDTO());
 
@@ -115,11 +115,17 @@ class DogServiceIT {
         assertEquals(0, page.getTotalElements());
     }
 
-    private CreateDogDTO createDogDTO() {
-        return new CreateDogDTO(
-                "Rex", 3, "Vira-lata", AnimalSex.MALE, 10,
-                AnimalSize.MEDIUM, AdoptionStatus.AVAILABLE,
-                "Cão amigável", "url.com/img"
-        );
+    CreateDogDTO createDogDTO() {
+        return CreateDogDTO.builder()
+                .name("Rex")
+                .yearsOld(3)
+                .breed("Vira-lata")
+                .sex(AnimalSex.MALE)
+                .weight(10)
+                .size(AnimalSize.MEDIUM)
+                .status(AdoptionStatus.AVAILABLE)
+                .description("Cão amigável")
+                .urlImage("url.com/img")
+                .build();
     }
 }

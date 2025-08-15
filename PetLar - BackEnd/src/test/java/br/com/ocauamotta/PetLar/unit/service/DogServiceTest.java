@@ -36,7 +36,7 @@ class DogServiceTest {
     }
 
     @Test
-    void save_ShouldReturnSavedDogDTO() {
+    void testSave_ShouldReturnSavedDogDTO() {
         Dog dogEntity = createDogEntity();
         when(repository.insert(any(Dog.class))).thenReturn(dogEntity);
 
@@ -48,7 +48,7 @@ class DogServiceTest {
     }
 
     @Test
-    void update_ShouldReturnUpdatedDogDTO() {
+    void testUpdate_ShouldReturnUpdatedDogDTO() {
         Dog dogEntity = createDogEntity();
         when(repository.save(any(Dog.class))).thenReturn(dogEntity);
 
@@ -60,7 +60,7 @@ class DogServiceTest {
     }
 
     @Test
-    void delete_ShouldCallRepositoryDelete_WhenDogExists() {
+    void testDelete_ShouldCallRepositoryDelete_WhenDogExists() {
         Dog dogEntity = createDogEntity();
         when(repository.findById("1")).thenReturn(Optional.of(dogEntity));
 
@@ -70,7 +70,7 @@ class DogServiceTest {
     }
 
     @Test
-    void delete_ShouldNotCallRepositoryDelete_WhenDogDoesNotExist() {
+    void testDelete_ShouldNotCallRepositoryDelete_WhenDogDoesNotExist() {
         when(repository.findById("1")).thenReturn(Optional.empty());
 
         service.delete("1");
@@ -79,7 +79,7 @@ class DogServiceTest {
     }
 
     @Test
-    void findById_ShouldReturnDogDTO_WhenFound() {
+    void testFindById_ShouldReturnDogDTO_WhenFound() {
         Dog dogEntity = createDogEntity();
         when(repository.findById("1")).thenReturn(Optional.of(dogEntity));
 
@@ -90,14 +90,14 @@ class DogServiceTest {
     }
 
     @Test
-    void findById_ShouldThrowException_WhenNotFound() {
+    void testFindById_ShouldThrowException_WhenNotFound() {
         when(repository.findById("1")).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> service.findById("1"));
     }
 
     @Test
-    void findAll_ShouldReturnPageOfDogDTOs() {
+    void testFindAll_ShouldReturnPageOfDogDTOs() {
         Dog dogEntity = createDogEntity();
         Page<Dog> page = new PageImpl<>(List.of(dogEntity));
         when(repository.findAll(any(Pageable.class))).thenReturn(page);
@@ -109,18 +109,33 @@ class DogServiceTest {
     }
 
     Dog createDogEntity() {
-        return new Dog(
-                "1", "Rex", 3, AnimalType.DOG, "Vira-lata", AnimalSex.MALE, 10,
-                AnimalSize.MEDIUM, LocalDate.now(), AdoptionStatus.AVAILABLE,
-                "Cão amigável", "url.com/img"
-        );
+        return Dog.builder()
+                .id("1")
+                .name("Rex")
+                .yearsOld(3)
+                .type(AnimalType.DOG)
+                .breed("Vira-lata")
+                .sex(AnimalSex.MALE)
+                .weight(10)
+                .size(AnimalSize.MEDIUM)
+                .registrationDate(LocalDate.now())
+                .status(AdoptionStatus.AVAILABLE)
+                .description("Cão amigável")
+                .urlImage("url.com/img")
+                .build();
     }
 
     CreateDogDTO createDogDTO() {
-        return new CreateDogDTO(
-                "Rex", 3, "Vira-lata", AnimalSex.MALE, 10,
-                AnimalSize.MEDIUM, AdoptionStatus.AVAILABLE,
-                "Cão amigável", "url.com/img"
-        );
+        return CreateDogDTO.builder()
+                .name("Rex")
+                .yearsOld(3)
+                .breed("Vira-lata")
+                .sex(AnimalSex.MALE)
+                .weight(10)
+                .size(AnimalSize.MEDIUM)
+                .status(AdoptionStatus.AVAILABLE)
+                .description("Cão amigável")
+                .urlImage("url.com/img")
+                .build();
     }
 }
