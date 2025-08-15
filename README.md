@@ -11,6 +11,7 @@ Na persistência, utiliza **MongoDB** para garantir flexibilidade e alta perform
 - 🌐 [Spring Web](https://docs.spring.io/spring-framework/reference/web.html) - Módulo para criação de APIs REST
 - ✅ [Spring Validation](https://docs.spring.io/spring-framework/reference/core/validation.html) - Validação de dados de entrada
 - 🍃 [MongoDB](https://www.mongodb.com/) - Banco de dados NoSQL orientado a documentos
+- 📦 [Flapdoodle Embedded MongoDB](https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo) – Banco de dados MongoDB embarcado para testes de integração
 
 ## 📦 Instalação e Execução
 
@@ -41,7 +42,7 @@ mvn spring-boot:run
 - Implementar métodos **CRUD** para animais (Create, Read, Update, Delete) ✅
 - Estruturar o projeto seguindo boas práticas de arquitetura (controller, service, repository) ✅
 - Criar **Controller** para expor endpoints REST ✅
-- Criar testes para serviços e controllers
+- Criar testes para serviços e controllers ✅
 - Preparar ambiente para deploy inicial (Docker ou hospedagem local)
 
 ### 🎨 Frontend

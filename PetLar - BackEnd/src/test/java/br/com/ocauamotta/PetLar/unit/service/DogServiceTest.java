@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.service;
+package br.com.ocauamotta.PetLar.unit.service;
 
 import br.com.ocauamotta.PetLar.domain.Dog;
 import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
@@ -10,6 +10,7 @@ import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.exception.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.mapper.DogMapper;
 import br.com.ocauamotta.PetLar.repository.IDogRepository;
+import br.com.ocauamotta.PetLar.service.DogService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -107,7 +108,7 @@ class DogServiceTest {
         assertEquals("Rex", result.getContent().get(0).getName());
     }
 
-    private Dog createDogEntity() {
+    Dog createDogEntity() {
         return new Dog(
                 "1", "Rex", 3, AnimalType.DOG, "Vira-lata", AnimalSex.MALE, 10,
                 AnimalSize.MEDIUM, LocalDate.now(), AdoptionStatus.AVAILABLE,
@@ -115,7 +116,7 @@ class DogServiceTest {
         );
     }
 
-    private CreateDogDTO createDogDTO() {
+    CreateDogDTO createDogDTO() {
         return new CreateDogDTO(
                 "Rex", 3, "Vira-lata", AnimalSex.MALE, 10,
                 AnimalSize.MEDIUM, AdoptionStatus.AVAILABLE,
