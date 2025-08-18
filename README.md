@@ -6,12 +6,21 @@ Na persistência, utiliza **MongoDB** para garantir flexibilidade e alta perform
 
 ## 🛠️ Tecnologias Utilizadas
 
+### Backend
+
 - ☕ [Java](https://www.java.com/) - Linguagem de programação principal do projeto
 - 🌱 [Spring Boot](https://spring.io/projects/spring-boot) - Framework para construção de aplicações Java rápidas e produtivas
 - 🌐 [Spring Web](https://docs.spring.io/spring-framework/reference/web.html) - Módulo para criação de APIs REST
 - ✅ [Spring Validation](https://docs.spring.io/spring-framework/reference/core/validation.html) - Validação de dados de entrada
 - 🍃 [MongoDB](https://www.mongodb.com/) - Banco de dados NoSQL orientado a documentos
 - 📦 [Flapdoodle Embedded MongoDB](https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo) – Banco de dados MongoDB embarcado para testes de integração
+
+### Frontend
+
+- ⚡ [Vite](https://vitejs.dev/) - Build tool para otimizar performance
+- ⚛️ [React](https://react.dev/) - Biblioteca para construção da UI
+- 💅 [Styled Components](https://styled-components.com/) - Estilização com CSS-in-JS
+- 🧭 [React Router DOM](https://reactrouter.com/) - Navegação entre páginas com rotas dinâmicas no React
 
 ## 📦 Instalação e Execução
 
@@ -24,12 +33,20 @@ git clone https://github.com/CauaMotta/petlar
 # Acesse a pasta do projeto
 cd petlar
 
+# Para rodar com Maven:
+# Acesse a pasta do backend
+cd ./PetLar - BackEnd/
+
 # Compile e execute o projeto com Maven
 mvn spring-boot:run
 
 # Não se esqueça de:
 # Ter o MongoDB em execução
 # Configurar as credenciais e a URL do banco
+
+# Para rodar com Docker:
+# Suba os containers
+docker-compose up --build
 ```
 
 ## 🚧 Próximos Passos
@@ -47,7 +64,7 @@ mvn spring-boot:run
 
 ### 🎨 Frontend
 
-- Iniciar o projeto Frontend com React + Vite
+- Iniciar o projeto Frontend com React + Vite ✅
 - Criar layout base (header, footer, navegação)
 - Criar páginas:
 - Listagem de animais disponíveis
