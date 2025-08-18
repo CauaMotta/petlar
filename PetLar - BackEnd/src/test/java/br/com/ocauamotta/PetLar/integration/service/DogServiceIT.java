@@ -118,7 +118,7 @@ class DogServiceIT {
     CreateDogDTO createDogDTO() {
         return CreateDogDTO.builder()
                 .name("Rex")
-                .yearsOld(3)
+                .age(3)
                 .breed("Vira-lata")
                 .sex(AnimalSex.MALE)
                 .weight(10)

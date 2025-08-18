@@ -27,7 +27,7 @@ public class Animal {
     private String name;
 
     @NotNull
-    private Integer yearsOld;
+    private Integer age;
 
     @NotNull
     private AnimalType type;

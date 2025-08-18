@@ -19,7 +19,7 @@ public class CreateDogDTO {
     private String name;
 
     @NotNull
-    private Integer yearsOld;
+    private Integer age;
 
     @NotNull
     @Size(min = 3, max = 100)

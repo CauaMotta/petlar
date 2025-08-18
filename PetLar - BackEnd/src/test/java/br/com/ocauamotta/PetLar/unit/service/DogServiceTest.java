@@ -112,7 +112,7 @@ class DogServiceTest {
         return Dog.builder()
                 .id("1")
                 .name("Rex")
-                .yearsOld(3)
+                .age(3)
                 .type(AnimalType.DOG)
                 .breed("Vira-lata")
                 .sex(AnimalSex.MALE)
@@ -128,7 +128,7 @@ class DogServiceTest {
     CreateDogDTO createDogDTO() {
         return CreateDogDTO.builder()
                 .name("Rex")
-                .yearsOld(3)
+                .age(3)
                 .breed("Vira-lata")
                 .sex(AnimalSex.MALE)
                 .weight(10)

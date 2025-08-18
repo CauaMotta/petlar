@@ -103,7 +103,7 @@ public class IDogRepositoryIT {
     Dog createDog() {
         return Dog.builder()
                 .name("Rex")
-                .yearsOld(3)
+                .age(3)
                 .type(AnimalType.DOG)
                 .breed("Vira-lata")
                 .sex(AnimalSex.MALE)
