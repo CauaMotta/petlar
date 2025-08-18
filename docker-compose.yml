@@ -1,0 +1,25 @@
+services:
+  petlar-app:
+    build: ./PetLar - BackEnd/
+    container_name: petlar-app-container
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://petlaruser:petlarpass@petlar-mongo:27017/petlardb?authSource=admin
+    depends_on:
+      - petlar-mongo
+
+  petlar-mongo:
+    image: mongo:latest
+    container_name: petlar-mongo-container
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=petlaruser
+      - MONGO_INITDB_ROOT_PASSWORD=petlarpass
+      - MONGO_INITDB_DATABASE=petlardb
+    volumes:
+      - petlar-mongo-data:/data/db
+
+volumes:
+  petlar-mongo-data:
