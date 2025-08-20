@@ -1,4 +1,4 @@
 export default {
   // Fonts
-  fontFamily: 'Fredoka, sans-serif'
+  fontFamily: 'Poppins, sans-serif'
 }
