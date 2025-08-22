@@ -1,15 +1,15 @@
-import { useState } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
+import { useSelector } from 'react-redux'
 
 import Dog from './pages/Dog'
 import Header from './components/Header'
+import type { RootReducer } from './store'
 
-import { themesMap } from './themes'
 import { Container, GlobalStyle } from './styles'
 
 function App() {
-  const [theme, setTheme] = useState(themesMap['dog'])
+  const { theme } = useSelector((state: RootReducer) => state.theme)
   const routes = createBrowserRouter([
     {
       path: '/',
@@ -21,15 +21,10 @@ function App() {
     }
   ])
 
-  const changeTheme = (themeName: string) => {
-    const selectedTheme = themesMap[themeName]
-    if (selectedTheme) setTheme(selectedTheme)
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Header changeTheme={changeTheme} />
+      <Header />
       <Container>
         <RouterProvider router={routes} />
       </Container>

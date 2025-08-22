@@ -1,21 +1,31 @@
 import { render, screen } from '../../utils/test-utils'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, test, vi } from 'vitest'
+import { useDispatch } from 'react-redux'
+import * as themeReducer from '../../store/reducers/Theme'
 
 import Header from '.'
 
-const mockChangeTheme = vi.fn()
+vi.mock('react-redux', async () => {
+  const actual = await vi.importActual<typeof import('react-redux')>(
+    'react-redux'
+  )
+  return {
+    ...actual,
+    useDispatch: vi.fn()
+  }
+})
 
 describe('Header', () => {
   test('Should render logo and title', () => {
-    render(<Header changeTheme={mockChangeTheme} />)
+    render(<Header />)
 
     expect(screen.getByText('PetLar')).toBeInTheDocument()
     expect(screen.getByTestId('petlar-logo')).toBeInTheDocument()
   })
 
   test('Should render the navigation buttons', () => {
-    render(<Header changeTheme={mockChangeTheme} />)
+    render(<Header />)
 
     expect(screen.getByText('Cachorros')).toBeInTheDocument()
     expect(screen.getByText('Gatos')).toBeInTheDocument()
@@ -24,20 +34,26 @@ describe('Header', () => {
   })
 
   test('Should call changeTheme with the correct theme when clicking the button', async () => {
-    render(<Header changeTheme={mockChangeTheme} />)
+    const mockDispatch = vi.fn()
+    ;(useDispatch as unknown as vi.Mock).mockReturnValue(mockDispatch)
+
+    const mockChangeTheme = vi.spyOn(themeReducer, 'changeTheme')
+    mockChangeTheme.mockImplementation((theme) => theme as any)
+
+    render(<Header />)
 
     await userEvent.click(screen.getByText('Cachorros'))
-    expect(mockChangeTheme).toHaveBeenCalledWith('dog')
+    expect(mockDispatch).toHaveBeenCalledWith('dog')
 
     await userEvent.click(screen.getByText('Gatos'))
-    expect(mockChangeTheme).toHaveBeenCalledWith('cat')
+    expect(mockDispatch).toHaveBeenCalledWith('cat')
 
     await userEvent.click(screen.getByText('Aves'))
-    expect(mockChangeTheme).toHaveBeenCalledWith('bird')
+    expect(mockDispatch).toHaveBeenCalledWith('bird')
 
     await userEvent.click(screen.getByText('Outros'))
-    expect(mockChangeTheme).toHaveBeenCalledWith('other')
+    expect(mockDispatch).toHaveBeenCalledWith('other')
 
-    expect(mockChangeTheme).toHaveBeenCalledTimes(4)
+    expect(mockDispatch).toHaveBeenCalledTimes(4)
   })
 })

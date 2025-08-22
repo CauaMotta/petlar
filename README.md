@@ -21,6 +21,8 @@ Na persistência, utiliza **MongoDB** para garantir flexibilidade e alta perform
 - ⚛️ [React](https://react.dev/) - Biblioteca para construção da UI
 - 💅 [Styled Components](https://styled-components.com/) - Estilização com CSS-in-JS
 - 🧭 [React Router DOM](https://reactrouter.com/) - Navegação entre páginas com rotas dinâmicas no React
+- 🗂️ [Redux](https://redux.js.org/) – Gerenciamento global de estado
+- 🔄 [React Spinners](https://www.davidhu.io/react-spinners/) - Componentes de carregamento estilizados para React
 - 🧪 [Vitest](https://vitest.dev/) - Testes unitários rápidos e eficientes para projetos com Vite
 - 🧩 [Testing Library](https://testing-library.com/) - Conjunto de ferramentas para testes acessíveis e eficazes
 
