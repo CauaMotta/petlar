@@ -4,13 +4,20 @@ public enum AnimalType {
     DOG("Cachorro"),
     CAT("Gato");
 
-    private final String type;
+    private final String label;
 
-    AnimalType(String type) {
-        this.type = type;
+    AnimalType(String label) {
+        this.label = label;
     }
 
-    public String getType() {
-        return type;
+    public String getLabel() {
+        return label;
+    }
+
+    public static AnimalType fromLabel(String label) {
+        for (AnimalType type : values()) {
+            if(type.getLabel().equalsIgnoreCase(label)) return type;
+        }
+        throw new IllegalArgumentException("tipo inválido: " + label);
     }
 }

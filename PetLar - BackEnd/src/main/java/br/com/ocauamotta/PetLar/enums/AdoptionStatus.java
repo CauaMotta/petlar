@@ -4,13 +4,20 @@ public enum AdoptionStatus {
     ADOPTED("Adotado"),
     AVAILABLE("Disponível");
 
-    private final String status;
+    private final String label;
 
-    AdoptionStatus(String status) {
-        this.status = status;
+    AdoptionStatus(String label) {
+        this.label = label;
     }
 
-    public String getStatus() {
-        return status;
+    public String getLabel() {
+        return label;
+    }
+
+    public static AdoptionStatus fromLabel(String label) {
+        for (AdoptionStatus status : values()) {
+            if(status.getLabel().equalsIgnoreCase(label)) return status;
+        }
+        throw new IllegalArgumentException("typeo inválido: " + label);
     }
 }

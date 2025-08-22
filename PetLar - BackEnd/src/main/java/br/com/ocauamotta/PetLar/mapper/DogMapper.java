@@ -3,6 +3,10 @@ package br.com.ocauamotta.PetLar.mapper;
 import br.com.ocauamotta.PetLar.domain.Dog;
 import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
 import br.com.ocauamotta.PetLar.dto.DogDTO;
+import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
+import br.com.ocauamotta.PetLar.enums.AnimalSex;
+import br.com.ocauamotta.PetLar.enums.AnimalSize;
+import br.com.ocauamotta.PetLar.enums.AnimalType;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,13 +25,13 @@ public class DogMapper {
                 .id(dto.getId())
                 .name(dto.getName())
                 .age(dto.getAge())
-                .type(dto.getType())
+                .type(AnimalType.fromLabel(dto.getType()))
                 .breed(dto.getBreed())
-                .sex(dto.getSex())
+                .sex(AnimalSex.fromLabel(dto.getSex()))
                 .weight(dto.getWeight())
-                .size(dto.getSize())
+                .size(AnimalSize.fromLabel(dto.getSize()))
                 .registrationDate(dto.getRegistrationDate())
-                .status(dto.getStatus())
+                .status(AdoptionStatus.fromLabel(dto.getStatus()))
                 .description(dto.getDescription())
                 .urlImage(dto.getUrlImage())
                 .build();
@@ -43,13 +47,13 @@ public class DogMapper {
                 .id(dog.getId())
                 .name(dog.getName())
                 .age(dog.getAge())
-                .type(dog.getType())
+                .type(dog.getType().getLabel())
                 .breed(dog.getBreed())
-                .sex(dog.getSex())
+                .sex(dog.getSex().getLabel())
                 .weight(dog.getWeight())
-                .size(dog.getSize())
+                .size(dog.getSize().getLabel())
                 .registrationDate(dog.getRegistrationDate())
-                .status(dog.getStatus())
+                .status(dog.getStatus().getLabel())
                 .description(dog.getDescription())
                 .urlImage(dog.getUrlImage())
                 .build();
@@ -65,10 +69,10 @@ public class DogMapper {
                 .name(createDogDTO.getName())
                 .age(createDogDTO.getAge())
                 .breed(createDogDTO.getBreed())
-                .sex(createDogDTO.getSex())
+                .sex(AnimalSex.fromLabel(createDogDTO.getSex()))
                 .weight(createDogDTO.getWeight())
-                .size(createDogDTO.getSize())
-                .status(createDogDTO.getStatus())
+                .size(AnimalSize.fromLabel(createDogDTO.getSize()))
+                .status(AdoptionStatus.fromLabel(createDogDTO.getStatus()))
                 .description(createDogDTO.getDescription())
                 .urlImage(createDogDTO.getUrlImage())
                 .build();

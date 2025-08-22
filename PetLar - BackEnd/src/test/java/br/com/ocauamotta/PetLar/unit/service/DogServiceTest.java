@@ -43,7 +43,7 @@ class DogServiceTest {
         DogDTO saved = service.save(createDogDTO());
 
         assertEquals("Rex", saved.getName());
-        assertEquals(AnimalType.DOG, saved.getType());
+        assertEquals("Cachorro", saved.getType());
         verify(repository, times(1)).insert(any(Dog.class));
     }
 
@@ -130,10 +130,10 @@ class DogServiceTest {
                 .name("Rex")
                 .age(3)
                 .breed("Vira-lata")
-                .sex(AnimalSex.MALE)
+                .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
-                .size(AnimalSize.MEDIUM)
-                .status(AdoptionStatus.AVAILABLE)
+                .size(AnimalSize.MEDIUM.getLabel())
+                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
                 .build();

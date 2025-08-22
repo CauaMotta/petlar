@@ -5,13 +5,20 @@ public enum AnimalSize {
     MEDIUM("Médio"),
     LARGE("Grande");
 
-    private final String size;
+    private final String label;
 
-    AnimalSize(String size) {
-        this.size = size;
+    AnimalSize(String label) {
+        this.label = label;
     }
 
-    public String getSize() {
-        return size;
+    public String getLabel() {
+        return label;
+    }
+
+    public static AnimalSize fromLabel(String label) {
+        for (AnimalSize size : values()) {
+            if(size.getLabel().equalsIgnoreCase(label)) return size;
+        }
+        throw new IllegalArgumentException("Sexo inválido: " + label);
     }
 }

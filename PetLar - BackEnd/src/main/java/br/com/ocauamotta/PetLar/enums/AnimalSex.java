@@ -4,13 +4,20 @@ public enum AnimalSex {
     MALE("Macho"),
     FEMALE("Fêmea");
 
-    private final String sex;
+    private final String label;
 
-    AnimalSex(String sex) {
-        this.sex = sex;
+    AnimalSex(String label) {
+        this.label = label;
     }
 
-    public String getSex() {
-        return sex;
+    public String getLabel() {
+        return label;
+    }
+
+    public static AnimalSex fromLabel(String label) {
+        for (AnimalSex sex : values()) {
+            if(sex.getLabel().equalsIgnoreCase(label)) return sex;
+        }
+        throw new IllegalArgumentException("Sexo inválido: " + label);
     }
 }

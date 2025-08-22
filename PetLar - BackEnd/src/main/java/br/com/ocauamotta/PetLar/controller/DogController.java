@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/dog")
+@RequestMapping(path = "/api/dogs")
 public class DogController {
 
     private DogService service;

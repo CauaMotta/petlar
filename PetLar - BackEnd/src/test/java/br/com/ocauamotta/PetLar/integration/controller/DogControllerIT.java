@@ -2,10 +2,12 @@ package br.com.ocauamotta.PetLar.integration.controller;
 
 import br.com.ocauamotta.PetLar.domain.Dog;
 import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
+import br.com.ocauamotta.PetLar.dto.DogDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
+import br.com.ocauamotta.PetLar.mapper.DogMapper;
 import br.com.ocauamotta.PetLar.repository.IDogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -45,7 +47,7 @@ class DogControllerIT {
     void testSave_ShouldPersistAndReturnDog() throws Exception {
         CreateDogDTO createDogDTO = createDogDTO();
 
-        mockMvc.perform(post("/dog")
+        mockMvc.perform(post("/api/dogs")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createDogDTO)))
                 .andExpect(status().isOk())
@@ -57,16 +59,17 @@ class DogControllerIT {
     void testUpdate_ShouldReturnUpdatedDog() throws Exception {
         Dog saved = repository.save(createDog());
 
-        mockMvc.perform(get("/dog/{id}", saved.getId()))
+        mockMvc.perform(get("/api/dogs/{id}", saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(saved.getId()))
                 .andExpect(jsonPath("$.name").value("Rex"));
 
         saved.setName("Bob");
+        DogDTO dogDTO = DogMapper.toDTO(saved);
 
-        mockMvc.perform(put("/dog")
+        mockMvc.perform(put("/api/dogs")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(saved)))
+                        .content(mapper.writeValueAsString(dogDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Bob"))
                 .andExpect(jsonPath("$.age").value(3));
@@ -76,7 +79,7 @@ class DogControllerIT {
     void testFindById_ShouldReturnDog() throws Exception {
         Dog saved = repository.save(createDog());
 
-        mockMvc.perform(get("/dog/{id}", saved.getId()))
+        mockMvc.perform(get("/api/dogs/{id}", saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(saved.getId()))
                 .andExpect(jsonPath("$.name").value("Rex"));
@@ -84,7 +87,7 @@ class DogControllerIT {
 
     @Test
     void testFindById_ShouldReturnNotFound() throws Exception {
-        mockMvc.perform(get("/dog/{id}", "1"))
+        mockMvc.perform(get("/api/dogs/{id}", "1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -92,7 +95,7 @@ class DogControllerIT {
     void testDelete_ShouldRemoveDog() throws Exception {
         Dog saved = repository.save(createDog());
 
-        mockMvc.perform(delete("/dog/{id}", saved.getId()))
+        mockMvc.perform(delete("/api/dogs/{id}", saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Removido com sucesso.")));
 
@@ -104,7 +107,7 @@ class DogControllerIT {
         repository.save(createDog());
         repository.save(createDog("Bob"));
 
-        mockMvc.perform(get("/dog")
+        mockMvc.perform(get("/api/dogs")
                 .param("page", "0")
                 .param("size", "10"))
                 .andExpect(status().isOk())
@@ -149,10 +152,10 @@ class DogControllerIT {
                 .name("Rex")
                 .age(3)
                 .breed("Vira-lata")
-                .sex(AnimalSex.MALE)
+                .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
-                .size(AnimalSize.MEDIUM)
-                .status(AdoptionStatus.AVAILABLE)
+                .size(AnimalSize.MEDIUM.getLabel())
+                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
                 .build();

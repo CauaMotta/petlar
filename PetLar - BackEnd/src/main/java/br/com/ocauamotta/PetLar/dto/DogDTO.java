@@ -1,9 +1,5 @@
 package br.com.ocauamotta.PetLar.dto;
 
-import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
-import br.com.ocauamotta.PetLar.enums.AnimalSex;
-import br.com.ocauamotta.PetLar.enums.AnimalSize;
-import br.com.ocauamotta.PetLar.enums.AnimalType;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -28,26 +24,26 @@ public class DogDTO {
     private Integer age;
 
     @NotNull
-    private AnimalType type;
+    private String type;
 
     @NotNull
     @Size(min = 3, max = 100)
     private String breed;
 
     @NotNull
-    private AnimalSex sex;
+    private String sex;
 
     @NotNull
     private Integer weight;
 
     @NotNull
-    private AnimalSize size;
+    private String size;
 
     @NotNull
     private LocalDate registrationDate;
 
     @NotNull
-    private AdoptionStatus status;
+    private String status;
 
     @Size(min = 3, max = 250)
     private String description;

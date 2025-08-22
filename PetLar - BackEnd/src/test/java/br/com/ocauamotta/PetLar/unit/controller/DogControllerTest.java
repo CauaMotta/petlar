@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DogController.class)
-public class DogControllerTest {
+class DogControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +47,7 @@ public class DogControllerTest {
         DogDTO returnedDto = dogDTO();
         when(service.save(Mockito.any(CreateDogDTO.class))).thenReturn(returnedDto);
 
-        mockMvc.perform(post("/dog")
+        mockMvc.perform(post("/api/dogs")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createDto)))
                 .andExpect(status().isOk())
@@ -62,7 +62,7 @@ public class DogControllerTest {
         DogDTO dogDTO = dogDTO();
         when(service.update(Mockito.any(DogDTO.class))).thenReturn(dogDTO);
 
-        mockMvc.perform(put("/dog")
+        mockMvc.perform(put("/api/dogs")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dogDTO)))
                 .andExpect(status().isOk())
@@ -75,7 +75,7 @@ public class DogControllerTest {
     void testDelete_ShouldReturnNoContent_WhenIdExists() throws Exception {
         doNothing().when(service).delete("1");
 
-        mockMvc.perform(delete("/dog/1"))
+        mockMvc.perform(delete("/api/dogs/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Removido com sucesso."));
 
@@ -88,7 +88,7 @@ public class DogControllerTest {
 
         when(service.findById("1")).thenReturn(dogDTO);
 
-        mockMvc.perform(get("/dog/1"))
+        mockMvc.perform(get("/api/dogs/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("1")))
                 .andExpect(jsonPath("$.name", is("Rex")));
@@ -98,7 +98,7 @@ public class DogControllerTest {
     void testFindById_ShouldReturnNotFound_WhenDogDoesNotExist() throws Exception {
         when(service.findById("1")).thenThrow(new EntityNotFoundException("Dog not found with ID: 1"));
 
-        mockMvc.perform(get("/dog/1"))
+        mockMvc.perform(get("/api/dogs/1"))
                 .andExpect(status().isNotFound());
     }
 
@@ -108,7 +108,7 @@ public class DogControllerTest {
         when(service.findAll(Mockito.any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
 
-        mockMvc.perform(get("/dog")
+        mockMvc.perform(get("/api/dogs")
                 .param("page", "0")
                 .param("size", "10"))
                 .andExpect(status().isOk())
@@ -121,12 +121,12 @@ public class DogControllerTest {
                 .id("1")
                 .name("Rex")
                 .age(3)
-                .type(AnimalType.DOG)
+                .type(AnimalType.DOG.getLabel())
                 .breed("Vira-lata")
-                .sex(AnimalSex.MALE)
+                .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
-                .size(AnimalSize.MEDIUM)
-                .status(AdoptionStatus.AVAILABLE)
+                .size(AnimalSize.MEDIUM.getLabel())
+                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .registrationDate(LocalDate.now())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
@@ -138,10 +138,10 @@ public class DogControllerTest {
                 .name("Rex")
                 .age(3)
                 .breed("Vira-lata")
-                .sex(AnimalSex.MALE)
+                .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
-                .size(AnimalSize.MEDIUM)
-                .status(AdoptionStatus.AVAILABLE)
+                .size(AnimalSize.MEDIUM.getLabel())
+                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
                 .build();

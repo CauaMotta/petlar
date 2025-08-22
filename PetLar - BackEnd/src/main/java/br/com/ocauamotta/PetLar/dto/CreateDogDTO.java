@@ -1,8 +1,5 @@
 package br.com.ocauamotta.PetLar.dto;
 
-import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
-import br.com.ocauamotta.PetLar.enums.AnimalSex;
-import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -26,16 +23,16 @@ public class CreateDogDTO {
     private String breed;
 
     @NotNull
-    private AnimalSex sex;
+    private String sex;
 
     @NotNull
     private Integer weight;
 
     @NotNull
-    private AnimalSize size;
+    private String size;
 
     @NotNull
-    private AdoptionStatus status;
+    private String status;
 
     @Size(min = 3, max = 250)
     private String description;

@@ -5,7 +5,6 @@ import br.com.ocauamotta.PetLar.dto.DogDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
-import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.exception.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.service.DogService;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +41,7 @@ class DogServiceIT {
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
-        assertEquals(AnimalType.DOG, saved.getType());
+        assertEquals("Cachorro", saved.getType());
     }
 
     @Test
@@ -51,7 +50,7 @@ class DogServiceIT {
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
-        assertEquals(AnimalType.DOG, saved.getType());
+        assertEquals("Cachorro", saved.getType());
 
         saved.setName("Totó");
 
@@ -67,7 +66,7 @@ class DogServiceIT {
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
-        assertEquals(AnimalType.DOG, saved.getType());
+        assertEquals("Cachorro", saved.getType());
 
         service.delete(saved.getId());
 
@@ -80,7 +79,7 @@ class DogServiceIT {
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
-        assertEquals(AnimalType.DOG, saved.getType());
+        assertEquals("Cachorro", saved.getType());
 
         DogDTO foundDog = service.findById(saved.getId());
 
@@ -120,10 +119,10 @@ class DogServiceIT {
                 .name("Rex")
                 .age(3)
                 .breed("Vira-lata")
-                .sex(AnimalSex.MALE)
+                .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
-                .size(AnimalSize.MEDIUM)
-                .status(AdoptionStatus.AVAILABLE)
+                .size(AnimalSize.MEDIUM.getLabel())
+                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
                 .build();

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataMongoTest
-public class IDogRepositoryIT {
+class IDogRepositoryIT {
 
     @Autowired
     private IDogRepository repository;
