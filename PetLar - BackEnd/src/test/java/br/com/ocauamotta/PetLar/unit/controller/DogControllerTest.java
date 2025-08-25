@@ -105,7 +105,7 @@ class DogControllerTest {
     @Test
     void testFindAll_ShouldReturnPagedDogs() throws Exception {
         DogDTO dogDTO = dogDTO();
-        when(service.findAll(Mockito.any(Pageable.class)))
+        when(service.findAll(Mockito.any(Pageable.class), Mockito.isNull()))
                 .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
 
         mockMvc.perform(get("/api/dogs")
@@ -114,6 +114,37 @@ class DogControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].name", is("Rex")));
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPagedDogs_WithStatusAvailable() throws Exception {
+        DogDTO dogDTO = dogDTO();
+        when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Disponível")))
+                .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
+
+        mockMvc.perform(get("/api/dogs?status=Disponível")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].name", is("Rex")))
+                .andExpect(jsonPath("$.content[0].status", is("Disponível")));
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPagedDogs_WithStatusAdopted() throws Exception {
+        DogDTO dogDTO = dogDTO();
+        dogDTO.setStatus(AdoptionStatus.ADOPTED.getLabel());
+        when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Adotado")))
+                .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
+
+        mockMvc.perform(get("/api/dogs?status=Adotado")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].name", is("Rex")))
+                .andExpect(jsonPath("$.content[0].status", is("Adotado")));
     }
 
     DogDTO dogDTO() {

@@ -2,6 +2,7 @@ package br.com.ocauamotta.PetLar.controller;
 
 import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
 import br.com.ocauamotta.PetLar.dto.DogDTO;
+import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.service.DogService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -20,8 +21,8 @@ public class DogController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DogDTO>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable));
+    public ResponseEntity<Page<DogDTO>> findAll(Pageable pageable, @RequestParam(required = false) String status) {
+        return ResponseEntity.ok(service.findAll(pageable, status));
     }
 
     @GetMapping(value = "/{id}")

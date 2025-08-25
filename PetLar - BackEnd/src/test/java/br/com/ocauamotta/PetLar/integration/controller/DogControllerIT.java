@@ -115,6 +115,41 @@ class DogControllerIT {
                 .andExpect(jsonPath("$.content[1].name").value("Bob"));
     }
 
+    @Test
+    void testFindAll_ShouldReturnPagedDogs_WithStatusAvailable() throws Exception {
+        repository.save(createDog());
+        repository.save(createDog("Bob"));
+
+        mockMvc.perform(get("/api/dogs?status=Disponível")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].name").value("Rex"))
+                .andExpect(jsonPath("$.content[0].status").value("Disponível"))
+                .andExpect(jsonPath("$.content[1].name").value("Bob"))
+                .andExpect(jsonPath("$.content[1].status").value("Disponível"));
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPagedDogs_WithStatusAdopted() throws Exception {
+        Dog dog1 = createDog();
+        dog1.setStatus(AdoptionStatus.ADOPTED);
+        repository.save(dog1);
+
+        Dog dog2 = createDog("Bob");
+        dog2.setStatus(AdoptionStatus.ADOPTED);
+        repository.save(dog2);
+
+        mockMvc.perform(get("/api/dogs?status=Adotado")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].name").value("Rex"))
+                .andExpect(jsonPath("$.content[0].status").value("Adotado"))
+                .andExpect(jsonPath("$.content[1].name").value("Bob"))
+                .andExpect(jsonPath("$.content[1].status").value("Adotado"));
+    }
+
     Dog createDog() {
         return Dog.builder()
                 .name("Rex")

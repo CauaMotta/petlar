@@ -99,7 +99,7 @@ class DogServiceIT {
         service.save(createDogDTO());
 
         PageRequest pageable = PageRequest.of(0, 2);
-        Page<DogDTO> page = service.findAll(pageable);
+        Page<DogDTO> page = service.findAll(pageable, null);
 
         assertEquals(2, page.getTotalElements());
 
@@ -109,7 +109,51 @@ class DogServiceIT {
             service.delete(dog.getId());
         }
 
-        page = service.findAll(pageable);
+        page = service.findAll(pageable, null);
+
+        assertEquals(0, page.getTotalElements());
+    }
+
+    @Test
+    void testFindAll_ShouldReturnAllDogs_WithStatusAvailable() {
+        service.save(createDogDTO());
+        service.save(createDogDTO());
+
+        PageRequest pageable = PageRequest.of(0, 2);
+        Page<DogDTO> page = service.findAll(pageable, "Disponível");
+
+        assertEquals(2, page.getTotalElements());
+
+        List<DogDTO> list = page.stream().toList();
+
+        for (DogDTO dog : list) {
+            service.delete(dog.getId());
+        }
+
+        page = service.findAll(pageable, "Disponível");
+
+        assertEquals(0, page.getTotalElements());
+    }
+
+    @Test
+    void testFindAll_ShouldReturnAllDogs_WithStatusAdopted() {
+        CreateDogDTO createDogDTO = createDogDTO();
+        createDogDTO.setStatus(AdoptionStatus.ADOPTED.getLabel());
+        service.save(createDogDTO);
+        service.save(createDogDTO);
+
+        PageRequest pageable = PageRequest.of(0, 2);
+        Page<DogDTO> page = service.findAll(pageable, "Adotado");
+
+        assertEquals(2, page.getTotalElements());
+
+        List<DogDTO> list = page.stream().toList();
+
+        for (DogDTO dog : list) {
+            service.delete(dog.getId());
+        }
+
+        page = service.findAll(pageable, "Adotado");
 
         assertEquals(0, page.getTotalElements());
     }

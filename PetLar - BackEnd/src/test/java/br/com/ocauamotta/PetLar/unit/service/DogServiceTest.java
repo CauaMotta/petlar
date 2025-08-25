@@ -102,10 +102,40 @@ class DogServiceTest {
         Page<Dog> page = new PageImpl<>(List.of(dogEntity));
         when(repository.findAll(any(Pageable.class))).thenReturn(page);
 
-        Page<DogDTO> result = service.findAll(PageRequest.of(0, 10));
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<DogDTO> result = service.findAll(pageable, null);
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Rex", result.getContent().get(0).getName());
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPageOfDog_WithStatusAvailable() {
+        Dog dogEntity = createDogEntity();
+        Page<Dog> page = new PageImpl<>(List.of(dogEntity));
+        when(repository.findByStatus(eq(AdoptionStatus.AVAILABLE),any(Pageable.class))).thenReturn(page);
+
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<DogDTO> result = service.findAll(pageable, "Disponível");
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Rex", result.getContent().get(0).getName());
+        assertEquals(AdoptionStatus.AVAILABLE.getLabel(), result.getContent().get(0).getStatus());
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPageOfDog_WithStatusAdopted() {
+        Dog dogEntity = createDogEntity();
+        dogEntity.setStatus(AdoptionStatus.ADOPTED);
+        Page<Dog> page = new PageImpl<>(List.of(dogEntity));
+        when(repository.findByStatus(eq(AdoptionStatus.ADOPTED),any(Pageable.class))).thenReturn(page);
+
+        PageRequest pageable = PageRequest.of(0, 10);
+        Page<DogDTO> result = service.findAll(pageable, "Adotado");
+
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Rex", result.getContent().get(0).getName());
+        assertEquals(AdoptionStatus.ADOPTED.getLabel(), result.getContent().get(0).getStatus());
     }
 
     Dog createDogEntity() {

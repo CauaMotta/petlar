@@ -3,6 +3,7 @@ package br.com.ocauamotta.PetLar.service;
 import br.com.ocauamotta.PetLar.domain.Dog;
 import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
 import br.com.ocauamotta.PetLar.dto.DogDTO;
+import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.exception.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.mapper.DogMapper;
@@ -46,7 +47,10 @@ public class DogService {
          return DogMapper.toDTO(dog);
     }
 
-    public Page<DogDTO> findAll(Pageable pageable) {
-        return repository.findAll(pageable).map(DogMapper::toDTO);
+    public Page<DogDTO> findAll(Pageable pageable, String status) {
+        if (status == null) {
+            return repository.findAll(pageable).map(DogMapper::toDTO);
+        }
+        return repository.findByStatus(AdoptionStatus.fromLabel(status), pageable).map(DogMapper::toDTO);
     }
 }

@@ -100,6 +100,53 @@ class IDogRepositoryIT {
         assertEquals(0, page.getTotalElements());
     }
 
+    @Test
+    void test_ShouldReturnAllDogs_WithStatusAvailable() {
+        repository.save(createDog());
+        repository.save(createDog());
+
+        PageRequest pageable = PageRequest.of(0, 2);
+        Page<Dog> page = repository.findByStatus(AdoptionStatus.AVAILABLE, pageable);
+
+        assertEquals(2, page.getTotalElements());
+
+        List<Dog> list = page.stream().toList();
+
+        for (Dog dog : list) {
+            repository.delete(dog);
+        }
+
+        page = repository.findAll(pageable);
+
+        assertEquals(0, page.getTotalElements());
+    }
+
+    @Test
+    void test_ShouldReturnAllDogs_WithStatusAdopted() {
+        Dog dog = createDog();
+        dog.setStatus(AdoptionStatus.ADOPTED);
+        repository.save(dog);
+
+        Dog dog2 = createDog();
+        dog2.setStatus(AdoptionStatus.ADOPTED);
+        repository.save(dog2);
+
+        PageRequest pageable = PageRequest.of(0, 2);
+        Page<Dog> page = repository.findByStatus(AdoptionStatus.ADOPTED, pageable);
+
+        assertEquals(2, page.getTotalElements());
+
+        List<Dog> list = page.stream().toList();
+
+        for (Dog d : list) {
+            repository.delete(d);
+        }
+
+        page = repository.findAll(pageable);
+
+        assertEquals(0, page.getTotalElements());
+    }
+
     Dog createDog() {
         return Dog.builder()
                 .name("Rex")
