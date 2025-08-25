@@ -18,6 +18,6 @@ public enum AdoptionStatus {
         for (AdoptionStatus status : values()) {
             if(status.getLabel().equalsIgnoreCase(label)) return status;
         }
-        throw new IllegalArgumentException("typeo inválido: " + label);
+        throw new IllegalArgumentException("Status inválido: " + label);
     }
 }

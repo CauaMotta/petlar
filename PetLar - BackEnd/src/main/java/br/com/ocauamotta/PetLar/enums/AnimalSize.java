@@ -19,6 +19,6 @@ public enum AnimalSize {
         for (AnimalSize size : values()) {
             if(size.getLabel().equalsIgnoreCase(label)) return size;
         }
-        throw new IllegalArgumentException("Sexo inválido: " + label);
+        throw new IllegalArgumentException("Tamanho inválido: " + label);
     }
 }

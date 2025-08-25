@@ -18,6 +18,6 @@ public enum AnimalType {
         for (AnimalType type : values()) {
             if(type.getLabel().equalsIgnoreCase(label)) return type;
         }
-        throw new IllegalArgumentException("tipo inválido: " + label);
+        throw new IllegalArgumentException("Tipo inválido: " + label);
     }
 }
