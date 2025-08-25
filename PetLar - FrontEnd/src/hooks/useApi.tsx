@@ -28,7 +28,7 @@ export function useApi(endpoint: string) {
       try {
         const response = await apiRequest<ApiResponse>(endpoint)
 
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 300))
 
         if (active) {
           setData(response.content)

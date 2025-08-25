@@ -83,6 +83,11 @@ export const Card = styled.div`
         background-color: ${({ theme }) => theme.colors.hoverColor};
         border-color: ${({ theme }) => theme.colors.hoverColor};
       }
+
+      &:disabled {
+        background-color: #ccc;
+        border-color: #ccc;
+      }
     }
   }
 `
