@@ -7,6 +7,7 @@ import Header from './components/Header'
 import type { RootReducer } from './store'
 
 import { Container, GlobalStyle } from './styles'
+import Footer from './components/Footer'
 
 function App() {
   const { theme } = useSelector((state: RootReducer) => state.theme)
@@ -28,6 +29,7 @@ function App() {
       <Container>
         <RouterProvider router={routes} />
       </Container>
+      <Footer />
     </ThemeProvider>
   )
 }
