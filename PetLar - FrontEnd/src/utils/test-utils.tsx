@@ -1,8 +1,9 @@
+import '@testing-library/jest-dom'
 import React, { type ReactNode } from 'react'
 import { render, type RenderOptions } from '@testing-library/react'
 import { Provider, useSelector } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import '@testing-library/jest-dom'
 
 import store, { type RootReducer } from '../store'
 
@@ -18,9 +19,11 @@ const ReduxThemeProvider = ({ children }: Props) => {
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllProviders = ({ children }: Props) => (
-  <Provider store={store}>
-    <ReduxThemeProvider>{children}</ReduxThemeProvider>
-  </Provider>
+  <MemoryRouter>
+    <Provider store={store}>
+      <ReduxThemeProvider>{children}</ReduxThemeProvider>
+    </Provider>
+  </MemoryRouter>
 )
 
 const customRender = (ui: React.ReactElement, options?: RenderOptions) =>

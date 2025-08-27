@@ -1,10 +1,15 @@
+import { useNavigate } from 'react-router-dom'
+
 import * as S from './styles'
+import { Button, Line } from '../../styles'
 
 type Props = {
   animal: Animal
 }
 
 const Card = ({ animal }: Props) => {
+  const navigate = useNavigate()
+
   return (
     <S.Card>
       <div className="image">
@@ -18,11 +23,20 @@ const Card = ({ animal }: Props) => {
       </div>
       <div className="content">
         <h2>{animal.name}</h2>
-        <hr />
-        <p className="text--small">Idade: {animal.age}</p>
-        <p className="text--small">Sexo: {animal.sex}</p>
-        <p className="text--small">Porte: {animal.size}</p>
-        <button disabled={animal.status === 'Adotado' ? true : false}>
+        <Line />
+        <p className="text--small">
+          <b>Idade:</b> {animal.age} {animal.age > 1 ? 'anos' : 'ano'}
+        </p>
+        <p className="text--small">
+          <b>Sexo:</b> {animal.sex}
+        </p>
+        <p className="text--small">
+          <b>Porte:</b> {animal.size}
+        </p>
+        <Button
+          disabled={animal.status === 'Adotado' ? true : false}
+          onClick={() => navigate(`/details/${animal.id}`)}
+        >
           {animal.status === 'Adotado' ? (
             <>Adotado!</>
           ) : (
@@ -30,7 +44,7 @@ const Card = ({ animal }: Props) => {
               Ver mais <i className="fa-solid fa-arrow-right"></i>
             </>
           )}
-        </button>
+        </Button>
       </div>
     </S.Card>
   )

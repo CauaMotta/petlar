@@ -2,12 +2,13 @@ const defaultTheme = {
   colors: {
     secondaryColor: '#DDDDDD',
     backgroundColor: '#E2E2E2',
-    fontColor: '#1F1F1F'
+    fontColor: '#1F1F1F',
+    fontColorSecondary: '#2F2F2F'
   }
 }
 
 export const dogTheme = {
-  name: 'dog',
+  name: 'dogs',
   colors: {
     ...defaultTheme.colors,
     primaryColor: '#D9A066',
@@ -16,7 +17,7 @@ export const dogTheme = {
 }
 
 export const catTheme = {
-  name: 'cat',
+  name: 'cats',
   colors: {
     ...defaultTheme.colors,
     primaryColor: '#95A5A6',
@@ -25,7 +26,7 @@ export const catTheme = {
 }
 
 export const birdTheme = {
-  name: 'bird',
+  name: 'birds',
   colors: {
     ...defaultTheme.colors,
     primaryColor: '#06923E',
@@ -34,7 +35,7 @@ export const birdTheme = {
 }
 
 export const otherTheme = {
-  name: 'other',
+  name: 'others',
   colors: {
     ...defaultTheme.colors,
     primaryColor: '#0288D1',

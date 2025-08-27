@@ -14,7 +14,6 @@ describe('Footer', () => {
   test('Should render the Cauã Logo', () => {
     render(<Footer />)
 
-    screen.debug()
     expect(
       screen.getByRole('heading', { name: /Cauã Motta/i })
     ).toBeInTheDocument()

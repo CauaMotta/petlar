@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 
 import { apiRequest } from '../services/api'
@@ -12,8 +13,12 @@ type ApiResponse = {
   last: boolean
 }
 
-export function useApi(endpoint: string) {
-  const [data, setData] = useState<Animal[]>([])
+export function useApi<T extends ApiResponse | Animal = ApiResponse>(
+  endpoint: string
+) {
+  const [data, setData] = useState<T extends ApiResponse ? Animal[] : Animal>(
+    [] as unknown as T extends ApiResponse ? Animal[] : Animal
+  )
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -21,17 +26,21 @@ export function useApi(endpoint: string) {
     let active = true
 
     const fetchData = async () => {
-      setData([])
+      setData([] as unknown as T extends ApiResponse ? Animal[] : Animal)
       setLoading(true)
       setError(null)
 
       try {
-        const response = await apiRequest<ApiResponse>(endpoint)
+        const response = await apiRequest<T>(endpoint)
 
         await new Promise((resolve) => setTimeout(resolve, 300))
 
         if (active) {
-          setData(response.content)
+          if ('content' in (response as ApiResponse)) {
+            setData((response as ApiResponse).content as any)
+          } else {
+            setData(response as any)
+          }
         }
       } catch (err: any) {
         if (active) {

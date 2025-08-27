@@ -29,12 +29,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 `
 
-export const Container = styled.div`
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-`
-
 const spin = keyframes`
   to {
     transform: rotate(360deg);
@@ -44,4 +38,31 @@ const spin = keyframes`
 export const StyledClipLoader = styled(ClipLoader)`
   border-width: 4px !important;
   animation: ${spin} 1s 0s linear infinite !important;
+`
+
+export const Line = styled.hr`
+  height: 2px;
+  background-color: #ccc;
+  border: none;
+  margin: 6px 0;
+`
+
+export const Button = styled.button`
+  padding: 8px 16px;
+
+  color: ${({ theme }) => theme.colors.fontColor};
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+
+  background-color: ${({ theme }) => theme.colors.primaryColor};
+  border: 2px solid ${({ theme }) => theme.colors.primaryColor};
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.hoverColor};
+    border: 2px solid ${({ theme }) => theme.colors.hoverColor};
+  }
 `

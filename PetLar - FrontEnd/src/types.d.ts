@@ -7,7 +7,7 @@ declare type Animal = {
   sex: string
   weight: number
   size: string
-  date: string
+  registrationDate: string
   status: string
   description?: string
   urlImage?: string

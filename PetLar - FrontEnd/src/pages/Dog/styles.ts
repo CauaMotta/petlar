@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 
-export const Container = styled.div`
+export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
+  margin-bottom: 32px;
 
   .box {
     text-align: center;

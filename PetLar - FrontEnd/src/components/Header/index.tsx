@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import PetlarLogo from '../PetlarLogo'
 
@@ -7,10 +8,12 @@ import { changeTheme } from '../../store/reducers/Theme'
 import * as S from './styles'
 
 const Header = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const buttonAction = (theme: string) => {
-    dispatch(changeTheme(theme))
+  const buttonAction = (params: string) => {
+    dispatch(changeTheme(params))
+    navigate(`/${params}`)
   }
 
   return (
@@ -21,10 +24,10 @@ const Header = () => {
           <h1>PetLar</h1>
         </div>
         <nav className="nav">
-          <button onClick={() => buttonAction('dog')}>Cachorros</button>
-          <button onClick={() => buttonAction('cat')}>Gatos</button>
-          <button onClick={() => buttonAction('bird')}>Aves</button>
-          <button onClick={() => buttonAction('other')}>Outros</button>
+          <button onClick={() => buttonAction('dogs')}>Cachorros</button>
+          <button onClick={() => buttonAction('cats')}>Gatos</button>
+          <button onClick={() => buttonAction('birds')}>Aves</button>
+          <button onClick={() => buttonAction('others')}>Outros</button>
         </nav>
       </S.Container>
     </S.Header>

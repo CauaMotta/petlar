@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
 export const Footer = styled.footer`
-  margin-top: 48px;
-
   background-color: ${({ theme }) => theme.colors.backgroundColor};
   border-top: 3px solid ${({ theme }) => theme.colors.primaryColor};
 

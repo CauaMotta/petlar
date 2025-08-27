@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { Button } from '../../styles'
+
 export const Card = styled.div`
   display: block;
   padding: 16px;
@@ -52,37 +54,17 @@ export const Card = styled.div`
       line-height: 1;
     }
 
-    hr {
-      height: 2px;
-      background-color: ${({ theme }) => theme.colors.primaryColor};
-      border: none;
-      margin: 6px 0;
-    }
-
     .text--small {
       padding-left: 8px;
+
+      b {
+        font-weight: 600;
+      }
     }
 
-    button {
+    ${Button} {
       width: 100%;
-
-      color: ${({ theme }) => theme.colors.fontColor};
-      font-size: 16px;
-      font-weight: 600;
-
-      background-color: ${({ theme }) => theme.colors.primaryColor};
-      border: 2px solid ${({ theme }) => theme.colors.primaryColor};
-      border-radius: 8px;
-
       margin-top: 16px;
-      padding-block: 4px;
-
-      cursor: pointer;
-
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.hoverColor};
-        border-color: ${({ theme }) => theme.colors.hoverColor};
-      }
 
       &:disabled {
         background-color: #ccc;
