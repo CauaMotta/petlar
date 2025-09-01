@@ -1,12 +1,11 @@
-import { useTheme } from 'styled-components'
-
 import Card from '../../components/Card'
+import AdoptionCallSection from '../../components/AdoptionCallSection'
+import Loader from '../../components/Loader'
 
 import { useApi } from '../../hooks/useApi'
 
 import { Container, CardContainer } from './styles'
-import { Line, StyledClipLoader } from '../../styles'
-import AdoptionCallSection from '../../components/AdoptionCallSection'
+import { Line } from '../../styles'
 
 const Dog = () => {
   const {
@@ -15,16 +14,12 @@ const Dog = () => {
     error
   } = useApi('/dogs?status=Disponível')
   const { data: dogAdopted } = useApi('/dogs?status=Adotado')
-  const theme = useTheme()
 
   if (loading)
     return (
       <Container>
         <div className="box">
-          <StyledClipLoader
-            data-testid="clipLoader"
-            color={theme.colors.primaryColor}
-          />
+          <Loader />
         </div>
       </Container>
     )

@@ -67,8 +67,8 @@ export const Card = styled.div`
       margin-top: 16px;
 
       &:disabled {
-        background-color: #ccc;
-        border-color: #ccc;
+        background-color: ${({ theme }) => theme.colors.highlightColor};
+        border-color: ${({ theme }) => theme.colors.highlightColor};
       }
     }
   }

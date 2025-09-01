@@ -1,13 +1,13 @@
 import { useParams } from 'react-router-dom'
-import { useTheme } from 'styled-components'
 
 import BackButton from '../../components/BackButton'
+import Loader from '../../components/Loader'
 
 import { useApi } from '../../hooks/useApi'
-import { formatDate, formatWeight } from '../../utils'
+import { formatAge, formatDate, formatWeight } from '../../utils'
 
 import { Card, Container, Description } from './styles'
-import { StyledClipLoader, Line, Button } from '../../styles'
+import { Line, Button } from '../../styles'
 
 type idParams = {
   id: string
@@ -16,16 +16,12 @@ type idParams = {
 const Details = () => {
   const { id } = useParams() as idParams
   const { data, loading, error } = useApi<Animal>(`/dogs/${id}`)
-  const theme = useTheme()
 
   if (loading)
     return (
       <Container>
         <div className="box">
-          <StyledClipLoader
-            data-testid="clipLoader"
-            color={theme.colors.primaryColor}
-          />
+          <Loader />
         </div>
       </Container>
     )
@@ -58,7 +54,7 @@ const Details = () => {
           <Line />
           <div className="info">
             <p className="text">
-              <b>Idade:</b> {data.age} {data.age > 1 ? 'anos' : 'ano'}
+              <b>Idade:</b> {formatAge(data.age)}
             </p>
             <p className="text">
               <b>Sexo:</b> {data.sex}

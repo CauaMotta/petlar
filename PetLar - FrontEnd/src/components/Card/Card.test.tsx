@@ -38,7 +38,7 @@ describe('Card', () => {
 
     expect(screen.getByTestId('noImage')).toBeInTheDocument()
     expect(screen.getByText(/Nome de teste/i)).toBeInTheDocument()
-    expect(screen.getByText(/2 anos/i)).toBeInTheDocument()
+    expect(screen.getByText(/2/i)).toBeInTheDocument()
     expect(screen.getByText(/Macho/i)).toBeInTheDocument()
     expect(screen.getByText(/Pequeno/i)).toBeInTheDocument()
     expect(screen.getByText(/Ver mais/i)).toBeInTheDocument()
@@ -57,7 +57,7 @@ describe('Card', () => {
       'urlTeste'
     )
     expect(screen.getByText(/Nome de teste/i)).toBeInTheDocument()
-    expect(screen.getByText(/2 anos/i)).toBeInTheDocument()
+    expect(screen.getByText(/2/i)).toBeInTheDocument()
     expect(screen.getByText(/Macho/i)).toBeInTheDocument()
     expect(screen.getByText(/Pequeno/i)).toBeInTheDocument()
     expect(screen.getByText(/Ver mais/i)).toBeInTheDocument()

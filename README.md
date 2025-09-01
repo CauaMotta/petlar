@@ -25,6 +25,10 @@ Na persistência, utiliza **MongoDB** para garantir flexibilidade e alta perform
 - 🔄 [React Spinners](https://www.davidhu.io/react-spinners/) - Componentes de carregamento estilizados para React
 - 🧪 [Vitest](https://vitest.dev/) - Testes unitários rápidos e eficientes para projetos com Vite
 - 🧩 [Testing Library](https://testing-library.com/) - Conjunto de ferramentas para testes acessíveis e eficazes
+- ✅ [Yup](https://github.com/jquense/yup) - Validação de formulários de forma simples e eficiente
+- 📝 [Formik](https://formik.org/) - Gerenciamento de formulários no React
+- 🔽 [React Select](https://react-select.com/) - Componente poderoso e personalizável para seleção
+- 🔢 [React IMask](https://imask.js.org/react.html) - Máscaras de entrada flexíveis e fáceis de integrar em inputs React
 
 ## 📦 Instalação e Execução
 

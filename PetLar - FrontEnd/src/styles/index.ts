@@ -29,20 +29,9 @@ export const GlobalStyle = createGlobalStyle`
   }
 `
 
-const spin = keyframes`
-  to {
-    transform: rotate(360deg);
-  }
-`
-
-export const StyledClipLoader = styled(ClipLoader)`
-  border-width: 4px !important;
-  animation: ${spin} 1s 0s linear infinite !important;
-`
-
 export const Line = styled.hr`
   height: 2px;
-  background-color: #ccc;
+  background-color: ${({ theme }) => theme.colors.highlightColor};
   border: none;
   margin: 6px 0;
 `

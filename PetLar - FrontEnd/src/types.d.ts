@@ -11,4 +11,19 @@ declare type Animal = {
   status: string
   description?: string
   urlImage?: string
+  author: string
+  phone: string
+}
+
+declare type CreateAnimal = {
+  name: string
+  age: number
+  breed: string
+  sex: string
+  weight: number | null
+  size: string
+  description?: string
+  urlImage?: string
+  author: string
+  phone: string
 }

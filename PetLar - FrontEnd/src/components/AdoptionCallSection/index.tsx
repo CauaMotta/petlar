@@ -9,10 +9,7 @@ const AdoptionCallSection = () => {
   return (
     <CallSection>
       <div className="image">
-        <img
-          src="/public/assets/dog-cat.svg"
-          alt="Desenho de um cão e um gato"
-        />
+        <img src="/assets/dog-cat.svg" alt="Desenho de um cão e um gato" />
       </div>
       <div className="call">
         <h2>

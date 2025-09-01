@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
+import { formatAge } from '../../utils'
+
 import * as S from './styles'
 import { Button, Line } from '../../styles'
 
@@ -25,7 +27,7 @@ const Card = ({ animal }: Props) => {
         <h2>{animal.name}</h2>
         <Line />
         <p className="text--small">
-          <b>Idade:</b> {animal.age} {animal.age > 1 ? 'anos' : 'ano'}
+          <b>Idade:</b> {formatAge(animal.age)}
         </p>
         <p className="text--small">
           <b>Sexo:</b> {animal.sex}

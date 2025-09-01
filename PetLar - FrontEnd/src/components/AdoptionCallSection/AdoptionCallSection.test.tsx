@@ -40,7 +40,7 @@ describe('AdoptionCallSection', () => {
 
     expect(screen.getByAltText('Desenho de um cão e um gato')).toHaveAttribute(
       'src',
-      '/public/assets/dog-cat.svg'
+      '/assets/dog-cat.svg'
     )
   })
 

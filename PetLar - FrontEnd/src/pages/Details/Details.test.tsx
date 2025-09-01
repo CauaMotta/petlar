@@ -32,7 +32,7 @@ describe('Details Page', () => {
 
     render(<Details />)
 
-    expect(screen.getByTestId('clipLoader')).toBeInTheDocument()
+    expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
 
   test('Should render error message when API fails', () => {

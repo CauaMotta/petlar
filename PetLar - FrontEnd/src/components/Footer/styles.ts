@@ -26,7 +26,7 @@ export const Container = styled.div`
 
     hr {
       width: 2px;
-      background-color: #ccc;
+      background-color: ${({ theme }) => theme.colors.highlightColor};
       border: none;
       transform: rotate(5deg);
     }
