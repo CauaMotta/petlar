@@ -1,8 +1,8 @@
 package br.com.ocauamotta.PetLar.unit.service;
 
 import br.com.ocauamotta.PetLar.domain.Dog;
-import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
-import br.com.ocauamotta.PetLar.dto.DogDTO;
+import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
+import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
@@ -28,19 +28,19 @@ class DogServiceTest {
     private IDogRepository repository;
 
     @InjectMocks
-    private static DogService service;
+    private DogService service;
 
     @BeforeEach
-    void setUpClass() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void testSave_ShouldReturnSavedDogDTO() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         when(repository.insert(any(Dog.class))).thenReturn(dogEntity);
 
-        DogDTO saved = service.save(createDogDTO());
+        AnimalDTO saved = service.save(createAnimalDTO());
 
         assertEquals("Rex", saved.getName());
         assertEquals("Cachorro", saved.getType());
@@ -49,11 +49,11 @@ class DogServiceTest {
 
     @Test
     void testUpdate_ShouldReturnUpdatedDogDTO() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         when(repository.save(any(Dog.class))).thenReturn(dogEntity);
 
-        DogDTO dto = DogMapper.toDTO(dogEntity);
-        DogDTO updated = service.update(dto);
+        AnimalDTO dto = DogMapper.toDTO(dogEntity);
+        AnimalDTO updated = service.update(dto);
 
         assertEquals("Rex", updated.getName());
         verify(repository, times(1)).save(any(Dog.class));
@@ -61,7 +61,7 @@ class DogServiceTest {
 
     @Test
     void testDelete_ShouldCallRepositoryDelete_WhenDogExists() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         when(repository.findById("1")).thenReturn(Optional.of(dogEntity));
 
         service.delete("1");
@@ -80,10 +80,10 @@ class DogServiceTest {
 
     @Test
     void testFindById_ShouldReturnDogDTO_WhenFound() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         when(repository.findById("1")).thenReturn(Optional.of(dogEntity));
 
-        DogDTO dto = service.findById("1");
+        AnimalDTO dto = service.findById("1");
 
         assertEquals("Rex", dto.getName());
         verify(repository, times(1)).findById("1");
@@ -98,12 +98,12 @@ class DogServiceTest {
 
     @Test
     void testFindAll_ShouldReturnPageOfDogDTOs() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         Page<Dog> page = new PageImpl<>(List.of(dogEntity));
         when(repository.findAll(any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
-        Page<DogDTO> result = service.findAll(pageable, null);
+        Page<AnimalDTO> result = service.findAll(pageable, null);
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Rex", result.getContent().get(0).getName());
@@ -111,12 +111,12 @@ class DogServiceTest {
 
     @Test
     void testFindAll_ShouldReturnPageOfDog_WithStatusAvailable() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         Page<Dog> page = new PageImpl<>(List.of(dogEntity));
         when(repository.findByStatus(eq(AdoptionStatus.AVAILABLE),any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
-        Page<DogDTO> result = service.findAll(pageable, "Disponível");
+        Page<AnimalDTO> result = service.findAll(pageable, "Disponível");
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Rex", result.getContent().get(0).getName());
@@ -125,20 +125,20 @@ class DogServiceTest {
 
     @Test
     void testFindAll_ShouldReturnPageOfDog_WithStatusAdopted() {
-        Dog dogEntity = createDogEntity();
+        Dog dogEntity = dog();
         dogEntity.setStatus(AdoptionStatus.ADOPTED);
         Page<Dog> page = new PageImpl<>(List.of(dogEntity));
         when(repository.findByStatus(eq(AdoptionStatus.ADOPTED),any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
-        Page<DogDTO> result = service.findAll(pageable, "Adotado");
+        Page<AnimalDTO> result = service.findAll(pageable, "Adotado");
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Rex", result.getContent().get(0).getName());
         assertEquals(AdoptionStatus.ADOPTED.getLabel(), result.getContent().get(0).getStatus());
     }
 
-    Dog createDogEntity() {
+    Dog dog() {
         return Dog.builder()
                 .id("1")
                 .name("Rex")
@@ -155,15 +155,14 @@ class DogServiceTest {
                 .build();
     }
 
-    CreateDogDTO createDogDTO() {
-        return CreateDogDTO.builder()
+    CreateAnimalDTO createAnimalDTO() {
+        return CreateAnimalDTO.builder()
                 .name("Rex")
                 .age(3)
                 .breed("Vira-lata")
                 .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
                 .size(AnimalSize.MEDIUM.getLabel())
-                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
                 .build();

@@ -1,8 +1,8 @@
 package br.com.ocauamotta.PetLar.unit.controller;
 
 import br.com.ocauamotta.PetLar.controller.DogController;
-import br.com.ocauamotta.PetLar.dto.CreateDogDTO;
-import br.com.ocauamotta.PetLar.dto.DogDTO;
+import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
+import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
@@ -43,39 +43,39 @@ class DogControllerTest {
 
     @Test
     void testSave_ShouldReturnCreatedDog() throws Exception {
-        CreateDogDTO createDto = createDogDTO();
-        DogDTO returnedDto = dogDTO();
-        when(service.save(Mockito.any(CreateDogDTO.class))).thenReturn(returnedDto);
+        CreateAnimalDTO createDto = createAnimalDTO();
+        AnimalDTO returnedDto = animalDTO();
+        when(service.save(Mockito.any(CreateAnimalDTO.class))).thenReturn(returnedDto);
 
-        mockMvc.perform(post("/api/dogs")
+        mockMvc.perform(post("/dogs")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("1")))
                 .andExpect(jsonPath("$.name", is("Rex")));
 
-        verify(service, times(1)).save(Mockito.any(CreateDogDTO.class));
+        verify(service, times(1)).save(Mockito.any(CreateAnimalDTO.class));
     }
 
     @Test
     void testUpdate_ShouldReturnUpdatedDog() throws Exception {
-        DogDTO dogDTO = dogDTO();
-        when(service.update(Mockito.any(DogDTO.class))).thenReturn(dogDTO);
+        AnimalDTO animalDTO = animalDTO();
+        when(service.update(Mockito.any(AnimalDTO.class))).thenReturn(animalDTO);
 
-        mockMvc.perform(put("/api/dogs")
+        mockMvc.perform(put("/dogs")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(dogDTO)))
+                        .content(mapper.writeValueAsString(animalDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Rex")));
 
-        verify(service, times(1)).update(Mockito.any(DogDTO.class));
+        verify(service, times(1)).update(Mockito.any(AnimalDTO.class));
     }
 
     @Test
     void testDelete_ShouldReturnNoContent_WhenIdExists() throws Exception {
         doNothing().when(service).delete("1");
 
-        mockMvc.perform(delete("/api/dogs/1"))
+        mockMvc.perform(delete("/dogs/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Removido com sucesso."));
 
@@ -84,11 +84,11 @@ class DogControllerTest {
 
     @Test
     void testFindById_ShouldReturnDog_WhenExists() throws Exception {
-        DogDTO dogDTO = dogDTO();
+        AnimalDTO animalDTO = animalDTO();
 
-        when(service.findById("1")).thenReturn(dogDTO);
+        when(service.findById("1")).thenReturn(animalDTO);
 
-        mockMvc.perform(get("/api/dogs/1"))
+        mockMvc.perform(get("/dogs/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("1")))
                 .andExpect(jsonPath("$.name", is("Rex")));
@@ -98,17 +98,17 @@ class DogControllerTest {
     void testFindById_ShouldReturnNotFound_WhenDogDoesNotExist() throws Exception {
         when(service.findById("1")).thenThrow(new EntityNotFoundException("Dog not found with ID: 1"));
 
-        mockMvc.perform(get("/api/dogs/1"))
+        mockMvc.perform(get("/dogs/1"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     void testFindAll_ShouldReturnPagedDogs() throws Exception {
-        DogDTO dogDTO = dogDTO();
+        AnimalDTO animalDTO = animalDTO();
         when(service.findAll(Mockito.any(Pageable.class), Mockito.isNull()))
-                .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
+                .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
 
-        mockMvc.perform(get("/api/dogs")
+        mockMvc.perform(get("/dogs")
                 .param("page", "0")
                 .param("size", "10"))
                 .andExpect(status().isOk())
@@ -118,11 +118,11 @@ class DogControllerTest {
 
     @Test
     void testFindAll_ShouldReturnPagedDogs_WithStatusAvailable() throws Exception {
-        DogDTO dogDTO = dogDTO();
+        AnimalDTO animalDTO = animalDTO();
         when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Disponível")))
-                .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
+                .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
 
-        mockMvc.perform(get("/api/dogs?status=Disponível")
+        mockMvc.perform(get("/dogs?status=Disponível")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
@@ -133,12 +133,12 @@ class DogControllerTest {
 
     @Test
     void testFindAll_ShouldReturnPagedDogs_WithStatusAdopted() throws Exception {
-        DogDTO dogDTO = dogDTO();
-        dogDTO.setStatus(AdoptionStatus.ADOPTED.getLabel());
+        AnimalDTO animalDTO = animalDTO();
+        animalDTO.setStatus(AdoptionStatus.ADOPTED.getLabel());
         when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Adotado")))
-                .thenReturn(new PageImpl<>(List.of(dogDTO), PageRequest.of(0, 10), 1));
+                .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
 
-        mockMvc.perform(get("/api/dogs?status=Adotado")
+        mockMvc.perform(get("/dogs?status=Adotado")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
@@ -147,8 +147,8 @@ class DogControllerTest {
                 .andExpect(jsonPath("$.content[0].status", is("Adotado")));
     }
 
-    DogDTO dogDTO() {
-        return DogDTO.builder()
+    AnimalDTO animalDTO() {
+        return AnimalDTO.builder()
                 .id("1")
                 .name("Rex")
                 .age(3)
@@ -164,15 +164,14 @@ class DogControllerTest {
                 .build();
     }
 
-    CreateDogDTO createDogDTO() {
-        return CreateDogDTO.builder()
+    CreateAnimalDTO createAnimalDTO() {
+        return CreateAnimalDTO.builder()
                 .name("Rex")
                 .age(3)
                 .breed("Vira-lata")
                 .sex(AnimalSex.MALE.getLabel())
                 .weight(10)
                 .size(AnimalSize.MEDIUM.getLabel())
-                .status(AdoptionStatus.AVAILABLE.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
                 .build();

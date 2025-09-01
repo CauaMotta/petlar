@@ -34,7 +34,7 @@ class IDogRepositoryIT {
 
     @Test
     void test_ShouldPersistAndFindById() {
-        Dog saved = repository.insert(createDog());
+        Dog saved = repository.insert(dog());
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
@@ -50,7 +50,7 @@ class IDogRepositoryIT {
 
     @Test
     void test_ShouldUpdateDog() {
-        Dog saved = repository.insert(createDog());
+        Dog saved = repository.insert(dog());
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
@@ -66,7 +66,7 @@ class IDogRepositoryIT {
 
     @Test
     void test_ShouldDeleteDog() {
-        Dog saved = repository.insert(createDog());
+        Dog saved = repository.insert(dog());
 
         assertNotNull(saved.getId());
         assertEquals("Rex", saved.getName());
@@ -81,8 +81,8 @@ class IDogRepositoryIT {
 
     @Test
     void test_ShouldReturnAllDogs() {
-        repository.save(createDog());
-        repository.save(createDog());
+        repository.save(dog());
+        repository.save(dog());
 
         PageRequest pageable = PageRequest.of(0, 2);
         Page<Dog> page = repository.findAll(pageable);
@@ -102,8 +102,8 @@ class IDogRepositoryIT {
 
     @Test
     void test_ShouldReturnAllDogs_WithStatusAvailable() {
-        repository.save(createDog());
-        repository.save(createDog());
+        repository.save(dog());
+        repository.save(dog());
 
         PageRequest pageable = PageRequest.of(0, 2);
         Page<Dog> page = repository.findByStatus(AdoptionStatus.AVAILABLE, pageable);
@@ -123,11 +123,11 @@ class IDogRepositoryIT {
 
     @Test
     void test_ShouldReturnAllDogs_WithStatusAdopted() {
-        Dog dog = createDog();
+        Dog dog = dog();
         dog.setStatus(AdoptionStatus.ADOPTED);
         repository.save(dog);
 
-        Dog dog2 = createDog();
+        Dog dog2 = dog();
         dog2.setStatus(AdoptionStatus.ADOPTED);
         repository.save(dog2);
 
@@ -147,7 +147,7 @@ class IDogRepositoryIT {
         assertEquals(0, page.getTotalElements());
     }
 
-    Dog createDog() {
+    Dog dog() {
         return Dog.builder()
                 .name("Rex")
                 .age(3)

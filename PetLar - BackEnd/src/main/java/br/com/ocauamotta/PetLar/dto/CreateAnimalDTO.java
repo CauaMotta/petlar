@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateDogDTO {
+public class CreateAnimalDTO {
 
     @NotNull
     @Size(min = 3, max = 100)
@@ -30,9 +30,6 @@ public class CreateDogDTO {
 
     @NotNull
     private String size;
-
-    @NotNull
-    private String status;
 
     @Size(min = 3, max = 250)
     private String description;

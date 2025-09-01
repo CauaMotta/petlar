@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DogDTO {
+public class AnimalDTO {
 
     @NotNull
     private String id;
