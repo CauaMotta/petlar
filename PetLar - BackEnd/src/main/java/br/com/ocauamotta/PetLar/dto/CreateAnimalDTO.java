@@ -37,4 +37,10 @@ public class CreateAnimalDTO {
     private String description;
 
     private String urlImage;
+
+    @NotNull
+    private String author;
+
+    @NotNull
+    private String phone;
 }

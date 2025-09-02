@@ -160,6 +160,8 @@ class IDogRepositoryIT {
                 .status(AdoptionStatus.AVAILABLE)
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 }

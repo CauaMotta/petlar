@@ -31,6 +31,8 @@ public class DogMapper {
                 .status(AdoptionStatus.fromLabel(dto.getStatus()))
                 .description(dto.getDescription())
                 .urlImage(dto.getUrlImage())
+                .author(dto.getAuthor())
+                .phone(dto.getPhone())
                 .build();
     }
 
@@ -50,6 +52,8 @@ public class DogMapper {
                 .status(entity.getStatus().getLabel())
                 .description(entity.getDescription())
                 .urlImage(entity.getUrlImage())
+                .author(entity.getAuthor())
+                .phone(entity.getPhone())
                 .build();
     }
 
@@ -65,6 +69,8 @@ public class DogMapper {
                 .size(AnimalSize.fromLabel(createDTO.getSize()))
                 .description(createDTO.getDescription())
                 .urlImage(createDTO.getUrlImage())
+                .author(createDTO.getAuthor())
+                .phone(createDTO.getPhone())
                 .build();
     }
 }

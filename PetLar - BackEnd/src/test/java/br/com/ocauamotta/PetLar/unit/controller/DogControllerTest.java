@@ -174,6 +174,8 @@ class DogControllerTest {
                 .registrationDate(LocalDate.now())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 
@@ -187,6 +189,8 @@ class DogControllerTest {
                 .size(AnimalSize.MEDIUM.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 }

@@ -41,4 +41,8 @@ public class AnimalDTO {
     private String description;
 
     private String urlImage;
+
+    private String author;
+
+    private String phone;
 }

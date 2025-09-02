@@ -179,6 +179,8 @@ class DogControllerIT {
                 .status(AdoptionStatus.AVAILABLE)
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 
@@ -195,6 +197,8 @@ class DogControllerIT {
                 .status(AdoptionStatus.AVAILABLE)
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 
@@ -208,6 +212,8 @@ class DogControllerIT {
                 .size(AnimalSize.MEDIUM.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 }

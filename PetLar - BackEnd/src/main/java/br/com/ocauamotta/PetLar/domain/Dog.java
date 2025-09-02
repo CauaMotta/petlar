@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Document(collection = "Dogs")
 public class Dog extends Animal{
 
-    public Dog(String id, String name, Integer age, AnimalType type, String breed, AnimalSex sex, Integer weight, AnimalSize size, LocalDate registrationDate, AdoptionStatus status, String description, String urlImage) {
-        super(id, name, age, type, breed, sex, weight, size, registrationDate, status, description, urlImage);
+    public Dog(String id, String name, Integer age, AnimalType type, String breed, AnimalSex sex, Integer weight, AnimalSize size, LocalDate registrationDate, AdoptionStatus status, String description, String urlImage, String author, String phone) {
+        super(id, name, age, type, breed, sex, weight, size, registrationDate, status, description, urlImage, author, phone);
     }
 
     public Dog() {

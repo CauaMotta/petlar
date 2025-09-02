@@ -153,6 +153,8 @@ class DogServiceTest {
                 .status(AdoptionStatus.AVAILABLE)
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 
@@ -166,6 +168,8 @@ class DogServiceTest {
                 .size(AnimalSize.MEDIUM.getLabel())
                 .description("Cão amigável")
                 .urlImage("url.com/img")
+                .author("Teste")
+                .phone("11988776655")
                 .build();
     }
 }
