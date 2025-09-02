@@ -1,5 +1,6 @@
 package br.com.ocauamotta.PetLar.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -13,36 +14,27 @@ import java.time.LocalDate;
 @Builder
 public class AnimalDTO {
 
-    @NotNull
+    @NotNull(message = "Falha ao receber ID")
     private String id;
 
-    @NotNull
     @Size(min = 3, max = 100)
     private String name;
 
-    @NotNull
     private Integer age;
 
-    @NotNull
     private String type;
 
-    @NotNull
     @Size(min = 3, max = 100)
     private String breed;
 
-    @NotNull
     private String sex;
 
-    @NotNull
     private Integer weight;
 
-    @NotNull
     private String size;
 
-    @NotNull
     private LocalDate registrationDate;
 
-    @NotNull
     private String status;
 
     @Size(min = 3, max = 250)

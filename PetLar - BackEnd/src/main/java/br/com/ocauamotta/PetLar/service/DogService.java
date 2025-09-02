@@ -22,11 +22,6 @@ public class DogService extends GenericAnimalService<Dog, IDogRepository> {
     }
 
     @Override
-    protected Dog toEntity(AnimalDTO dto) {
-        return DogMapper.toEntity(dto);
-    }
-
-    @Override
     protected Dog createEntity(CreateAnimalDTO dto) {
         return DogMapper.create(dto);
     }

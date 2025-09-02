@@ -1,5 +1,6 @@
 package br.com.ocauamotta.PetLar.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -16,6 +17,7 @@ public class CreateAnimalDTO {
     private String name;
 
     @NotNull
+    @Min(value = 1, message = "A idade deve ser maior que zero")
     private Integer age;
 
     @NotNull

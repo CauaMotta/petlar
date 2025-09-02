@@ -12,6 +12,7 @@ import br.com.ocauamotta.PetLar.repository.IDogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,8 @@ import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -73,6 +76,19 @@ class DogControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Bob"))
                 .andExpect(jsonPath("$.age").value(3));
+    }
+
+    @Test
+    void testUpdate_ShouldReturnBadRequest_WhenUpdatingWithoutId() throws Exception {
+        Dog saved = repository.save(dog());
+        saved.setName("Bob");
+        saved.setId(null);
+        AnimalDTO animalDTO = DogMapper.toDTO(saved);
+
+        mockMvc.perform(put("/dogs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(animalDTO)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

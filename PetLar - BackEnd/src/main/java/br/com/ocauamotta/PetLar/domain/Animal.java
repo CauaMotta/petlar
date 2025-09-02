@@ -4,6 +4,7 @@ import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -27,6 +28,7 @@ public class Animal {
     private String name;
 
     @NotNull
+    @Min(value = 1, message = "A idade deve ser maior que zero")
     private Integer age;
 
     @NotNull

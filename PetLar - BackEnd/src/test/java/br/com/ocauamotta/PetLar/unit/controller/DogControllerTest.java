@@ -72,6 +72,19 @@ class DogControllerTest {
     }
 
     @Test
+    void testUpdate_ShouldReturnBadRequest_WhenUpdatingWithoutId() throws Exception {
+        AnimalDTO animalDTO = animalDTO();
+        animalDTO.setId(null);
+
+        mockMvc.perform(put("/dogs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(animalDTO)))
+                .andExpect(status().isBadRequest());
+
+        verify(service, times(0)).update(Mockito.any(AnimalDTO.class));
+    }
+
+    @Test
     void testDelete_ShouldReturnNoContent_WhenIdExists() throws Exception {
         doNothing().when(service).delete("1");
 

@@ -50,6 +50,7 @@ class DogServiceTest {
     @Test
     void testUpdate_ShouldReturnUpdatedDogDTO() {
         Dog dogEntity = dog();
+        when(repository.findById("1")).thenReturn(Optional.of(dogEntity));
         when(repository.save(any(Dog.class))).thenReturn(dogEntity);
 
         AnimalDTO dto = DogMapper.toDTO(dogEntity);
