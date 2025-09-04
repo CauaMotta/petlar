@@ -109,7 +109,6 @@ const NewAnimal = () => {
       } catch (err) {
         console.error('Erro ao criar animal', err)
       }
-      console.log('Payload: ', payload)
     },
     validateOnMount: true
   })
@@ -125,7 +124,7 @@ const NewAnimal = () => {
   if (loading)
     return (
       <Container>
-        <BackButton path={'/'} />
+        <BackButton path={-1} />
         <h2>Cadastre um Pet</h2>
         <Line />
         <div className="box">
@@ -140,7 +139,7 @@ const NewAnimal = () => {
   if (error)
     return (
       <Container>
-        <BackButton path={'/'} />
+        <BackButton path={-1} />
         <h2>Cadastre um Pet</h2>
         <Line />
         <div className="box">
@@ -156,7 +155,7 @@ const NewAnimal = () => {
   if (data)
     return (
       <Container>
-        <BackButton path={'/'} />
+        <BackButton path={-1} />
         <h2>Cadastre um Pet</h2>
         <Line />
         <div className="box">
@@ -171,7 +170,7 @@ const NewAnimal = () => {
 
   return (
     <Container>
-      <BackButton path={'/'} />
+      <BackButton path={-1} />
       <h2>Cadastre um Pet</h2>
       <Line />
       <p className="text">

@@ -11,13 +11,13 @@ import { changeTheme } from '../../store/reducers/Theme'
 import { Container, CardContainer } from './styles'
 import { Line } from '../../styles'
 
-const Dog = () => {
-  const { data: available, loading, error } = useApi('/dogs?status=Disponível')
-  const { data: adopted } = useApi('/dogs?status=Adotado')
+const Cat = () => {
+  const { data: available, loading, error } = useApi('/cats?status=Disponível')
+  const { data: adopted } = useApi('/cats?status=Adotado')
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(changeTheme('dogs'))
+    dispatch(changeTheme('cats'))
   }, [dispatch])
 
   if (loading)
@@ -47,7 +47,7 @@ const Dog = () => {
         {available.length == 0 && (
           <div className="box">
             <p className="text">
-              Parece que não temos nenhum doguinho para adoção no momento, volte
+              Parece que não temos nenhum bixano para adoção no momento, volte
               outra hora!
             </p>
           </div>
@@ -55,8 +55,8 @@ const Dog = () => {
         {available.length > 0 && (
           <>
             <p className="text">
-              Então você está em busca de um AUmigo? De uma olhada nessas
-              fofuras que estão a espera de um lar:
+              Quer adotar um novo soberano de quatro patas? Esses gatinhos já
+              estão prontos para assumir o comando da sua casa:
             </p>
             <CardContainer>
               {available.map((entity) => (
@@ -69,7 +69,8 @@ const Dog = () => {
         {adopted.length > 0 && (
           <>
             <p className="text">
-              De uma olhada nestes amiguinhos que já conseguiram um lar:
+              E olha só esses chefes felinos que já recrutaram humanos dedicados
+              para servi-los:
             </p>
             <CardContainer>
               {adopted.map((entity) => (
@@ -85,4 +86,4 @@ const Dog = () => {
   )
 }
 
-export default Dog
+export default Cat

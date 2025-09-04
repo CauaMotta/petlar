@@ -2,13 +2,13 @@ import { render, screen } from '../../utils/test-utils'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { useApi } from '../../hooks/useApi'
 
-import Dog from '.'
+import Other from '.'
 
 vi.mock('../../hooks/useApi', () => ({
   useApi: vi.fn()
 }))
 
-describe('Dog page', () => {
+describe('Other page', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -22,7 +22,7 @@ describe('Dog page', () => {
       })
       .mockReturnValueOnce({})
 
-    render(<Dog />)
+    render(<Other />)
 
     expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
@@ -36,14 +36,14 @@ describe('Dog page', () => {
       })
       .mockReturnValueOnce({})
 
-    render(<Dog />)
+    render(<Other />)
 
     expect(
       screen.getByText(/Ops... Ocorreu um erro, tente novamente mais tarde!/i)
     ).toBeInTheDocument()
   })
 
-  test('Should show empty message when there are no dogs available', () => {
+  test('Should show empty message when there are no others available', () => {
     ;(useApi as vi.Mock)
       .mockReturnValueOnce({
         data: [],
@@ -56,19 +56,19 @@ describe('Dog page', () => {
         error: false
       })
 
-    render(<Dog />)
+    render(<Other />)
 
     expect(
-      screen.getByText(/Parece que não temos nenhum doguinho/i)
+      screen.getByText(/Parece que não temos nenhum bixinho/i)
     ).toBeInTheDocument()
   })
 
-  test('Should render available and adopted dogs', () => {
+  test('Should render available and adopted others', () => {
     const available = [
-      { id: 1, name: 'Rex', status: 'Disponível', age: 2 },
-      { id: 2, name: 'Luna', status: 'Disponível', age: 1 }
+      { id: 1, name: 'Bolt', status: 'Disponível', age: 2 },
+      { id: 2, name: 'Pernalonga', status: 'Disponível', age: 1 }
     ]
-    const adopted = [{ id: 3, name: 'Bolt', status: 'Adotado', age: 4 }]
+    const adopted = [{ id: 3, name: 'Sansão', status: 'Adotado', age: 4 }]
 
     ;(useApi as vi.Mock)
       .mockReturnValueOnce({
@@ -82,20 +82,20 @@ describe('Dog page', () => {
         error: false
       })
 
-    render(<Dog />)
-
-    expect(
-      screen.getByText(/Então você está em busca de um AUmigo/i)
-    ).toBeInTheDocument()
-
-    expect(screen.getByText(/Rex/i)).toBeInTheDocument()
-    expect(screen.getByText(/Luna/i)).toBeInTheDocument()
+    render(<Other />)
 
     expect(
       screen.getByText(
-        /De uma olhada nestes amiguinhos que já conseguiram um lar:/i
+        /Que tal adotar um novo amigo para dividir momentos especiais/i
       )
     ).toBeInTheDocument()
+
     expect(screen.getByText(/Bolt/i)).toBeInTheDocument()
+    expect(screen.getByText(/Pernalonga/i)).toBeInTheDocument()
+
+    expect(
+      screen.getByText(/Espia só esses fofos que já encontraram um lar/i)
+    ).toBeInTheDocument()
+    expect(screen.getByText(/Sansão/i)).toBeInTheDocument()
   })
 })

@@ -36,7 +36,7 @@ const Details = () => {
   if (error)
     return (
       <Container>
-        <BackButton path={'/'} />
+        <BackButton path={-1} />
         <div className="box">
           <i className="fa-solid fa-file-circle-xmark"></i>
           <p className="text">Não encontramos este registro em nosso banco!</p>
@@ -46,7 +46,7 @@ const Details = () => {
 
   return (
     <Container>
-      <BackButton path={'/'} />
+      <BackButton path={-1} />
       <Card>
         <div className="image">
           {data.urlImage != null ? (

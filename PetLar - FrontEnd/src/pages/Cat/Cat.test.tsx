@@ -2,13 +2,13 @@ import { render, screen } from '../../utils/test-utils'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { useApi } from '../../hooks/useApi'
 
-import Dog from '.'
+import Cat from '.'
 
 vi.mock('../../hooks/useApi', () => ({
   useApi: vi.fn()
 }))
 
-describe('Dog page', () => {
+describe('Cat page', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -22,7 +22,7 @@ describe('Dog page', () => {
       })
       .mockReturnValueOnce({})
 
-    render(<Dog />)
+    render(<Cat />)
 
     expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
@@ -36,14 +36,14 @@ describe('Dog page', () => {
       })
       .mockReturnValueOnce({})
 
-    render(<Dog />)
+    render(<Cat />)
 
     expect(
       screen.getByText(/Ops... Ocorreu um erro, tente novamente mais tarde!/i)
     ).toBeInTheDocument()
   })
 
-  test('Should show empty message when there are no dogs available', () => {
+  test('Should show empty message when there are no cats available', () => {
     ;(useApi as vi.Mock)
       .mockReturnValueOnce({
         data: [],
@@ -56,16 +56,16 @@ describe('Dog page', () => {
         error: false
       })
 
-    render(<Dog />)
+    render(<Cat />)
 
     expect(
-      screen.getByText(/Parece que não temos nenhum doguinho/i)
+      screen.getByText(/Parece que não temos nenhum bixano/i)
     ).toBeInTheDocument()
   })
 
-  test('Should render available and adopted dogs', () => {
+  test('Should render available and adopted cats', () => {
     const available = [
-      { id: 1, name: 'Rex', status: 'Disponível', age: 2 },
+      { id: 1, name: 'Mimi', status: 'Disponível', age: 2 },
       { id: 2, name: 'Luna', status: 'Disponível', age: 1 }
     ]
     const adopted = [{ id: 3, name: 'Bolt', status: 'Adotado', age: 4 }]
@@ -82,19 +82,17 @@ describe('Dog page', () => {
         error: false
       })
 
-    render(<Dog />)
+    render(<Cat />)
 
     expect(
-      screen.getByText(/Então você está em busca de um AUmigo/i)
+      screen.getByText(/Quer adotar um novo soberano de quatro patas/i)
     ).toBeInTheDocument()
 
-    expect(screen.getByText(/Rex/i)).toBeInTheDocument()
+    expect(screen.getByText(/Mimi/i)).toBeInTheDocument()
     expect(screen.getByText(/Luna/i)).toBeInTheDocument()
 
     expect(
-      screen.getByText(
-        /De uma olhada nestes amiguinhos que já conseguiram um lar:/i
-      )
+      screen.getByText(/E olha só esses chefes felinos/i)
     ).toBeInTheDocument()
     expect(screen.getByText(/Bolt/i)).toBeInTheDocument()
   })

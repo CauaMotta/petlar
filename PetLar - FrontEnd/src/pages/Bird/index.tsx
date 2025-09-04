@@ -11,13 +11,13 @@ import { changeTheme } from '../../store/reducers/Theme'
 import { Container, CardContainer } from './styles'
 import { Line } from '../../styles'
 
-const Dog = () => {
-  const { data: available, loading, error } = useApi('/dogs?status=Disponível')
-  const { data: adopted } = useApi('/dogs?status=Adotado')
+const Bird = () => {
+  const { data: available, loading, error } = useApi('/birds?status=Disponível')
+  const { data: adopted } = useApi('/birds?status=Adotado')
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(changeTheme('dogs'))
+    dispatch(changeTheme('birds'))
   }, [dispatch])
 
   if (loading)
@@ -47,7 +47,7 @@ const Dog = () => {
         {available.length == 0 && (
           <div className="box">
             <p className="text">
-              Parece que não temos nenhum doguinho para adoção no momento, volte
+              Parece que não temos nenhum pássaro para adoção no momento, volte
               outra hora!
             </p>
           </div>
@@ -55,8 +55,8 @@ const Dog = () => {
         {available.length > 0 && (
           <>
             <p className="text">
-              Então você está em busca de um AUmigo? De uma olhada nessas
-              fofuras que estão a espera de um lar:
+              Quer adotar um novo maestro de penas? Essas aves já estão prontas
+              para comandar o show de cantoria na sua casa:
             </p>
             <CardContainer>
               {available.map((entity) => (
@@ -69,7 +69,8 @@ const Dog = () => {
         {adopted.length > 0 && (
           <>
             <p className="text">
-              De uma olhada nestes amiguinhos que já conseguiram um lar:
+              De uma olhada nessas estrelas aladas que já encontraram humanos
+              para serem acordados todos os dias com seus cantos:
             </p>
             <CardContainer>
               {adopted.map((entity) => (
@@ -85,4 +86,4 @@ const Dog = () => {
   )
 }
 
-export default Dog
+export default Bird

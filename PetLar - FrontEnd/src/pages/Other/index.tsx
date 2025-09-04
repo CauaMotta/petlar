@@ -11,13 +11,17 @@ import { changeTheme } from '../../store/reducers/Theme'
 import { Container, CardContainer } from './styles'
 import { Line } from '../../styles'
 
-const Dog = () => {
-  const { data: available, loading, error } = useApi('/dogs?status=Disponível')
-  const { data: adopted } = useApi('/dogs?status=Adotado')
+const Other = () => {
+  const {
+    data: available,
+    loading,
+    error
+  } = useApi('/others?status=Disponível')
+  const { data: adopted } = useApi('/others?status=Adotado')
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(changeTheme('dogs'))
+    dispatch(changeTheme('others'))
   }, [dispatch])
 
   if (loading)
@@ -47,7 +51,7 @@ const Dog = () => {
         {available.length == 0 && (
           <div className="box">
             <p className="text">
-              Parece que não temos nenhum doguinho para adoção no momento, volte
+              Parece que não temos nenhum bixinho para adoção no momento, volte
               outra hora!
             </p>
           </div>
@@ -55,8 +59,8 @@ const Dog = () => {
         {available.length > 0 && (
           <>
             <p className="text">
-              Então você está em busca de um AUmigo? De uma olhada nessas
-              fofuras que estão a espera de um lar:
+              Que tal adotar um novo amigo para dividir momentos especiais?
+              Esses bichinhos estão esperando por você:
             </p>
             <CardContainer>
               {available.map((entity) => (
@@ -69,7 +73,8 @@ const Dog = () => {
         {adopted.length > 0 && (
           <>
             <p className="text">
-              De uma olhada nestes amiguinhos que já conseguiram um lar:
+              Espia só esses fofos que já encontraram um lar cheio de amor e
+              diversão:
             </p>
             <CardContainer>
               {adopted.map((entity) => (
@@ -85,4 +90,4 @@ const Dog = () => {
   )
 }
 
-export default Dog
+export default Other

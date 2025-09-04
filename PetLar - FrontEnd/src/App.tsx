@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux'
 
 import Layout from './pages/Layout'
 import Dog from './pages/Dog'
+import Cat from './pages/Cat'
+import Bird from './pages/Bird'
+import Other from './pages/Other'
 import Details from './pages/Details'
 import NewAnimal from './pages/NewAnimal'
 
@@ -25,6 +28,18 @@ function App() {
         {
           path: '/dogs',
           element: <Dog />
+        },
+        {
+          path: '/cats',
+          element: <Cat />
+        },
+        {
+          path: '/birds',
+          element: <Bird />
+        },
+        {
+          path: '/others',
+          element: <Other />
         },
         {
           path: '/details/:id',
