@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { useApi } from '../../hooks/useApi'
 
 import Details from '.'
+import userEvent from '@testing-library/user-event'
 
 vi.mock('../../hooks/useApi', () => ({
   useApi: vi.fn()
@@ -61,7 +62,9 @@ describe('Details Page', () => {
         size: 'Médio',
         registrationDate: '2025-01-01',
         urlImage: '/rex.png',
-        description: 'Muito brincalhão'
+        description: 'Muito brincalhão',
+        author: 'Teste',
+        phone: '11999999999'
       },
       loading: false,
       error: false
@@ -78,5 +81,39 @@ describe('Details Page', () => {
     expect(
       screen.getByRole('button', { name: /Entrar em contato/i })
     ).toBeInTheDocument()
+  })
+
+  test('should open WhatsApp with the correct number and message when clicking the button', async () => {
+    ;(useApi as vi.Mock).mockReturnValue({
+      data: {
+        id: 1,
+        name: 'Rex',
+        age: 2,
+        sex: 'Macho',
+        breed: 'Vira-lata',
+        weight: 12,
+        size: 'Médio',
+        registrationDate: '2025-01-01',
+        urlImage: '/rex.png',
+        description: 'Muito brincalhão',
+        author: 'Teste',
+        phone: '11999999999'
+      },
+      loading: false,
+      error: false
+    })
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
+
+    render(<Details />)
+
+    const button = screen.getByRole('button', { name: /entrar em contato/i })
+    await userEvent.click(button)
+
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://wa.me/5511999999999?text=Olá, vim pelo anuncio do Rex!',
+      '_blank'
+    )
+
+    openSpy.mockRestore()
   })
 })
