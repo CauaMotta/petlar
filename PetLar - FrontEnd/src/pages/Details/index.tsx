@@ -17,6 +17,13 @@ const Details = () => {
   const { id } = useParams() as idParams
   const { data, loading, error } = useApi<Animal>(`/dogs/${id}`)
 
+  const contact = () => {
+    window.open(
+      `https://wa.me/55${data.phone}?text=Olá, vim pelo anuncio do ${data.name}!`,
+      '_blank'
+    )
+  }
+
   if (loading)
     return (
       <Container>
@@ -29,6 +36,7 @@ const Details = () => {
   if (error)
     return (
       <Container>
+        <BackButton path={'/'} />
         <div className="box">
           <i className="fa-solid fa-file-circle-xmark"></i>
           <p className="text">Não encontramos este registro em nosso banco!</p>
@@ -74,9 +82,9 @@ const Details = () => {
           </div>
           <div className="contact">
             <p className="text">
-              <b>Registrado por:</b>
+              <b>Registrado por:</b> {data.author}
             </p>
-            <Button>
+            <Button onClick={contact}>
               Entrar em contato <i className="fa-brands fa-whatsapp"></i>
             </Button>
           </div>
