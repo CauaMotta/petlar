@@ -91,8 +91,8 @@ class IDogRepositoryIT {
 
         List<Dog> list = page.stream().toList();
 
-        for (Dog dog : list) {
-            repository.delete(dog);
+        for (Dog entity : list) {
+            repository.delete(entity);
         }
 
         page = repository.findAll(pageable);
@@ -112,8 +112,8 @@ class IDogRepositoryIT {
 
         List<Dog> list = page.stream().toList();
 
-        for (Dog dog : list) {
-            repository.delete(dog);
+        for (Dog entity : list) {
+            repository.delete(entity);
         }
 
         page = repository.findAll(pageable);
@@ -138,8 +138,8 @@ class IDogRepositoryIT {
 
         List<Dog> list = page.stream().toList();
 
-        for (Dog d : list) {
-            repository.delete(d);
+        for (Dog entity : list) {
+            repository.delete(entity);
         }
 
         page = repository.findAll(pageable);

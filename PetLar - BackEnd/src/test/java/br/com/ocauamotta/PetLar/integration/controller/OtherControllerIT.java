@@ -1,14 +1,16 @@
 package br.com.ocauamotta.PetLar.integration.controller;
 
-import br.com.ocauamotta.PetLar.domain.Dog;
+import br.com.ocauamotta.PetLar.domain.Other;
+import br.com.ocauamotta.PetLar.domain.Other;
+import br.com.ocauamotta.PetLar.domain.Other;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
-import br.com.ocauamotta.PetLar.mapper.DogMapper;
-import br.com.ocauamotta.PetLar.repository.IDogRepository;
+import br.com.ocauamotta.PetLar.mapper.OtherMapper;
+import br.com.ocauamotta.PetLar.repository.IOtherRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,13 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DogControllerIT {
+class OtherControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private IDogRepository repository;
+    private IOtherRepository repository;
 
     @Autowired
     private ObjectMapper mapper;
@@ -44,71 +46,71 @@ class DogControllerIT {
     }
 
     @Test
-    void testSave_ShouldPersistAndReturnDog() throws Exception {
+    void testSave_ShouldPersistAndReturnOther() throws Exception {
         CreateAnimalDTO createAnimalDTO = createAnimalDTO();
 
-        mockMvc.perform(post("/dogs")
+        mockMvc.perform(post("/others")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createAnimalDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Rex"))
-                .andExpect(jsonPath("$.age").value(3));
+                .andExpect(jsonPath("$.name").value("Bolt"))
+                .andExpect(jsonPath("$.age").value(48));
     }
 
     @Test
-    void testUpdate_ShouldReturnUpdatedDog() throws Exception {
-        Dog saved = repository.save(dog());
+    void testUpdate_ShouldReturnUpdatedOther() throws Exception {
+        Other saved = repository.save(other());
 
-        mockMvc.perform(get("/dogs/{id}", saved.getId()))
+        mockMvc.perform(get("/others/{id}", saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(saved.getId()))
-                .andExpect(jsonPath("$.name").value("Rex"));
+                .andExpect(jsonPath("$.name").value("Bolt"));
 
-        saved.setName("Bob");
-        AnimalDTO animalDTO = DogMapper.toDTO(saved);
+        saved.setName("Pernalonga");
+        AnimalDTO animalDTO = OtherMapper.toDTO(saved);
 
-        mockMvc.perform(put("/dogs")
+        mockMvc.perform(put("/others")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(animalDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Bob"))
-                .andExpect(jsonPath("$.age").value(3));
+                .andExpect(jsonPath("$.name").value("Pernalonga"))
+                .andExpect(jsonPath("$.age").value(48));
     }
 
     @Test
     void testUpdate_ShouldReturnBadRequest_WhenUpdatingWithoutId() throws Exception {
-        Dog saved = repository.save(dog());
-        saved.setName("Bob");
+        Other saved = repository.save(other());
+        saved.setName("Pernalonga");
         saved.setId(null);
-        AnimalDTO animalDTO = DogMapper.toDTO(saved);
+        AnimalDTO animalDTO = OtherMapper.toDTO(saved);
 
-        mockMvc.perform(put("/dogs")
+        mockMvc.perform(put("/others")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(animalDTO)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testFindById_ShouldReturnDog() throws Exception {
-        Dog saved = repository.save(dog());
+    void testFindById_ShouldReturnOther() throws Exception {
+        Other saved = repository.save(other());
 
-        mockMvc.perform(get("/dogs/{id}", saved.getId()))
+        mockMvc.perform(get("/others/{id}", saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(saved.getId()))
-                .andExpect(jsonPath("$.name").value("Rex"));
+                .andExpect(jsonPath("$.name").value("Bolt"));
     }
 
     @Test
     void testFindById_ShouldReturnNotFound() throws Exception {
-        mockMvc.perform(get("/dogs/{id}", "1"))
+        mockMvc.perform(get("/others/{id}", "1"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testDelete_ShouldRemoveDog() throws Exception {
-        Dog saved = repository.save(dog());
+    void testDelete_ShouldRemoveOther() throws Exception {
+        Other saved = repository.save(other());
 
-        mockMvc.perform(delete("/dogs/{id}", saved.getId()))
+        mockMvc.perform(delete("/others/{id}", saved.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Removido com sucesso.")));
 
@@ -116,83 +118,83 @@ class DogControllerIT {
     }
 
     @Test
-    void testFindAll_ShouldReturnPagedDogs() throws Exception {
-        repository.save(dog());
-        repository.save(dog("Bob"));
+    void testFindAll_ShouldReturnPagedOthers() throws Exception {
+        repository.save(other());
+        repository.save(other("Pernalonga"));
 
-        mockMvc.perform(get("/dogs")
-                .param("page", "0")
-                .param("size", "10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].name").value("Rex"))
-                .andExpect(jsonPath("$.content[1].name").value("Bob"));
-    }
-
-    @Test
-    void testFindAll_ShouldReturnPagedDogs_WithStatusAvailable() throws Exception {
-        repository.save(dog());
-        repository.save(dog("Bob"));
-
-        mockMvc.perform(get("/dogs?status=Disponível")
+        mockMvc.perform(get("/others")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].name").value("Rex"))
+                .andExpect(jsonPath("$.content[0].name").value("Bolt"))
+                .andExpect(jsonPath("$.content[1].name").value("Pernalonga"));
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPagedOthers_WithStatusAvailable() throws Exception {
+        repository.save(other());
+        repository.save(other("Pernalonga"));
+
+        mockMvc.perform(get("/others?status=Disponível")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].name").value("Bolt"))
                 .andExpect(jsonPath("$.content[0].status").value("Disponível"))
-                .andExpect(jsonPath("$.content[1].name").value("Bob"))
+                .andExpect(jsonPath("$.content[1].name").value("Pernalonga"))
                 .andExpect(jsonPath("$.content[1].status").value("Disponível"));
     }
 
     @Test
-    void testFindAll_ShouldReturnPagedDogs_WithStatusAdopted() throws Exception {
-        Dog dog1 = dog();
+    void testFindAll_ShouldReturnPagedOthers_WithStatusAdopted() throws Exception {
+        Other dog1 = other();
         dog1.setStatus(AdoptionStatus.ADOPTED);
         repository.save(dog1);
 
-        Dog dog2 = dog("Bob");
+        Other dog2 = other("Pernalonga");
         dog2.setStatus(AdoptionStatus.ADOPTED);
         repository.save(dog2);
 
-        mockMvc.perform(get("/dogs?status=Adotado")
+        mockMvc.perform(get("/others?status=Adotado")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].name").value("Rex"))
+                .andExpect(jsonPath("$.content[0].name").value("Bolt"))
                 .andExpect(jsonPath("$.content[0].status").value("Adotado"))
-                .andExpect(jsonPath("$.content[1].name").value("Bob"))
+                .andExpect(jsonPath("$.content[1].name").value("Pernalonga"))
                 .andExpect(jsonPath("$.content[1].status").value("Adotado"));
     }
 
-    Dog dog() {
-        return Dog.builder()
-                .name("Rex")
-                .age(3)
-                .type(AnimalType.DOG)
-                .breed("Vira-lata")
+    Other other() {
+        return Other.builder()
+                .name("Bolt")
+                .age(48)
+                .type(AnimalType.OTHER)
+                .breed("Coelho")
                 .sex(AnimalSex.MALE)
-                .weight(10)
+                .weight(250)
                 .size(AnimalSize.MEDIUM)
                 .registrationDate(LocalDate.now())
                 .status(AdoptionStatus.AVAILABLE)
-                .description("Cão amigável")
+                .description("Animal dócil e brincalhão.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")
                 .build();
     }
 
-    Dog dog(String name) {
-        return Dog.builder()
+    Other other(String name) {
+        return Other.builder()
                 .name(name)
-                .age(3)
-                .type(AnimalType.DOG)
-                .breed("Vira-lata")
+                .age(48)
+                .type(AnimalType.OTHER)
+                .breed("Coelho")
                 .sex(AnimalSex.MALE)
-                .weight(10)
+                .weight(250)
                 .size(AnimalSize.MEDIUM)
                 .registrationDate(LocalDate.now())
                 .status(AdoptionStatus.AVAILABLE)
-                .description("Cão amigável")
+                .description("Animal dócil e brincalhão.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")
@@ -201,13 +203,13 @@ class DogControllerIT {
 
     CreateAnimalDTO createAnimalDTO() {
         return CreateAnimalDTO.builder()
-                .name("Rex")
-                .age(3)
-                .breed("Vira-lata")
+                .name("Bolt")
+                .age(48)
+                .breed("Coelho")
                 .sex(AnimalSex.MALE.getLabel())
-                .weight(10)
+                .weight(250)
                 .size(AnimalSize.MEDIUM.getLabel())
-                .description("Cão amigável")
+                .description("Animal dócil e brincalhão.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")

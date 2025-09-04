@@ -2,7 +2,9 @@ package br.com.ocauamotta.PetLar.enums;
 
 public enum AnimalType {
     DOG("Cachorro"),
-    CAT("Gato");
+    CAT("Gato"),
+    BIRD("Ave"),
+    OTHER("Outro");
 
     private final String label;
 

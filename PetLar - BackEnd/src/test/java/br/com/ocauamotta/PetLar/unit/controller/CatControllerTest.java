@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.unit.controller;
 
-import br.com.ocauamotta.PetLar.controller.DogController;
+import br.com.ocauamotta.PetLar.controller.CatController;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
@@ -8,7 +8,7 @@ import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.exception.EntityNotFoundException;
-import br.com.ocauamotta.PetLar.service.DogService;
+import br.com.ocauamotta.PetLar.service.CatService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -29,44 +29,44 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(DogController.class)
-class DogControllerTest {
+@WebMvcTest(CatController.class)
+class CatControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    private DogService service;
+    private CatService service;
 
     @Autowired
     private ObjectMapper mapper;
 
     @Test
-    void testSave_ShouldReturnCreatedDog() throws Exception {
+    void testSave_ShouldReturnCreatedCat() throws Exception {
         CreateAnimalDTO createDto = createAnimalDTO();
         AnimalDTO returnedDto = animalDTO();
         when(service.save(Mockito.any(CreateAnimalDTO.class))).thenReturn(returnedDto);
 
-        mockMvc.perform(post("/dogs")
+        mockMvc.perform(post("/cats")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("1")))
-                .andExpect(jsonPath("$.name", is("Rex")));
+                .andExpect(jsonPath("$.name", is("Mimi")));
 
         verify(service, times(1)).save(Mockito.any(CreateAnimalDTO.class));
     }
 
     @Test
-    void testUpdate_ShouldReturnUpdatedDog() throws Exception {
+    void testUpdate_ShouldReturnUpdatedCat() throws Exception {
         AnimalDTO animalDTO = animalDTO();
         when(service.update(Mockito.any(AnimalDTO.class))).thenReturn(animalDTO);
 
-        mockMvc.perform(put("/dogs")
+        mockMvc.perform(put("/cats")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(animalDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Rex")));
+                .andExpect(jsonPath("$.name", is("Mimi")));
 
         verify(service, times(1)).update(Mockito.any(AnimalDTO.class));
     }
@@ -76,7 +76,7 @@ class DogControllerTest {
         AnimalDTO animalDTO = animalDTO();
         animalDTO.setId(null);
 
-        mockMvc.perform(put("/dogs")
+        mockMvc.perform(put("/cats")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(animalDTO)))
                 .andExpect(status().isBadRequest());
@@ -88,7 +88,7 @@ class DogControllerTest {
     void testDelete_ShouldReturnNoContent_WhenIdExists() throws Exception {
         doNothing().when(service).delete("1");
 
-        mockMvc.perform(delete("/dogs/1"))
+        mockMvc.perform(delete("/cats/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Removido com sucesso."));
 
@@ -96,83 +96,83 @@ class DogControllerTest {
     }
 
     @Test
-    void testFindById_ShouldReturnDog_WhenExists() throws Exception {
+    void testFindById_ShouldReturnCat_WhenExists() throws Exception {
         AnimalDTO animalDTO = animalDTO();
 
         when(service.findById("1")).thenReturn(animalDTO);
 
-        mockMvc.perform(get("/dogs/1"))
+        mockMvc.perform(get("/cats/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("1")))
-                .andExpect(jsonPath("$.name", is("Rex")));
+                .andExpect(jsonPath("$.name", is("Mimi")));
     }
 
     @Test
-    void testFindById_ShouldReturnNotFound_WhenDogDoesNotExist() throws Exception {
+    void testFindById_ShouldReturnNotFound_WhenCatDoesNotExist() throws Exception {
         when(service.findById("1")).thenThrow(new EntityNotFoundException("Animal not found with ID: 1"));
 
-        mockMvc.perform(get("/dogs/1"))
+        mockMvc.perform(get("/cats/1"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    void testFindAll_ShouldReturnPagedDogs() throws Exception {
+    void testFindAll_ShouldReturnPagedCats() throws Exception {
         AnimalDTO animalDTO = animalDTO();
         when(service.findAll(Mockito.any(Pageable.class), Mockito.isNull()))
                 .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
 
-        mockMvc.perform(get("/dogs")
-                .param("page", "0")
-                .param("size", "10"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content", hasSize(1)))
-                .andExpect(jsonPath("$.content[0].name", is("Rex")));
-    }
-
-    @Test
-    void testFindAll_ShouldReturnPagedDogs_WithStatusAvailable() throws Exception {
-        AnimalDTO animalDTO = animalDTO();
-        when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Disponível")))
-                .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
-
-        mockMvc.perform(get("/dogs?status=Disponível")
+        mockMvc.perform(get("/cats")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
-                .andExpect(jsonPath("$.content[0].name", is("Rex")))
+                .andExpect(jsonPath("$.content[0].name", is("Mimi")));
+    }
+
+    @Test
+    void testFindAll_ShouldReturnPagedCats_WithStatusAvailable() throws Exception {
+        AnimalDTO animalDTO = animalDTO();
+        when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Disponível")))
+                .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
+
+        mockMvc.perform(get("/cats?status=Disponível")
+                        .param("page", "0")
+                        .param("size", "10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].name", is("Mimi")))
                 .andExpect(jsonPath("$.content[0].status", is("Disponível")));
     }
 
     @Test
-    void testFindAll_ShouldReturnPagedDogs_WithStatusAdopted() throws Exception {
+    void testFindAll_ShouldReturnPagedCats_WithStatusAdopted() throws Exception {
         AnimalDTO animalDTO = animalDTO();
         animalDTO.setStatus(AdoptionStatus.ADOPTED.getLabel());
         when(service.findAll(Mockito.any(Pageable.class), Mockito.eq("Adotado")))
                 .thenReturn(new PageImpl<>(List.of(animalDTO), PageRequest.of(0, 10), 1));
 
-        mockMvc.perform(get("/dogs?status=Adotado")
+        mockMvc.perform(get("/cats?status=Adotado")
                         .param("page", "0")
                         .param("size", "10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
-                .andExpect(jsonPath("$.content[0].name", is("Rex")))
+                .andExpect(jsonPath("$.content[0].name", is("Mimi")))
                 .andExpect(jsonPath("$.content[0].status", is("Adotado")));
     }
 
     AnimalDTO animalDTO() {
         return AnimalDTO.builder()
                 .id("1")
-                .name("Rex")
-                .age(3)
-                .type(AnimalType.DOG.getLabel())
-                .breed("Vira-lata")
-                .sex(AnimalSex.MALE.getLabel())
-                .weight(10)
-                .size(AnimalSize.MEDIUM.getLabel())
-                .status(AdoptionStatus.AVAILABLE.getLabel())
+                .name("Mimi")
+                .age(12)
+                .type(AnimalType.CAT.getLabel())
+                .breed("SRD")
+                .sex(AnimalSex.FEMALE.getLabel())
+                .weight(400)
+                .size(AnimalSize.SMALL.getLabel())
                 .registrationDate(LocalDate.now())
-                .description("Cão amigável")
+                .status(AdoptionStatus.AVAILABLE.getLabel())
+                .description("Carinhosa.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")
@@ -181,13 +181,13 @@ class DogControllerTest {
 
     CreateAnimalDTO createAnimalDTO() {
         return CreateAnimalDTO.builder()
-                .name("Rex")
-                .age(3)
-                .breed("Vira-lata")
-                .sex(AnimalSex.MALE.getLabel())
-                .weight(10)
-                .size(AnimalSize.MEDIUM.getLabel())
-                .description("Cão amigável")
+                .name("Mimi")
+                .age(12)
+                .breed("SRD")
+                .sex(AnimalSex.FEMALE.getLabel())
+                .weight(400)
+                .size(AnimalSize.SMALL.getLabel())
+                .description("Carinhosa.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")

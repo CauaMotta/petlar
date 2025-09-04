@@ -6,7 +6,7 @@ import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.exception.EntityNotFoundException;
-import br.com.ocauamotta.PetLar.service.DogService;
+import br.com.ocauamotta.PetLar.service.OtherService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,52 +21,52 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
-@Import(DogService.class)
-class DogServiceIT {
+@Import(OtherService.class)
+class OtherServiceIT {
 
     @Autowired
-    private DogService service;
+    private OtherService service;
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
     @AfterEach
     void tearDown() {
-        mongoTemplate.dropCollection("Dogs");
+        mongoTemplate.dropCollection("Others");
     }
 
     @Test
-    void testSave_ShouldPersistDogInDatabase() {
+    void testSave_ShouldPersistOtherInDatabase() {
         AnimalDTO saved = service.save(createAnimalDTO());
 
         assertNotNull(saved.getId());
-        assertEquals("Rex", saved.getName());
-        assertEquals("Cachorro", saved.getType());
+        assertEquals("Bolt", saved.getName());
+        assertEquals("Outro", saved.getType());
     }
 
     @Test
-    void testUpdate_ShouldUpdateDogInDatabase() {
+    void testUpdate_ShouldUpdateOtherInDatabase() {
         AnimalDTO saved = service.save(createAnimalDTO());
 
         assertNotNull(saved.getId());
-        assertEquals("Rex", saved.getName());
-        assertEquals("Cachorro", saved.getType());
+        assertEquals("Bolt", saved.getName());
+        assertEquals("Outro", saved.getType());
 
-        saved.setName("Totó");
+        saved.setName("Luna");
 
         AnimalDTO updated = service.update(saved);
 
         assertNotNull(updated.getId());
-        assertEquals("Totó", updated.getName());
+        assertEquals("Luna", updated.getName());
     }
 
     @Test
-    void testDelete_ShouldDeleteDogInDatabase() {
+    void testDelete_ShouldDeleteOtherInDatabase() {
         AnimalDTO saved = service.save(createAnimalDTO());
 
         assertNotNull(saved.getId());
-        assertEquals("Rex", saved.getName());
-        assertEquals("Cachorro", saved.getType());
+        assertEquals("Bolt", saved.getName());
+        assertEquals("Outro", saved.getType());
 
         service.delete(saved.getId());
 
@@ -74,18 +74,18 @@ class DogServiceIT {
     }
 
     @Test
-    void testFindById_ShouldFindDogInDatabase() {
+    void testFindById_ShouldFindOtherInDatabase() {
         AnimalDTO saved = service.save(createAnimalDTO());
 
         assertNotNull(saved.getId());
-        assertEquals("Rex", saved.getName());
-        assertEquals("Cachorro", saved.getType());
+        assertEquals("Bolt", saved.getName());
+        assertEquals("Outro", saved.getType());
 
-        AnimalDTO foundDog = service.findById(saved.getId());
+        AnimalDTO foundCat = service.findById(saved.getId());
 
-        assertNotNull(foundDog.getId());
-        assertEquals(saved.getId(), foundDog.getId());
-        assertEquals(saved.getName(), foundDog.getName());
+        assertNotNull(foundCat.getId());
+        assertEquals(saved.getId(), foundCat.getId());
+        assertEquals(saved.getName(), foundCat.getName());
     }
 
     @Test
@@ -94,7 +94,7 @@ class DogServiceIT {
     }
 
     @Test
-    void testFindAll_ShouldReturnAllDogsInDatabase() {
+    void testFindAll_ShouldReturnAllOthersInDatabase() {
         service.save(createAnimalDTO());
         service.save(createAnimalDTO());
 
@@ -115,7 +115,7 @@ class DogServiceIT {
     }
 
     @Test
-    void testFindAll_ShouldReturnAllDogs_WithStatusAvailable() {
+    void testFindAll_ShouldReturnAllOthers_WithStatusAvailable() {
         service.save(createAnimalDTO());
         service.save(createAnimalDTO());
 
@@ -136,7 +136,7 @@ class DogServiceIT {
     }
 
     @Test
-    void testFindAll_ShouldReturnAllDogs_WithStatusAdopted() {
+    void testFindAll_ShouldReturnAllOthers_WithStatusAdopted() {
         AnimalDTO dog1 = service.save(createAnimalDTO());
         AnimalDTO dog2 = service.save(createAnimalDTO());
 
@@ -164,13 +164,13 @@ class DogServiceIT {
 
     CreateAnimalDTO createAnimalDTO() {
         return CreateAnimalDTO.builder()
-                .name("Rex")
-                .age(3)
-                .breed("Vira-lata")
+                .name("Bolt")
+                .age(48)
+                .breed("Coelho")
                 .sex(AnimalSex.MALE.getLabel())
-                .weight(10)
+                .weight(250)
                 .size(AnimalSize.MEDIUM.getLabel())
-                .description("Cão amigável")
+                .description("Animal dócil e brincalhão.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")

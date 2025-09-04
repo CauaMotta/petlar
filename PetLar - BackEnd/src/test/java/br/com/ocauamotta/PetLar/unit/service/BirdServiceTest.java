@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.unit.service;
 
-import br.com.ocauamotta.PetLar.domain.Dog;
+import br.com.ocauamotta.PetLar.domain.Bird;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
@@ -8,9 +8,9 @@ import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.exception.EntityNotFoundException;
-import br.com.ocauamotta.PetLar.mapper.DogMapper;
-import br.com.ocauamotta.PetLar.repository.IDogRepository;
-import br.com.ocauamotta.PetLar.service.DogService;
+import br.com.ocauamotta.PetLar.mapper.BirdMapper;
+import br.com.ocauamotta.PetLar.repository.IBirdRepository;
+import br.com.ocauamotta.PetLar.service.BirdService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -23,12 +23,12 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class DogServiceTest {
+class BirdServiceTest {
     @Mock
-    private IDogRepository repository;
+    private IBirdRepository repository;
 
     @InjectMocks
-    private DogService service;
+    private BirdService service;
 
     @BeforeEach
     void setUp() {
@@ -36,33 +36,33 @@ class DogServiceTest {
     }
 
     @Test
-    void testSave_ShouldReturnSavedDog() {
-        Dog entity = dog();
-        when(repository.insert(any(Dog.class))).thenReturn(entity);
+    void testSave_ShouldReturnSavedBird() {
+        Bird entity = bird();
+        when(repository.insert(any(Bird.class))).thenReturn(entity);
 
         AnimalDTO saved = service.save(createAnimalDTO());
 
-        assertEquals("Rex", saved.getName());
-        assertEquals("Cachorro", saved.getType());
-        verify(repository, times(1)).insert(any(Dog.class));
+        assertEquals("Loro", saved.getName());
+        assertEquals("Ave", saved.getType());
+        verify(repository, times(1)).insert(any(Bird.class));
     }
 
     @Test
-    void testUpdate_ShouldReturnUpdatedDog() {
-        Dog entity = dog();
+    void testUpdate_ShouldReturnUpdatedBird() {
+        Bird entity = bird();
         when(repository.findById("1")).thenReturn(Optional.of(entity));
-        when(repository.save(any(Dog.class))).thenReturn(entity);
+        when(repository.save(any(Bird.class))).thenReturn(entity);
 
-        AnimalDTO dto = DogMapper.toDTO(entity);
+        AnimalDTO dto = BirdMapper.toDTO(entity);
         AnimalDTO updated = service.update(dto);
 
-        assertEquals("Rex", updated.getName());
-        verify(repository, times(1)).save(any(Dog.class));
+        assertEquals("Loro", updated.getName());
+        verify(repository, times(1)).save(any(Bird.class));
     }
 
     @Test
-    void testDelete_ShouldCallRepositoryDelete_WhenDogExists() {
-        Dog entity = dog();
+    void testDelete_ShouldCallRepositoryDelete_WhenBirdExists() {
+        Bird entity = bird();
         when(repository.findById("1")).thenReturn(Optional.of(entity));
 
         service.delete("1");
@@ -71,22 +71,22 @@ class DogServiceTest {
     }
 
     @Test
-    void testDelete_ShouldNotCallRepositoryDelete_WhenDogDoesNotExist() {
+    void testDelete_ShouldNotCallRepositoryDelete_WhenBirdDoesNotExist() {
         when(repository.findById("1")).thenReturn(Optional.empty());
 
         service.delete("1");
 
-        verify(repository, never()).delete(any(Dog.class));
+        verify(repository, never()).delete(any(Bird.class));
     }
 
     @Test
-    void testFindById_ShouldReturnDog_WhenFound() {
-        Dog entity = dog();
+    void testFindById_ShouldReturnBird_WhenFound() {
+        Bird entity = bird();
         when(repository.findById("1")).thenReturn(Optional.of(entity));
 
         AnimalDTO dto = service.findById("1");
 
-        assertEquals("Rex", dto.getName());
+        assertEquals("Loro", dto.getName());
         verify(repository, times(1)).findById("1");
     }
 
@@ -98,60 +98,60 @@ class DogServiceTest {
     }
 
     @Test
-    void testFindAll_ShouldReturnPageOfDog() {
-        Dog entity = dog();
-        Page<Dog> page = new PageImpl<>(List.of(entity));
+    void testFindAll_ShouldReturnPageOfBird() {
+        Bird entity = bird();
+        Page<Bird> page = new PageImpl<>(List.of(entity));
         when(repository.findAll(any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
         Page<AnimalDTO> result = service.findAll(pageable, null);
 
         assertEquals(1, result.getTotalElements());
-        assertEquals("Rex", result.getContent().get(0).getName());
+        assertEquals("Loro", result.getContent().get(0).getName());
     }
 
     @Test
-    void testFindAll_ShouldReturnPageOfDog_WithStatusAvailable() {
-        Dog entity = dog();
-        Page<Dog> page = new PageImpl<>(List.of(entity));
+    void testFindAll_ShouldReturnPageOfBird_WithStatusAvailable() {
+        Bird entity = bird();
+        Page<Bird> page = new PageImpl<>(List.of(entity));
         when(repository.findByStatus(eq(AdoptionStatus.AVAILABLE),any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
         Page<AnimalDTO> result = service.findAll(pageable, "Disponível");
 
         assertEquals(1, result.getTotalElements());
-        assertEquals("Rex", result.getContent().get(0).getName());
+        assertEquals("Loro", result.getContent().get(0).getName());
         assertEquals(AdoptionStatus.AVAILABLE.getLabel(), result.getContent().get(0).getStatus());
     }
 
     @Test
-    void testFindAll_ShouldReturnPageOfDog_WithStatusAdopted() {
-        Dog entity = dog();
+    void testFindAll_ShouldReturnPageOfBird_WithStatusAdopted() {
+        Bird entity = bird();
         entity.setStatus(AdoptionStatus.ADOPTED);
-        Page<Dog> page = new PageImpl<>(List.of(entity));
+        Page<Bird> page = new PageImpl<>(List.of(entity));
         when(repository.findByStatus(eq(AdoptionStatus.ADOPTED),any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
         Page<AnimalDTO> result = service.findAll(pageable, "Adotado");
 
         assertEquals(1, result.getTotalElements());
-        assertEquals("Rex", result.getContent().get(0).getName());
+        assertEquals("Loro", result.getContent().get(0).getName());
         assertEquals(AdoptionStatus.ADOPTED.getLabel(), result.getContent().get(0).getStatus());
     }
 
-    Dog dog() {
-        return Dog.builder()
+    Bird bird() {
+        return Bird.builder()
                 .id("1")
-                .name("Rex")
-                .age(36)
-                .type(AnimalType.DOG)
-                .breed("Vira-lata")
+                .name("Loro")
+                .age(12)
+                .type(AnimalType.BIRD)
+                .breed("Papagaio")
                 .sex(AnimalSex.MALE)
-                .weight(600)
-                .size(AnimalSize.MEDIUM)
+                .weight(50)
+                .size(AnimalSize.SMALL)
                 .registrationDate(LocalDate.now())
                 .status(AdoptionStatus.AVAILABLE)
-                .description("Cão amigável")
+                .description("Pássaro alegre e falador.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")
@@ -160,13 +160,13 @@ class DogServiceTest {
 
     CreateAnimalDTO createAnimalDTO() {
         return CreateAnimalDTO.builder()
-                .name("Rex")
-                .age(36)
-                .breed("Vira-lata")
+                .name("Loro")
+                .age(12)
+                .breed("Papagaio")
                 .sex(AnimalSex.MALE.getLabel())
-                .weight(600)
-                .size(AnimalSize.MEDIUM.getLabel())
-                .description("Cão amigável")
+                .weight(50)
+                .size(AnimalSize.SMALL.getLabel())
+                .description("Pássaro alegre e falador.")
                 .urlImage("url.com/img")
                 .author("Teste")
                 .phone("11988776655")
