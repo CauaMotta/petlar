@@ -21,6 +21,9 @@ const Footer = () => (
         &copy; {new Date().getFullYear()} - Cauã Motta. Todos os direitos
         reservados.
       </p>
+      <p className="text--small">
+        * Este site não representa uma instituição de adoção real.
+      </p>
     </S.Container>
   </S.Footer>
 )

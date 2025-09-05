@@ -1,7 +1,6 @@
-import styled, { createGlobalStyle, keyframes } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 
 import variables from './variables'
-import { ClipLoader } from 'react-spinners'
 
 export const GlobalStyle = createGlobalStyle`
   * {

@@ -1,8 +1,9 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { useSelector } from 'react-redux'
 
 import Layout from './pages/Layout'
+import Home from './pages/Home'
 import Dog from './pages/Dog'
 import Cat from './pages/Cat'
 import Bird from './pages/Bird'
@@ -23,7 +24,7 @@ function App() {
       children: [
         {
           path: '/',
-          element: <Navigate to="/dogs" replace />
+          element: <Home />
         },
         {
           path: '/dogs',
