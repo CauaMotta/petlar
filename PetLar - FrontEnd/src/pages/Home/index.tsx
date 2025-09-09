@@ -10,11 +10,15 @@ const Home = () => {
 
   return (
     <Container>
-      <div className="image">
-        <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
+      <div className="welcome">
+        <div className="image">
+          <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
+        </div>
+        <h1>Bem-vindo ao PetLar!</h1>
+        <p className="text">
+          Encontre um novo amigo e dê um lar cheio de carinho.
+        </p>
       </div>
-      <h1>Bem-vindo ao PetLar!</h1>
-      <p>Encontre um novo amigo e dê um lar cheio de carinho.</p>
       <div className="btnGroup">
         <HomeButton color={dogTheme} onClick={() => navigate('/dogs')}>
           <i className="fa-solid fa-dog"></i> Cachorros
@@ -30,7 +34,7 @@ const Home = () => {
         </HomeButton>
       </div>
       <div className="info">
-        <h2>Sobre este projeto</h2>
+        <h2 className="title">Sobre este projeto</h2>
         <Line />
         <p className="text">
           Este site não representa uma instituição de adoção real. Trata-se de

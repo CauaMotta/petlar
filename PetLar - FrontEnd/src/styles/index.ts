@@ -17,6 +17,11 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.backgroundColor};
   }
 
+  .title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
   .text {
     font-size: 16px;
     font-weight: 500;
@@ -24,6 +29,16 @@ export const GlobalStyle = createGlobalStyle`
     &--small {
       font-size: 12px;
       line-height: 16px;
+    }
+  }
+
+  @media (max-width: ${variables.breakpoints.tablet}) {
+    .title {
+      font-size: 16px;
+    }
+
+    .text {
+      font-size: 14px;
     }
   }
 `
