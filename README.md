@@ -79,5 +79,5 @@ docker-compose up --build
 - Detalhes de um animal ✅
 - Formulário para cadastrar animal ✅
 - Consumir API do backend para listar, criar, atualizar e remover animais ✅
-- Implementar estilização responsiva
+- Implementar estilização responsiva ✅
 - Criar testes de componentes ✅

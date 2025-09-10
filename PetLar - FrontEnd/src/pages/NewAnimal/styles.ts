@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Button, Line } from '../../styles'
+import variables from '../../styles/variables'
 
 export const Container = styled.section`
   padding-inline: 16px;
@@ -110,6 +111,20 @@ export const AnimalForm = styled.form`
           i {
             transform: rotate(90deg);
           }
+        }
+      }
+    }
+  }
+
+  @media (max-width: ${variables.breakpoints.tablet}) {
+    .animalSelect {
+      margin-bottom: 4px;
+    }
+
+    .inputGroup {
+      .input-select {
+        .input {
+          width: 100%;
         }
       }
     }
