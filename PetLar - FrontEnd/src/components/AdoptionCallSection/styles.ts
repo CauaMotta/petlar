@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import variables from '../../styles/variables'
 
 export const CallSection = styled.section`
   margin-bottom: 48px;
@@ -29,23 +30,28 @@ export const CallSection = styled.section`
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
-    h2 {
+    .title {
       line-height: 1;
-      margin-bottom: 16px;
+      font-weight: 700;
+    }
 
-      b {
-        font-weight: 700;
-        font-size: 20px;
+    .text {
+      line-height: 1;
+    }
+  }
+
+  @media (max-width: ${variables.breakpoints.tablet}) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+
+    .call {
+      .text {
+        margin-block: 8px;
       }
-    }
-
-    p {
-      line-height: 1;
-    }
-
-    .btnContainer {
-      margin-top: auto;
     }
   }
 `

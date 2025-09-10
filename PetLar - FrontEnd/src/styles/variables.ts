@@ -1,7 +1,7 @@
 export default {
   // Breakpoints
   breakpoints: {
-    tablet: '596px',
+    tablet: '746px',
     mobile: '480px'
   },
 

@@ -18,8 +18,13 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .title {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
+
+    &--small {
+      font-size: 20px;
+      font-weight: 600;
+    }
   }
 
   .text {
@@ -34,7 +39,11 @@ export const GlobalStyle = createGlobalStyle`
 
   @media (max-width: ${variables.breakpoints.tablet}) {
     .title {
-      font-size: 16px;
+      font-size: 20px;
+
+      &--small {
+        font-size: 16px;
+      }
     }
 
     .text {

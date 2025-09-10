@@ -34,7 +34,7 @@ const Home = () => {
         </HomeButton>
       </div>
       <div className="info">
-        <h2 className="title">Sobre este projeto</h2>
+        <h2 className="title--small">Sobre este projeto</h2>
         <Line />
         <p className="text">
           Este site não representa uma instituição de adoção real. Trata-se de

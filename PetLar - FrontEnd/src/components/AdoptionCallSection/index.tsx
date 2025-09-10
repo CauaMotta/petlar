@@ -12,8 +12,9 @@ const AdoptionCallSection = () => {
         <img src="/assets/dog-cat.svg" alt="Desenho de um cão e um gato" />
       </div>
       <div className="call">
-        <h2>
-          <b>Compartilhe amor:</b> <br /> anuncie um pet para adoção!
+        <h2 className="title">
+          <b className="title--small">Compartilhe amor:</b> <br /> anuncie um
+          pet para adoção!
         </h2>
         <p className="text">
           Se você conhece um cão, gato ou outro bichinho que precisa de uma nova
