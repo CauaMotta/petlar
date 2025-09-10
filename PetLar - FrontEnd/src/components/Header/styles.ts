@@ -59,20 +59,18 @@ export const Container = styled.div`
   }
 
   .menu {
+    height: 21px;
     display: none;
     border: none;
     background: none;
-    border-top: 3px solid ${({ theme }) => theme.colors.fontColor};
     cursor: pointer;
 
-    &::before,
-    &::after {
-      content: ' ';
+    .line {
       display: block;
       width: 30px;
       height: 3px;
       background-color: ${({ theme }) => theme.colors.fontColor};
-      margin-top: 5px;
+      border-radius: 8px;
       position: relative;
       transition: 0.3s;
     }
@@ -84,7 +82,9 @@ export const Container = styled.div`
 
   @media (max-width: ${variables.breakpoints.tablet}) {
     .menu {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       z-index: 1;
     }
 
@@ -143,14 +143,17 @@ export const Container = styled.div`
         position: fixed;
         top: 22px;
         right: 16px;
-        border-top-color: transparent;
 
-        &::before {
+        display: block;
+
+        .line:nth-child(1) {
+          display: none;
+        }
+        .line:nth-child(2) {
           transform: rotate(135deg);
         }
-
-        &::after {
-          top: -7px;
+        .line:nth-child(3) {
+          top: -3px;
           transform: rotate(-135deg);
         }
       }

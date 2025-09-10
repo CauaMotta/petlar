@@ -16,10 +16,11 @@ const Header = () => {
           <PetlarLogo width={40} height={40} />
           <h1>PetLar</h1>
         </div>
-        <button
-          className="menu"
-          onClick={() => setIsActive(!isActive)}
-        ></button>
+        <button className="menu" onClick={() => setIsActive(!isActive)}>
+          <span className="line"></span>
+          <span className="line"></span>
+          <span className="line"></span>
+        </button>
         <div className="navBackground"></div>
         <nav className="nav">
           <button

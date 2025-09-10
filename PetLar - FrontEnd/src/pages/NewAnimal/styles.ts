@@ -5,23 +5,13 @@ export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
 
-  h2 {
+  .title {
     margin-top: 24px;
     text-align: center;
   }
 
   .box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
     margin-top: 32px;
-    line-height: 1;
-
-    i {
-      font-size: 32px;
-    }
   }
 `
 

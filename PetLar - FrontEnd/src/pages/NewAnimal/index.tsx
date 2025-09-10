@@ -125,7 +125,7 @@ const NewAnimal = () => {
     return (
       <Container>
         <BackButton path={-1} />
-        <h2>Cadastre um Pet</h2>
+        <h2 className="title">Cadastre um Pet</h2>
         <Line />
         <div className="box">
           <Loader />
@@ -140,7 +140,7 @@ const NewAnimal = () => {
     return (
       <Container>
         <BackButton path={-1} />
-        <h2>Cadastre um Pet</h2>
+        <h2 className="title">Cadastre um Pet</h2>
         <Line />
         <div className="box">
           <i className="fa-solid fa-triangle-exclamation"></i>
@@ -156,7 +156,7 @@ const NewAnimal = () => {
     return (
       <Container>
         <BackButton path={-1} />
-        <h2>Cadastre um Pet</h2>
+        <h2 className="title">Cadastre um Pet</h2>
         <Line />
         <div className="box">
           <i className="fa-solid fa-check"></i>
@@ -171,7 +171,7 @@ const NewAnimal = () => {
   return (
     <Container>
       <BackButton path={-1} />
-      <h2>Cadastre um Pet</h2>
+      <h2 className="title">Cadastre um Pet</h2>
       <Line />
       <p className="text">
         Que bom ver você aqui! Qual bixinho quer cadastrar?

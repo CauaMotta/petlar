@@ -37,6 +37,14 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .box {
+    margin-bottom: 32px;
+    text-align: center;
+    i {
+      font-size: 24px;
+    }
+  }
+
   @media (max-width: ${variables.breakpoints.tablet}) {
     .title {
       font-size: 20px;

@@ -4,14 +4,6 @@ export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
   margin-bottom: 32px;
-
-  .box {
-    margin-bottom: 32px;
-    text-align: center;
-    i {
-      font-size: 24px;
-    }
-  }
 `
 
 export const CardContainer = styled.div`
