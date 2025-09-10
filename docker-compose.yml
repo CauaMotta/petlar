@@ -1,6 +1,6 @@
 services:
   petlar-app:
-    build: ./PetLar - BackEnd/
+    build: .
     container_name: petlar-app-container
     ports:
       - "8080:8080"
