@@ -48,6 +48,10 @@ export const GlobalStyle = createGlobalStyle`
 
     .text {
       font-size: 14px;
+
+      &--small {
+        font-size: 10px;
+      }
     }
   }
 `

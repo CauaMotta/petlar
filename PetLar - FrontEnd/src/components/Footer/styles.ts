@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import variables from '../../styles/variables'
 
 export const Footer = styled.footer`
   background-color: ${({ theme }) => theme.colors.backgroundColor};
@@ -11,6 +12,7 @@ export const Container = styled.div`
   max-width: 1200px;
   width: 100%;
 
+  text-align: center;
   padding: 24px 16px;
   margin: 0 auto;
 
@@ -42,5 +44,9 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  @media (max-width: ${variables.breakpoints.tablet}) {
+    gap: 16px;
   }
 `
