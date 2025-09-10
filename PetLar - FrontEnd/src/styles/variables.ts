@@ -1,8 +1,9 @@
 export default {
   // Breakpoints
   breakpoints: {
+    mobile: '480px',
     tablet: '746px',
-    mobile: '480px'
+    desktop_sm: '992px'
   },
 
   // Fonts

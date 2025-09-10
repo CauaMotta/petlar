@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import variables from '../../styles/variables'
 
 export const Container = styled.section`
   padding-inline: 16px;
@@ -13,8 +14,9 @@ export const Card = styled.div`
   gap: 24px;
 
   .image {
-    width: 384px;
-    height: 384px;
+    width: 100%;
+    max-width: 384px;
+    aspect-ratio: 1/1;
 
     background-color: ${({ theme }) => theme.colors.primaryColor};
     border: 2px solid ${({ theme }) => theme.colors.primaryColor};
@@ -48,15 +50,13 @@ export const Card = styled.div`
     display: flex;
     flex-direction: column;
 
-    h2 {
+    .title {
       padding-inline: 16px;
       line-height: 1;
     }
 
     .text {
-      color: ${({ theme }) => theme.colors.fontColorSecondary};
       b {
-        color: ${({ theme }) => theme.colors.fontColor};
         font-weight: 600;
       }
     }
@@ -71,7 +71,6 @@ export const Card = styled.div`
       width: 100%;
 
       display: flex;
-      justify-content: space-between;
       align-items: center;
       gap: 8px;
 
@@ -80,19 +79,56 @@ export const Card = styled.div`
       }
     }
   }
+
+  @media (max-width: ${variables.breakpoints.desktop_sm}) {
+    .content {
+      .contact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
+  }
+
+  @media (max-width: ${variables.breakpoints.tablet}) {
+    flex-direction: column;
+    .image {
+      margin: 0 auto;
+    }
+
+    .content {
+      .title {
+        text-align: center;
+      }
+
+      .contact {
+        margin-top: 16px;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+  }
+
+  @media (max-width: ${variables.breakpoints.mobile}) {
+    .content {
+      .contact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
+  }
 `
 
 export const Description = styled.div`
   margin-bottom: 40px;
 
-  h3 {
+  .title--small {
     padding-inline: 16px;
-    font-weight: 600;
     line-height: 1;
   }
 
-  p {
-    color: ${({ theme }) => theme.colors.fontColorSecondary};
+  .text {
     padding-inline: 16px;
   }
 `

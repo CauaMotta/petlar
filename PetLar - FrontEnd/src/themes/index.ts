@@ -3,8 +3,7 @@ const defaultTheme = {
     secondaryColor: '#DDDDDD',
     backgroundColor: '#E2E2E2',
     highlightColor: '#CCCCCC',
-    fontColor: '#1F1F1F',
-    fontColorSecondary: '#2F2F2F'
+    fontColor: '#1F1F1F'
   }
 }
 

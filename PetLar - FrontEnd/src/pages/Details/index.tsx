@@ -58,7 +58,7 @@ const Details = () => {
           )}
         </div>
         <div className="content">
-          <h2>{data.name}</h2>
+          <h2 className="title">{data.name}</h2>
           <Line />
           <div className="info">
             <p className="text">
@@ -92,9 +92,9 @@ const Details = () => {
       </Card>
       {data.description != null && (
         <Description>
-          <h3>Descrição</h3>
+          <h3 className="title--small">Descrição</h3>
           <Line />
-          <p>{data.description}</p>
+          <p className="text">{data.description}</p>
         </Description>
       )}
     </Container>
