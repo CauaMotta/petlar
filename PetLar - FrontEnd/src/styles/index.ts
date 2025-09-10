@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
     list-style: none;
 
     font-family: ${variables.fontFamily};
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
