@@ -71,7 +71,7 @@ describe('Card', () => {
     const button = screen.getByRole('button', { name: /Ver mais/i })
     await userEvent.click(button)
 
-    expect(mockNavigate).toHaveBeenCalledWith('/details/1')
+    expect(mockNavigate).toHaveBeenCalledWith('/details/dogs/1')
   })
 
   test('Should render adopted button when status is adopted', async () => {

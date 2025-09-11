@@ -41,9 +41,15 @@ git clone https://github.com/CauaMotta/petlar
 # Acesse a pasta do projeto
 cd petlar
 
-# Para rodar com Maven:
+# Para fazer o build manualmente:
+# Acesse a pasta do frontend
+cd ./PetLar_FrontEnd/
+
+# Compile o projeto com npm
+npm run build:deploy
+
 # Acesse a pasta do backend
-cd ./PetLar - BackEnd/
+cd ../PetLar_BackEnd/
 
 # Compile e execute o projeto com Maven
 mvn spring-boot:run

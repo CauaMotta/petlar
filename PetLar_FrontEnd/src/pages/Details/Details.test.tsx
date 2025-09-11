@@ -15,7 +15,7 @@ vi.mock('react-router-dom', async () => {
   )
   return {
     ...actual,
-    useParams: () => ({ id: '1' })
+    useParams: () => ({ id: '1', type: 'dogs' })
   }
 })
 

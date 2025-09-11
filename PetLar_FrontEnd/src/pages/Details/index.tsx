@@ -9,13 +9,14 @@ import { formatAge, formatDate, formatWeight } from '../../utils'
 import { Card, Container, Description } from './styles'
 import { Line, Button } from '../../styles'
 
-type idParams = {
+type Params = {
   id: string
+  type: string
 }
 
 const Details = () => {
-  const { id } = useParams() as idParams
-  const { data, loading, error } = useApi<Animal>(`/dogs/${id}`)
+  const { id, type } = useParams() as Params
+  const { data, loading, error } = useApi<Animal>(`/${type}/${id}`)
 
   const contact = () => {
     window.open(

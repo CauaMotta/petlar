@@ -16,3 +16,16 @@ export const formatAge = (ageInMonths: number) => {
   const years = Math.floor(ageInMonths / 12)
   return `${years} ${years === 1 ? 'ano' : 'anos'}`
 }
+
+export const convertType = (type: string) => {
+  switch (type) {
+    case 'Cachorro':
+      return 'dogs'
+    case 'Gato':
+      return 'cats'
+    case 'Ave':
+      return 'birds'
+    case 'Outro':
+      return 'others'
+  }
+}
