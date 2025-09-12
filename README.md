@@ -20,6 +20,7 @@ Na persistência, utiliza **MongoDB** para garantir flexibilidade e alta perform
 - ⚡ [Vite](https://vitejs.dev/) - Build tool para otimizar performance
 - ⚛️ [React](https://react.dev/) - Biblioteca para construção da UI
 - 💅 [Styled Components](https://styled-components.com/) - Estilização com CSS-in-JS
+- 🎨 [Font Awesome](https://fontawesome.com/) - Ícones personalizáveis para a interface
 - 🧭 [React Router DOM](https://reactrouter.com/) - Navegação entre páginas com rotas dinâmicas no React
 - 🗂️ [Redux](https://redux.js.org/) – Gerenciamento global de estado
 - 🔄 [React Spinners](https://www.davidhu.io/react-spinners/) - Componentes de carregamento estilizados para React
