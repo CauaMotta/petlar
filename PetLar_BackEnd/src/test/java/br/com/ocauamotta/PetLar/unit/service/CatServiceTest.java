@@ -1,6 +1,5 @@
 package br.com.ocauamotta.PetLar.unit.service;
 
-import br.com.ocauamotta.PetLar.domain.Cat;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;

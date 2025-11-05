@@ -1,9 +1,9 @@
 package br.com.ocauamotta.PetLar.enums;
 
 public enum AnimalSize {
-    SMALL("Pequeno"),
-    MEDIUM("Médio"),
-    LARGE("Grande");
+    PEQUENO("pequeno"),
+    MEDIO("medio"),
+    GRANDE("grande");
 
     private final String label;
 
@@ -15,10 +15,10 @@ public enum AnimalSize {
         return label;
     }
 
-    public static AnimalSize fromLabel(String label) {
+    public static AnimalSize fromString(String label) {
         for (AnimalSize size : values()) {
             if(size.getLabel().equalsIgnoreCase(label)) return size;
         }
-        throw new IllegalArgumentException("Tamanho inválido: " + label);
+        throw new IllegalArgumentException("Porte inválido: " + label);
     }
 }

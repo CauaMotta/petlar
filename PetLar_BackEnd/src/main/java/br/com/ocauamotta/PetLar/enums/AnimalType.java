@@ -1,10 +1,10 @@
 package br.com.ocauamotta.PetLar.enums;
 
 public enum AnimalType {
-    DOG("Cachorro"),
-    CAT("Gato"),
-    BIRD("Ave"),
-    OTHER("Outro");
+    CACHORRO("cachorro"),
+    GATO("gato"),
+    PASSARO("passaro"),
+    OUTRO("outro");
 
     private final String label;
 
@@ -16,7 +16,7 @@ public enum AnimalType {
         return label;
     }
 
-    public static AnimalType fromLabel(String label) {
+    public static AnimalType fromString(String label) {
         for (AnimalType type : values()) {
             if(type.getLabel().equalsIgnoreCase(label)) return type;
         }

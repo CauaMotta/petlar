@@ -1,8 +1,9 @@
 package br.com.ocauamotta.PetLar.enums;
 
 public enum AdoptionStatus {
-    ADOPTED("Adotado"),
-    AVAILABLE("Disponível");
+    ADOTADO("adotado"),
+    PENDENTE("pendente"),
+    DISPONIVEL("disponivel");
 
     private final String label;
 
@@ -14,7 +15,7 @@ public enum AdoptionStatus {
         return label;
     }
 
-    public static AdoptionStatus fromLabel(String label) {
+    public static AdoptionStatus fromString(String label) {
         for (AdoptionStatus status : values()) {
             if(status.getLabel().equalsIgnoreCase(label)) return status;
         }

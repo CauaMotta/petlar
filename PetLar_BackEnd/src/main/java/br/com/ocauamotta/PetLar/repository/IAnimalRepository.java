@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.repository;
 
-import br.com.ocauamotta.PetLar.domain.Animal;
+import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

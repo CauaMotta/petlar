@@ -1,6 +1,5 @@
 package br.com.ocauamotta.PetLar.service;
 
-import br.com.ocauamotta.PetLar.domain.Dog;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AnimalType;

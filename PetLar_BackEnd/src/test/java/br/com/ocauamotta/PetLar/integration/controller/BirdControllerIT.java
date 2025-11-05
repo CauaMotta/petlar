@@ -1,7 +1,5 @@
 package br.com.ocauamotta.PetLar.integration.controller;
 
-import br.com.ocauamotta.PetLar.domain.Bird;
-import br.com.ocauamotta.PetLar.domain.Bird;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;

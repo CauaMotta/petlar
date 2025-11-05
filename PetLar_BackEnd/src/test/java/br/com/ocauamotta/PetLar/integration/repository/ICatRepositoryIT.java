@@ -1,6 +1,5 @@
 package br.com.ocauamotta.PetLar.integration.repository;
 
-import br.com.ocauamotta.PetLar.domain.Cat;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;

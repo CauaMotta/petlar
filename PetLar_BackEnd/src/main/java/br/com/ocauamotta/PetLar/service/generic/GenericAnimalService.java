@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.service.generic;
 
-import br.com.ocauamotta.PetLar.domain.Animal;
+import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.dto.AnimalDTO;
 import br.com.ocauamotta.PetLar.dto.CreateAnimalDTO;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;

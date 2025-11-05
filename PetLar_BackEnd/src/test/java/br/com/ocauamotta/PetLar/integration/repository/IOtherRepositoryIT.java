@@ -1,12 +1,9 @@
 package br.com.ocauamotta.PetLar.integration.repository;
 
-import br.com.ocauamotta.PetLar.domain.Other;
-import br.com.ocauamotta.PetLar.domain.Other;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
-import br.com.ocauamotta.PetLar.repository.IOtherRepository;
 import br.com.ocauamotta.PetLar.repository.IOtherRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
