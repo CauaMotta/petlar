@@ -10,6 +10,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
+/**
+ * Representa a entidade de domínio "Animal", mapeada como um documento na coleção "Animals" do MongoDB.
+ * <p>
+ * Esta classe armazena informações detalhadas sobre um animal disponível para adoção,
+ * incluindo suas características e status atual.
+ */
 @Getter
 @Setter
 @AllArgsConstructor

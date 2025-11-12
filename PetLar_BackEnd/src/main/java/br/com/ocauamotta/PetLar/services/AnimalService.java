@@ -18,12 +18,26 @@ import java.lang.reflect.Modifier;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+/**
+ * Camada de Serviço responsável por implementar a lógica de negócio
+ * para a entidade {@code Animal}.
+ * Intermedeia as requisições do controller e o acesso a dados.
+ */
 @Service
 public class AnimalService {
 
     @Autowired
     private IAnimalRepository repository;
 
+    /**
+     * Busca uma página de animais, permitindo a filtragem por status de adoção
+     * e, opcionalmente, por tipo de animal.
+     *
+     * @param pageable Objeto que contém informações de paginação e ordenação.
+     * @param status O status de adoção do animal.
+     * @param type O tipo de animal opcional para filtro.
+     * @return Uma {@code Page} de {@code AnimalResponseDto} correspondente aos critérios de filtro.
+     */
     public Page<AnimalResponseDto> findAll(Pageable pageable, String status, String type) {
         if (type == null || type.isBlank()) {
             return repository.findByStatus(AdoptionStatus.fromString(status), pageable).map(AnimalMapper::toDTO);
@@ -31,11 +45,25 @@ public class AnimalService {
         return repository.findByStatusAndType(AdoptionStatus.fromString(status), AnimalType.fromString(type), pageable).map(AnimalMapper::toDTO);
     }
 
+    /**
+     * Busca um animal específico pelo seu identificador único.
+     *
+     * @param id O ID do animal a ser buscado.
+     * @return O {@code AnimalResponseDto} correspondente.
+     * @throws EntityNotFoundException Se nenhum animal for encontrado com o ID fornecido.
+     */
     public AnimalResponseDto findById(String id) {
-        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entidade não encontrada com ID - " + id));
+        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
         return AnimalMapper.toDTO(entity);
     }
 
+    /**
+     * Salva um novo animal no sistema.
+     * Define automaticamente a data de registro e o status como {@code DISPONIVEL}.
+     *
+     * @param dto O DTO de requisição contendo os dados do animal.
+     * @return O {@code AnimalResponseDto} do animal recém-salvo, incluindo seu ID.
+     */
     public AnimalResponseDto save(AnimalRequestDto dto) {
         Animal entity = AnimalMapper.createEntity(dto);
         entity.setRegistrationDate(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
@@ -43,8 +71,18 @@ public class AnimalService {
         return AnimalMapper.toDTO(repository.insert(entity));
     }
 
+    /**
+     * Atualiza um animal existente com os dados fornecidos no DTO.
+     * Este método suporta atualizações parciais, modificando apenas os campos não nulos do DTO.
+     *
+     * @param id O ID do animal a ser atualizado.
+     * @param dto O DTO de requisição contendo os dados de atualização.
+     * @return O {@code AnimalResponseDto} do animal atualizado.
+     * @throws EntityNotFoundException Se o animal com o ID fornecido não for encontrado.
+     * @throws IllegalArgumentException Se o DTO não contiver nenhum campo para atualização.
+     */
     public AnimalResponseDto update(String id, AnimalRequestDto dto) {
-        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entidade não encontrada com ID - " + id));
+        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
         Boolean updated = updateAnimalFields(dto, entity);
         if (!updated) {
             throw new IllegalArgumentException("Nenhum campo para atualização foi informado.");
@@ -52,10 +90,25 @@ public class AnimalService {
         return AnimalMapper.toDTO(repository.save(entity));
     }
 
+    /**
+     * Remove um animal do sistema pelo seu identificador único.
+     *
+     * @param id O ID do animal a ser excluído.
+     */
     public void delete(String id) {
         repository.deleteById(id);
     }
 
+    /**
+     * Método auxiliar privado que utiliza Reflections para aplicar de forma dinâmica
+     * apenas os campos não nulos do DTO de requisição ({@code AnimalRequestDto})
+     * na entidade persistente ({@code Animal}).
+     *
+     * @param dto O DTO de requisição com os novos valores.
+     * @param entity A entidade {@code Animal} a ser modificada.
+     * @return {@code true} se pelo menos um campo foi atualizado; {@code false} caso contrário.
+     * @throws IllegalStateException Se ocorrer um erro durante o acesso ou modificação dos campos via Reflection.
+     */
     private Boolean updateAnimalFields(AnimalRequestDto dto, Animal entity) {
         Boolean updated = false;
 

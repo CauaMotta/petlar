@@ -2,6 +2,10 @@ package br.com.ocauamotta.PetLar.exceptions;
 
 import java.util.Map;
 
+/**
+ * Exceção personalizada lançada para indicar que um ou mais campos de entrada
+ * falharam nas regras de validação.
+ */
 public class CustomValidationException extends RuntimeException {
     private final Map<String, String> errors;
 

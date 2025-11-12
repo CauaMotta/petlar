@@ -3,6 +3,12 @@ package br.com.ocauamotta.PetLar.controllers;
 import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.services.AnimalService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,35 +16,122 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller responsável pelos endpoints de gerenciamento de animais.
+ * Permite realizar operações de CRUD e filtragem de registros.
+ */
 @RestController
 @RequestMapping(path = "${api.prefix}/animals")
+@Tag(name = "Animais", description = "Endpoints para gerenciamento de animais")
 public class AnimalController {
 
     @Autowired
     private AnimalService service;
 
+    /**
+     * Retorna uma lista paginada de animais, podendo ser filtrada por status e tipo.
+     *
+     * @param pageable Informações de paginação.
+     * @param status   Status de adoção do animal.
+     * @param type     Tipo de animal.
+     * @return Um {@code ResponseEntity} contendo uma {@code Page} de {@code AnimalResponseDto}
+     * correspondente aos critérios de filtro.
+     */
+    @Operation(
+            summary = "Listar animais",
+            description = "Retorna uma lista paginada de animais, sendo possível filtrar por status e tipo.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de animais retornada com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AnimalResponseDto.class)))
+            }
+    )
     @GetMapping
     public ResponseEntity<Page<AnimalResponseDto>> findAll(Pageable pageable,
+                                                           @Parameter(description = "Status do animal, por padrão é disponivel")
                                                            @RequestParam(required = false, defaultValue = "disponivel") String status,
+                                                           @Parameter(description = "Tipo de animal, por exemplo cachorro, gato, etc.")
                                                            @RequestParam(required = false) String type) {
         return ResponseEntity.ok(service.findAll(pageable, status, type));
     }
 
+    /**
+     * Busca um animal pelo seu ID.
+     *
+     * @param id Identificador do animal.
+     * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal encontrado.
+     */
+    @Operation(
+            summary = "Buscar animal por ID",
+            description = "Retorna um animal de acordo com o ID informado.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Animal encontrado com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AnimalResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado")
+            }
+    )
     @GetMapping(value = "/{id}")
     public ResponseEntity<AnimalResponseDto> findById(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    /**
+     * Cadastra um novo animal.
+     *
+     * @param dto {@code AnimalRequestDto} contendo os dados do novo animal.
+     * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal cadastrado.
+     */
+    @Operation(
+            summary = "Cadastrar novo animal",
+            description = "Cria um novo registro de animal no sistema.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Animal cadastrado com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AnimalResponseDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
+            }
+    )
     @PostMapping
     public ResponseEntity<AnimalResponseDto> save(@RequestBody @Valid AnimalRequestDto dto) {
         return ResponseEntity.ok(service.save(dto));
     }
 
+    /**
+     * Atualiza as informações de um animal existente.
+     *
+     * @param id Identificador do animal.
+     * @param dto {@code AnimalRequestDto} contendo os dados a serem atualizados.
+     * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal atualizado.
+     */
+    @Operation(
+            summary = "Atualizar animal existente",
+            description = "Atualiza as informações de um animal com base no ID informado.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Animal atualizado com sucesso",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AnimalResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado")
+            }
+    )
     @PutMapping(value = "/{id}")
     public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id, @RequestBody AnimalRequestDto dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
+    /**
+     * Exclui permanentemente um animal do sistema pelo seu ID.
+     *
+     * @param id Identificador do animal.
+     * @return Um {@code ResponseEntity} vazio indicando sucesso na exclusão.
+     */
+    @Operation(
+            summary = "Excluir um animal",
+            description = "Remove permanentemente um animal do banco de dados de acordo com o ID informado.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Animal excluído com sucesso")
+            }
+    )
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
         service.delete(id);
