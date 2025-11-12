@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
+
 /**
  * Representa os dados necessários para cadastrar ou atualizar um animal.
  * <p>
@@ -21,10 +23,9 @@ public record AnimalRequestDto(
         @NotBlank
         @Size(min = 3, max = 110, message = "O nome deve conter entre 3 e 110 caracteres.")
         String name,
-        @Schema(description = "Idade aproximada do animal (em meses)", example = "3")
+        @Schema(description = "Data de nascimento do animal", example = "2025-11-10")
         @NotNull
-        @Min(value = 1, message = "A idade deve ser maior que 1.")
-        Integer age,
+        LocalDate dob,
         @Schema(description = "Peso do animal (em gramas)", example = "1200")
         @NotNull
         @Min(value = 1, message = "O peso deve ser maior que 1.")

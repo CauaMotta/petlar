@@ -6,6 +6,7 @@ import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -18,8 +19,8 @@ public record AnimalResponseDto(
         String id,
         @Schema(description = "Nome do animal", example = "Luna")
         String name,
-        @Schema(description = "Idade do animal (em meses)", example = "12")
-        Integer age,
+        @Schema(description = "Data de nascimento do animal", example = "2025-11-10")
+        LocalDate dob,
         @Schema(description = "Peso do animal (em gramas)", example = "1200")
         Integer weight,
         @Schema(

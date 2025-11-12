@@ -15,7 +15,7 @@ O projeto utiliza o modelo de entidade `Animal` para gerenciar as informações 
 | :--------------------- | :---------------------- | :---------------------------------------------------------- |
 | **`id`**               | `String`                | O identificador único do animal (Chave Primária).           |
 | **`name`**             | `String`                | O nome do animal.                                           |
-| **`age`**              | `Integer`               | A idade do animal (em meses).                               |
+| **`dob`**              | `LocalDate`             | A data de nascimento do animal.                             |
 | **`weight`**           | `Integer`               | O peso do animal (em gramas).                               |
 | **`type`**             | `AnimalType` (Enum)     | O tipo de animal (Cão, Gato, Passaro ou Outro).             |
 | **`sex`**              | `AnimalSex` (Enum)      | O sexo do animal (Macho ou Fêmea).                          |
@@ -74,15 +74,15 @@ Os **Data Transfer Objects (DTOs)** são utilizados para garantir a separação 
 
 Este DTO é usado para **receber** dados nas operações de **criação (`POST`)** e **atualização (`PUT`)** de um animal. Ele implementa regras de validação para garantir a integridade dos dados na entrada:
 
-| Campo             | Tipo      | Validações                  | Descrição                           | Exemplo                      |
-| :---------------- | :-------- | :-------------------------- | :---------------------------------- | :--------------------------- |
-| **`name`**        | `String`  | `@NotBlank`, `@Size(3-110)` | Nome do animal.                     | `"Rex"`                      |
-| **`age`**         | `Integer` | `@NotNull`, `@Min(1)`       | Idade do animal.                    | `14`                         |
-| **`weight`**      | `Integer` | `@NotNull`, `@Min(1)`       | Peso do animal                      | `1200`                       |
-| **`type`**        | `String`  | `@NotBlank`                 | Espécie do animal.                  | `"Cachorro"`                 |
-| **`sex`**         | `String`  | `@NotBlank`                 | Sexo do animal.                     | `"Macho"`                    |
-| **`size`**        | `String`  | `@NotBlank`                 | Porte do animal.                    | `"Médio"`                    |
-| **`description`** | `String`  | `@Size(3-255)`              | Descrição adicional sobre o animal. | `"Animal dócil e vacinado."` |
+| Campo             | Tipo        | Validações                  | Descrição                           | Exemplo                      |
+| :---------------- | :---------- | :-------------------------- | :---------------------------------- | :--------------------------- |
+| **`name`**        | `String`    | `@NotBlank`, `@Size(3-110)` | Nome do animal.                     | `"Rex"`                      |
+| **`dob`**         | `LocalDate` | `@NotNull`                  | Data de nascimento do animal.       | `"2025-11-10"`               |
+| **`weight`**      | `Integer`   | `@NotNull`, `@Min(1)`       | Peso do animal                      | `1200`                       |
+| **`type`**        | `String`    | `@NotBlank`                 | Espécie do animal.                  | `"Cachorro"`                 |
+| **`sex`**         | `String`    | `@NotBlank`                 | Sexo do animal.                     | `"Macho"`                    |
+| **`size`**        | `String`    | `@NotBlank`                 | Porte do animal.                    | `"Médio"`                    |
+| **`description`** | `String`    | `@Size(3-255)`              | Descrição adicional sobre o animal. | `"Animal dócil e vacinado."` |
 
 > **Nota:** Nas requisições de atualização (`PUT`), apenas os campos que você deseja modificar precisam ser enviados no corpo da requisição.
 
@@ -94,7 +94,7 @@ Este DTO é usado para **retornar** os dados de um animal em operações de **co
 | :--------------------- | :---------------------- | :----------------------------- |
 | **`id`**               | `String`                | Identificador único do animal. |
 | **`name`**             | `String`                | Nome do animal.                |
-| **`age`**              | `Integer`               | Idade (em meses).              |
+| **`dob`**              | `LocalDate`             | Data de nascimento do animal.  |
 | **`weight`**           | `Integer`               | Peso (em gramas).              |
 | **`type`**             | `AnimalType` (Enum)     | Espécie do animal.             |
 | **`sex`**              | `AnimalSex` (Enum)      | Sexo do animal.                |

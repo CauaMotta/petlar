@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -26,7 +27,7 @@ public class Animal {
     @Id
     private String id;
     private String name;
-    private Integer age;
+    private LocalDate dob;
     private Integer weight;
     private AnimalType type;
     private AnimalSex sex;

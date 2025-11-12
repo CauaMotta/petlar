@@ -35,7 +35,7 @@ public class AnimalMapper {
         return Animal.builder()
                 .id(dto.id())
                 .name(dto.name())
-                .age(dto.age())
+                .dob(dto.dob())
                 .weight(dto.weight())
                 .type(dto.type())
                 .sex(dto.sex())
@@ -58,7 +58,7 @@ public class AnimalMapper {
         return new AnimalResponseDto(
                 entity.getId(),
                 entity.getName(),
-                entity.getAge(),
+                entity.getDob(),
                 entity.getWeight(),
                 entity.getType(),
                 entity.getSex(),
@@ -80,7 +80,7 @@ public class AnimalMapper {
 
         return Animal.builder()
                 .name(dto.name())
-                .age(dto.age())
+                .dob(dto.dob())
                 .weight(dto.weight())
                 .type(AnimalType.fromString(dto.type()))
                 .sex(AnimalSex.fromString(dto.sex()))
