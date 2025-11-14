@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Classe utilitária responsável por converter objetos entre a camada de Entidade
- * ({@code Animal}) e os objetos de Transferência de Dados (DTOs).
+ * {@code Animal} e os objetos de Transferência de Dados (DTOs).
  * <p>
  * Garante a separação e o isolamento entre o modelo de domínio e os modelos de API.
  */
@@ -24,30 +24,7 @@ public class AnimalMapper {
     }
 
     /**
-     * Converte um DTO de Resposta ({@code AnimalResponseDto}) em uma entidade {@code Animal}.
-     *
-     * @param dto O DTO de resposta contendo todos os campos.
-     * @return A entidade {@code Animal} correspondente, ou {@code null} se o DTO de entrada for nulo.
-     */
-    public static Animal toEntity(AnimalResponseDto dto) {
-        if (dto == null) return null;
-
-        return Animal.builder()
-                .id(dto.id())
-                .name(dto.name())
-                .dob(dto.dob())
-                .weight(dto.weight())
-                .type(dto.type())
-                .sex(dto.sex())
-                .size(dto.size())
-                .registrationDate(dto.registrationDate())
-                .status(dto.status())
-                .description(dto.description())
-                .build();
-    }
-
-    /**
-     * Converte a entidade de domínio ({@code Animal}) em um DTO de Resposta ({@code AnimalResponseDto}).
+     * Converte a entidade de domínio {@code Animal} em um DTO de Resposta {@code AnimalResponseDto}.
      *
      * @param entity A entidade {@code Animal} a ser convertida.
      * @return O DTO de resposta correspondente, ou {@code null} se a entidade de entrada for nula.
@@ -70,12 +47,12 @@ public class AnimalMapper {
     }
 
     /**
-     * Converte um DTO de Requisição ({@code AnimalRequestDto}) em uma nova entidade {@code Animal}.
+     * Converte um DTO de Requisição {@code AnimalRequestDto} em uma nova entidade {@code Animal}.
      *
-     * @param dto O DTO de requisição do cliente.
+     * @param dto O DTO de requisição do animal.
      * @return A nova entidade {@code Animal} (sem ID, data de registro ou status definidos).
      */
-    public static Animal createEntity(AnimalRequestDto dto) {
+    public static Animal toEntity(AnimalRequestDto dto) {
         if (dto == null) return null;
 
         return Animal.builder()

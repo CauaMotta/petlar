@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -65,7 +64,7 @@ public class AnimalService {
      * @return O {@code AnimalResponseDto} do animal recém-salvo, incluindo seu ID.
      */
     public AnimalResponseDto save(AnimalRequestDto dto) {
-        Animal entity = AnimalMapper.createEntity(dto);
+        Animal entity = AnimalMapper.toEntity(dto);
         entity.setRegistrationDate(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
         entity.setStatus(AdoptionStatus.DISPONIVEL);
         return AnimalMapper.toDTO(repository.insert(entity));
@@ -73,20 +72,15 @@ public class AnimalService {
 
     /**
      * Atualiza um animal existente com os dados fornecidos no DTO.
-     * Este método suporta atualizações parciais, modificando apenas os campos não nulos do DTO.
      *
      * @param id O ID do animal a ser atualizado.
      * @param dto O DTO de requisição contendo os dados de atualização.
      * @return O {@code AnimalResponseDto} do animal atualizado.
      * @throws EntityNotFoundException Se o animal com o ID fornecido não for encontrado.
-     * @throws IllegalArgumentException Se o DTO não contiver nenhum campo para atualização.
      */
     public AnimalResponseDto update(String id, AnimalRequestDto dto) {
         Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
-        Boolean updated = updateAnimalFields(dto, entity);
-        if (!updated) {
-            throw new IllegalArgumentException("Nenhum campo para atualização foi informado.");
-        }
+        updateAnimalFields(AnimalMapper.toEntity(dto), entity);
         return AnimalMapper.toDTO(repository.save(entity));
     }
 
@@ -96,52 +90,35 @@ public class AnimalService {
      * @param id O ID do animal a ser excluído.
      */
     public void delete(String id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("Nenhum registro encontrado com ID - " + id);
+        }
         repository.deleteById(id);
     }
 
     /**
      * Método auxiliar privado que utiliza Reflections para aplicar de forma dinâmica
-     * apenas os campos não nulos do DTO de requisição ({@code AnimalRequestDto})
-     * na entidade persistente ({@code Animal}).
+     * os campos da requisição com os novos dados na entidade persistente {@code Animal}.
      *
-     * @param dto O DTO de requisição com os novos valores.
+     * @param updated A entidade gerada a partir do DTO de requisição com os novos valores.
      * @param entity A entidade {@code Animal} a ser modificada.
-     * @return {@code true} se pelo menos um campo foi atualizado; {@code false} caso contrário.
      * @throws IllegalStateException Se ocorrer um erro durante o acesso ou modificação dos campos via Reflection.
      */
-    private Boolean updateAnimalFields(AnimalRequestDto dto, Animal entity) {
-        Boolean updated = false;
-
-        for ( Field dtoField : dto.getClass().getDeclaredFields() ) {
-            dtoField.setAccessible(true);
-
-            if (dtoField.getName().equalsIgnoreCase("id")) {
-                continue;
-            }
+    private void updateAnimalFields(Animal updated, Animal entity) {
+        for ( Field field : updated.getClass().getDeclaredFields() ) {
+            if (field.getName().equalsIgnoreCase("id")) continue;
+            field.setAccessible(true);
 
             try {
-                Object newValue = dtoField.get(dto);
+                Object newValue = field.get(updated);
                 if (newValue == null) continue;
 
-                Field entityField;
-                try {
-                    entityField = entity.getClass().getDeclaredField(dtoField.getName());
-                } catch (NoSuchFieldException ex) {
-                    continue;
-                }
-
-                if(Modifier.isFinal(entityField.getModifiers())) {
-                    continue;
-                }
-
+                Field entityField = entity.getClass().getDeclaredField(field.getName());
                 entityField.setAccessible(true);
                 entityField.set(entity, newValue);
-                updated = true;
-            } catch (IllegalAccessException ex) {
-                throw new IllegalStateException("Erro ao tentar atualizar o campo " + dtoField.getName());
+            } catch (IllegalAccessException | NoSuchFieldException ex) {
+                throw new IllegalStateException("Erro ao tentar atualizar o campo " + field.getName());
             }
         }
-
-        return updated;
     }
 }

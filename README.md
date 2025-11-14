@@ -84,8 +84,6 @@ Este DTO é usado para **receber** dados nas operações de **criação (`POST`)
 | **`size`**        | `String`    | `@NotBlank`                 | Porte do animal.                    | `"Médio"`                    |
 | **`description`** | `String`    | `@Size(3-255)`              | Descrição adicional sobre o animal. | `"Animal dócil e vacinado."` |
 
-> **Nota:** Nas requisições de atualização (`PUT`), apenas os campos que você deseja modificar precisam ser enviados no corpo da requisição.
-
 ### 2. `AnimalResponseDto` (Saída de Dados)
 
 Este DTO é usado para **retornar** os dados de um animal em operações de **consulta (`GET`)** e após o sucesso em operações de modificação. Ele contém todos os campos da entidade, incluindo os valores de **`enum`** e informações geradas pelo sistema:

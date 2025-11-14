@@ -2,10 +2,12 @@ package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.services.AnimalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +45,22 @@ public class AnimalController {
             description = "Retorna uma lista paginada de animais, sendo possível filtrar por status e tipo.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Lista de animais retornada com sucesso",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
                             content = @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = AnimalResponseDto.class)))
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
             }
     )
     @GetMapping
@@ -68,7 +85,36 @@ public class AnimalController {
                     @ApiResponse(responseCode = "200", description = "Animal encontrado com sucesso",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = AnimalResponseDto.class))),
-                    @ApiResponse(responseCode = "404", description = "Animal não encontrado")
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 404,
+                                                                "message": "Nenhum registro encontrado com ID - 123"
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
             }
     )
     @GetMapping(value = "/{id}")
@@ -86,15 +132,48 @@ public class AnimalController {
             summary = "Cadastrar novo animal",
             description = "Cria um novo registro de animal no sistema.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Animal cadastrado com sucesso",
+                    @ApiResponse(responseCode = "201", description = "Animal cadastrado com sucesso",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = AnimalResponseDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos")
+                    @ApiResponse(responseCode = "400", description = "Dados fornecidos inválidos",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals",
+                                                                "status": 400,
+                                                                "message": "Houve um erro de validação em um ou mais campos.",
+                                                                  "errors": {
+                                                                    "name": "O nome é obrigatório.",
+                                                                    "weight": "O peso é obrigatório.",
+                                                                  }
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
             }
     )
     @PostMapping
     public ResponseEntity<AnimalResponseDto> save(@RequestBody @Valid AnimalRequestDto dto) {
-        return ResponseEntity.ok(service.save(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto));
     }
 
     /**
@@ -111,11 +190,40 @@ public class AnimalController {
                     @ApiResponse(responseCode = "200", description = "Animal atualizado com sucesso",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = AnimalResponseDto.class))),
-                    @ApiResponse(responseCode = "404", description = "Animal não encontrado")
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 404,
+                                                                "message": "Nenhum registro encontrado com ID - 123"
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
             }
     )
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id, @RequestBody AnimalRequestDto dto) {
+    public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id, @RequestBody @Valid AnimalRequestDto dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
@@ -129,7 +237,37 @@ public class AnimalController {
             summary = "Excluir um animal",
             description = "Remove permanentemente um animal do banco de dados de acordo com o ID informado.",
             responses = {
-                    @ApiResponse(responseCode = "204", description = "Animal excluído com sucesso")
+                    @ApiResponse(responseCode = "204", description = "Animal excluído com sucesso"),
+                    @ApiResponse(responseCode = "404", description = "Animal não encontrado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 404,
+                                                                "message": "Nenhum registro encontrado com ID - 123"
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
             }
     )
     @DeleteMapping(value = "/{id}")

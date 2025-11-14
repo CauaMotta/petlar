@@ -10,7 +10,7 @@ public class CustomValidationException extends RuntimeException {
     private final Map<String, String> errors;
 
     public CustomValidationException(Map<String, String> errors) {
-        super("Erro de validação");
+        super("Houve um erro de validação em um ou mais campos.");
         this.errors = errors;
     }
 
