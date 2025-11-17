@@ -146,10 +146,10 @@ public class AnimalController {
                                                                 "path": "/api/animals",
                                                                 "status": 400,
                                                                 "message": "Houve um erro de validação em um ou mais campos.",
-                                                                  "errors": {
+                                                                "errors": {
                                                                     "name": "O nome é obrigatório.",
-                                                                    "weight": "O peso é obrigatório.",
-                                                                  }
+                                                                    "weight": "O peso é obrigatório."
+                                                                }
                                                             }
                                                             """
                                             )

@@ -11,11 +11,9 @@ import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,7 +41,7 @@ class AnimalServiceTest {
     @DisplayName("Deve salvar um animal com sucesso")
     void testSave_ShouldSaveNewAnimal() {
         AnimalRequestDto dto = createAnimalRequestDto("Rex", "Cachorro", "Macho");
-        when(repository.insert(Mockito.any(Animal.class))).thenReturn(createAnimal("1", "Rex", AnimalType.CACHORRO, AnimalSex.MACHO));
+        when(repository.insert(any(Animal.class))).thenReturn(createAnimal("1", "Rex", AnimalType.CACHORRO, AnimalSex.MACHO));
 
         AnimalResponseDto savedAnimalDto = service.save(dto);
 
@@ -51,7 +49,7 @@ class AnimalServiceTest {
         assertEquals(dto.name(), savedAnimalDto.name());
         assertNotNull(savedAnimalDto.registrationDate());
         assertEquals(AdoptionStatus.DISPONIVEL, savedAnimalDto.status());
-        verify(repository, times(1)).insert(Mockito.any(Animal.class));
+        verify(repository, times(1)).insert(any(Animal.class));
     }
 
     @Test
@@ -59,7 +57,7 @@ class AnimalServiceTest {
     void testUpdate_ShouldUpdateAnAnimal() {
         AnimalRequestDto dto = createAnimalRequestDto("Luna", "Gato", "Femea");
         when(repository.findById("1")).thenReturn(Optional.of(createAnimal("1", "Rex", AnimalType.CACHORRO, AnimalSex.MACHO)));
-        when(repository.save(Mockito.any(Animal.class))).thenReturn(createAnimal("1", "Luna", AnimalType.GATO, AnimalSex.FEMEA));
+        when(repository.save(any(Animal.class))).thenReturn(createAnimal("1", "Luna", AnimalType.GATO, AnimalSex.FEMEA));
 
         AnimalResponseDto updatedAnimalDto = service.update("1", dto);
 
@@ -67,7 +65,7 @@ class AnimalServiceTest {
         assertEquals(dto.name(), updatedAnimalDto.name());
         assertTrue(dto.type().equalsIgnoreCase(updatedAnimalDto.type().toString()));
         verify(repository, times(1)).findById("1");
-        verify(repository,times(1)).save((Mockito.any(Animal.class)));
+        verify(repository,times(1)).save((any(Animal.class)));
     }
 
     @Test
@@ -124,7 +122,7 @@ class AnimalServiceTest {
         Animal dogEntity = createAnimal("1", "Rex", AnimalType.CACHORRO, AnimalSex.MACHO);
         Animal catEntity = createAnimal("2", "Lua", AnimalType.GATO, AnimalSex.FEMEA);
         Page<Animal> page = new PageImpl<>(List.of(dogEntity, catEntity));
-        when(repository.findByStatus(eq(AdoptionStatus.DISPONIVEL), Mockito.any(Pageable.class))).thenReturn(page);
+        when(repository.findByStatus(eq(AdoptionStatus.DISPONIVEL), any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
         Page<AnimalResponseDto> result = service.findAll(pageable, "Disponivel", null);
@@ -132,21 +130,21 @@ class AnimalServiceTest {
         assertEquals(2, result.getTotalElements());
         assertEquals("Rex", result.getContent().get(0).name());
         assertEquals("Lua", result.getContent().get(1).name());
-        verify(repository, times(1)).findByStatus(eq(AdoptionStatus.DISPONIVEL), Mockito.any(Pageable.class));
+        verify(repository, times(1)).findByStatus(eq(AdoptionStatus.DISPONIVEL), any(Pageable.class));
     }
 
     @Test
     @DisplayName("Deve retornar uma lista paginada de animais com filtro de espécie gatos")
     void testFindAll_ShouldReturnAPageOfCats() {
         Page<Animal> page = new PageImpl<>(List.of(createAnimal("2", "Lua", AnimalType.GATO, AnimalSex.FEMEA)));
-        when(repository.findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), Mockito.any(Pageable.class))).thenReturn(page);
+        when(repository.findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
         Page<AnimalResponseDto> result = service.findAll(pageable, "Disponivel", "Gato");
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Lua", result.getContent().get(0).name());
-        verify(repository, times(1)).findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), Mockito.any(Pageable.class));
+        verify(repository, times(1)).findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), any(Pageable.class));
     }
 
     @Test
@@ -157,7 +155,7 @@ class AnimalServiceTest {
         dogEntity.setStatus(AdoptionStatus.ADOTADO);
         catEntity.setStatus(AdoptionStatus.ADOTADO);
         Page<Animal> page = new PageImpl<>(List.of(dogEntity, catEntity));
-        when(repository.findByStatus(eq(AdoptionStatus.ADOTADO), Mockito.any(Pageable.class))).thenReturn(page);
+        when(repository.findByStatus(eq(AdoptionStatus.ADOTADO), any(Pageable.class))).thenReturn(page);
 
         PageRequest pageable = PageRequest.of(0, 10);
         Page<AnimalResponseDto> result = service.findAll(pageable, "Adotado", null);
@@ -167,7 +165,7 @@ class AnimalServiceTest {
         assertEquals("Lua", result.getContent().get(1).name());
         assertEquals(AdoptionStatus.ADOTADO, result.getContent().get(0).status());
         assertEquals(AdoptionStatus.ADOTADO, result.getContent().get(1).status());
-        verify(repository, times(1)).findByStatus(eq(AdoptionStatus.ADOTADO), Mockito.any(Pageable.class));
+        verify(repository, times(1)).findByStatus(eq(AdoptionStatus.ADOTADO), any(Pageable.class));
     }
 
     AnimalRequestDto createAnimalRequestDto(String name, String type, String sex) {

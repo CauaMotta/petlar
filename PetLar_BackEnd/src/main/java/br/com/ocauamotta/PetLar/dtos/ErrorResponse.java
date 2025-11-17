@@ -29,7 +29,7 @@ public class ErrorResponse {
     @Schema(description = "A mensagem principal do erro", example = "Parâmetros de entrada inválidos")
     private String message;
     @Schema(description = "Mapa de erros de validação detalhados por campo, presente apenas em erros 400",
-            example = "{\"campoNome\": \"O campo nome é obrigatório\"}")
+            example = "{\"name\": \"O nome é obrigatório\"}")
     private Map<String, String> errors;
 
     /**
