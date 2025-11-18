@@ -168,6 +168,13 @@ class AnimalServiceTest {
         verify(repository, times(1)).findByStatus(eq(AdoptionStatus.ADOTADO), any(Pageable.class));
     }
 
+    @Test
+    @DisplayName("Deve lançar exceção ao BUSCAR com FILTROS inválidos")
+    void testFindAll_ShouldThrowIllegalArgumentException() {
+        PageRequest pageable = PageRequest.of(0, 10);
+        assertThrows(IllegalArgumentException.class, () -> service.findAll(pageable, "available", null));
+    }
+
     AnimalRequestDto createAnimalRequestDto(String name, String type, String sex) {
         return new AnimalRequestDto(
                 name,
