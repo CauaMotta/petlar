@@ -38,7 +38,7 @@ class AnimalServiceIT {
 
     @Test
     @DisplayName("Deve salvar um novo animal e busca-lo no banco de dados com sucesso")
-    void testSave_ShouldSaveAndFindAnAnimal() {
+    void testSaveAndFindById_ShouldSaveAndFindAnAnimal() {
         AnimalResponseDto savedAnimal = service.save(createAnimalRequestDto("Rex", "Cachorro", "Macho"));
 
         assertNotNull(savedAnimal.id());
