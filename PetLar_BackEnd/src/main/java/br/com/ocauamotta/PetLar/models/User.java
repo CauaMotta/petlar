@@ -10,7 +10,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Representa a entidade de um usuário no sistema, mapeado como um documento na coleção "Users" do MongoDB.
+ * Representa a entidade de um usuário no sistema PetLar.
+ * <p>
+ * Esta classe está mapeada para um documento na coleção "Users" do banco de dados MongoDB.
+ * Além disso, implementa a interface
+ * {@code UserDetails} do Spring Security, permitindo que esta classe seja usada
+ * diretamente no processo de autenticação.
  */
 @Document(collection = "Users")
 public class User implements UserDetails {
