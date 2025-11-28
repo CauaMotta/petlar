@@ -21,18 +21,18 @@ public class AuthService implements UserDetailsService {
     private IUserRepository repository;
 
     /**
-     * Carrega os detalhes do usuário a partir do seu username.
+     * Carrega os detalhes do usuário a partir do seu email.
      * <p>
      * Este é o método principal invocado pelo Spring Security durante uma tentativa de login.
      * Ele delega a busca ao repositório {@code IUserRepository}.
      *
-     * @param username O nome de usuário fornecido na tentativa de autenticação.
+     * @param username O email do usuário fornecido na tentativa de autenticação.
      * @return Um objeto {@code UserDetails}
      * contendo os detalhes do usuário para verificação de senha e autorizações.
      * @throws UsernameNotFoundException Se o usuário com o username especificado não for encontrado.
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByUsername(username);
+        return repository.findByEmail(username);
     }
 }

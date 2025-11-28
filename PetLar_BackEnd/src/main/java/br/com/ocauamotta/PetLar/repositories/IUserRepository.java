@@ -16,15 +16,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IUserRepository extends MongoRepository<User, String> {
     /**
-     * Busca um usuário pelo seu nome de usuário (username).
+     * Busca um usuário pelo seu email.
      *
      * <p>Este método é essencial para o processo de autenticação do Spring Security,
      * pois retorna um objeto {@code UserDetails}
      * que contém as informações necessárias para verificar as credenciais.
      *
-     * @param username O nome de usuário a ser buscado.
+     * @param email O email do usuário a ser buscado.
      * @return Um objeto {@code UserDetails}
      * que representa o usuário encontrado, ou {@code null} se o usuário não existir.
      */
-    UserDetails findByUsername(String username);
+    UserDetails findByEmail(String email);
 }
