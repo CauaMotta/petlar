@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.dtos;
+package br.com.ocauamotta.PetLar.dtos.Animal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;

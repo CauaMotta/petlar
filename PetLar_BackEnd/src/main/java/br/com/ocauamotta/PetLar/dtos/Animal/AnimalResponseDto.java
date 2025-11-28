@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.dtos;
+package br.com.ocauamotta.PetLar.dtos.Animal;
 
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;

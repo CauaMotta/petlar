@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.controllers;
 
-import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;

@@ -1,7 +1,7 @@
 package br.com.ocauamotta.PetLar.controllers;
 
-import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
-import br.com.ocauamotta.PetLar.dtos.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.services.AnimalService;
 import io.swagger.v3.oas.annotations.Operation;

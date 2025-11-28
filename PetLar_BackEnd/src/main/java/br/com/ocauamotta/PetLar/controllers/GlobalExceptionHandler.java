@@ -157,7 +157,7 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(
                 request.getDescription(false).replace("uri=", ""),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage() + "Ocorreu um erro no servidor."
+                "Ocorreu um erro no servidor."
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

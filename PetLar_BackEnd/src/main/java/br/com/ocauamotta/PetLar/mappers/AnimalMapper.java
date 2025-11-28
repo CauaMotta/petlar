@@ -1,7 +1,7 @@
 package br.com.ocauamotta.PetLar.mappers;
 
-import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
-import br.com.ocauamotta.PetLar.dtos.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;

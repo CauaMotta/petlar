@@ -1,7 +1,7 @@
 package br.com.ocauamotta.PetLar.services;
 
-import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
-import br.com.ocauamotta.PetLar.dtos.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
