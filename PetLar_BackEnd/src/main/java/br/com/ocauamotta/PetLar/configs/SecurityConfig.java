@@ -1,5 +1,8 @@
 package br.com.ocauamotta.PetLar.configs;
 
+import br.com.ocauamotta.PetLar.filters.SecurityFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Classe de configuração principal para o Spring Security.
@@ -22,15 +26,22 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private SecurityFilter securityFilter;
+
+    @Value("${api.prefix}")
+    private String apiPrefix;
+
     /**
      * Define a cadeia de filtros de segurança (Security Filter Chain) para a aplicação.
      *
      * <p>Esta configuração estabelece:
      * <ul>
-     * <li>Desabilita o CSRF (Cross-Site Request Forgery), pois APIs REST geralmente não precisam de proteção CSRF.</li>
-     * <li>Define a política de criação de sessão como {@code SessionCreationPolicy.STATELESS},
-     * indicando que a aplicação não manterá estado de sessão entre requisições. Isso é ideal para
-     * arquiteturas baseadas em tokens.</li>
+     * <li>Desabilita o CSRF (Cross-Site Request Forgery).</li>
+     * <li>Define a política de criação de sessão como {@code SessionCreationPolicy.STATELESS}.</li>
+     * <li>Permite acesso público ao endpoint de login.</li>
+     * <li>Exige autenticação para todas as outras requisições.</li>
+     * <li>Adiciona o {@code SecurityFilter} personalizado antes do filtro padrão de autenticação de usuário e senha.</li>
      * </ul>
      *
      * @param http O objeto {@code HttpSecurity} para configurar a segurança web.
@@ -39,8 +50,15 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String loginPath = apiPrefix + "/login";
+
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers(loginPath).permitAll();
+                    req.anyRequest().authenticated();
+                })
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
