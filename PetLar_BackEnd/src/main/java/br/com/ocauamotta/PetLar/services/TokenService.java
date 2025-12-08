@@ -1,5 +1,7 @@
 package br.com.ocauamotta.PetLar.services;
 
+import br.com.ocauamotta.PetLar.exceptions.InvalidTokenException;
+import br.com.ocauamotta.PetLar.exceptions.TokenException;
 import br.com.ocauamotta.PetLar.models.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -43,7 +45,7 @@ public class TokenService {
      *
      * @param user O objeto {@code User} para o qual o token será gerado.
      * @return Uma {@code String} representando o JWT assinado.
-     * @throws RuntimeException Se ocorrer um erro durante o processo de criação do JWT.
+     * @throws TokenException Se ocorrer um erro durante o processo de criação do JWT.
      */
     public String generateToken(User user) {
         try {
@@ -54,7 +56,7 @@ public class TokenService {
                     .withExpiresAt(generateExpires())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
-            throw new RuntimeException("Erro ao gerar o token JWT");
+            throw new TokenException("Erro ao gerar o token JWT");
         }
     }
 
@@ -77,7 +79,7 @@ public class TokenService {
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            throw new RuntimeException("Token JWT inválido ou expirado!");
+            throw new InvalidTokenException("Token JWT inválido ou expirado!");
         }
     }
 
