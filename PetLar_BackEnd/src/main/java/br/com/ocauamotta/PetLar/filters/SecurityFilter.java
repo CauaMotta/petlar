@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.filters;
 
-import br.com.ocauamotta.PetLar.repositories.IUserRepository;
+import br.com.ocauamotta.PetLar.services.AuthService;
 import br.com.ocauamotta.PetLar.services.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,7 +31,10 @@ public class SecurityFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private IUserRepository repository;
+    private AuthService authService;
+
+    @Autowired
+    private AuthenticationEntryPoint entryPoint;
 
     /**
      * Lógica principal de filtragem.
@@ -42,6 +47,14 @@ public class SecurityFilter extends OncePerRequestFilter {
      * <li>Define o objeto de autenticação no {@code SecurityContextHolder}, autenticando o usuário.</li>
      * </ol>
      *
+     * <p>
+     * Se o token estiver ausente, expirado ou inválido, ou se o usuário não for encontrado:
+     * <ul>
+     * <li>Qualquer {@code AuthenticationException} lançada é capturada.</li>
+     * <li>O {@code AuthenticationEntryPoint} customizado é chamado para padronizar a resposta
+     * de erro HTTP 401 UNAUTHORIZED.</li>
+     * </ul>
+     *
      * @param request O objeto {@code HttpServletRequest}.
      * @param response O objeto {@code HttpServletResponse}.
      * @param filterChain A cadeia de filtros para continuar o processamento da requisição.
@@ -50,16 +63,20 @@ public class SecurityFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String tokenJWT = getToken(request);
+        try {
+            String tokenJWT = getToken(request);
 
-        if (tokenJWT != null) {
-            String subject = tokenService.getSubject(tokenJWT);
-            UserDetails user = repository.findByEmail(subject);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            if (tokenJWT != null) {
+                String subject = tokenService.getSubject(tokenJWT);
+                UserDetails user = authService.loadUserByUsername(subject);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (AuthenticationException ex) {
+            entryPoint.commence(request, response, ex);
         }
-
-        filterChain.doFilter(request, response);
     }
 
     /**

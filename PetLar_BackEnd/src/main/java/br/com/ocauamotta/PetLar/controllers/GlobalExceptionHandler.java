@@ -6,6 +6,7 @@ import br.com.ocauamotta.PetLar.exceptions.CustomValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +25,28 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * Manipula exceções de credenciais inválidas {@code BadCredentialsException}.
+     * Esta exceção é lançada pelo {@code AuthenticationManager} quando a combinação
+     * de e-mail e senha fornecida pelo usuário não é valida.
+     * Mapeia a exceção para o status HTTP 401 UNAUTHORIZED.
+     *
+     * @param ex A exceção {@code BadCredentialsException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 401 e o corpo {@code ErrorResponse},
+     * contendo uma mensagem genérica de erro de login.
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.UNAUTHORIZED.value(),
+                "Email ou senha incorretos."
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
 
     /**
      * Manipula exceções de {@code EntityNotFoundException}.

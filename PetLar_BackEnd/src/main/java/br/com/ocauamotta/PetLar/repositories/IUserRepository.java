@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Interface de Repositório para a entidade {@code User}.
  * Estende {@code MongoRepository} para fornecer operações CRUD, paginação e
@@ -17,14 +19,13 @@ import org.springframework.stereotype.Repository;
 public interface IUserRepository extends MongoRepository<User, String> {
     /**
      * Busca um usuário pelo seu email.
-     *
-     * <p>Este método é essencial para o processo de autenticação do Spring Security,
-     * pois retorna um objeto {@code UserDetails}
-     * que contém as informações necessárias para verificar as credenciais.
+     * <p>
+     * Este método é essencial para o processo de autenticação do Spring Security.
      *
      * @param email O email do usuário a ser buscado.
-     * @return Um objeto {@code UserDetails}
-     * que representa o usuário encontrado, ou {@code null} se o usuário não existir.
+     * @return Um objeto {@code Optional} contendo o {@code UserDetails}
+     * se um usuário com o email fornecido for encontrado. Retorna um {@code Optional} vázio
+     * se o usuário não existir.
      */
-    UserDetails findByEmail(String email);
+    Optional<UserDetails> findByEmail(String email);
 }
