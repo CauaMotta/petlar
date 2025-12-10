@@ -10,8 +10,6 @@ import java.time.LocalDate;
  * <p>
  * Este DTO é usado nas operações de criação e atualização de animais, garantindo
  * que todos os campos obrigatórios sejam validados.
- * <p>
- * Em atualizações (PUT), apenas os campos que devem ser modificados precisam ser enviados.
  */
 @Schema(description = "Objeto de requisição contendo os dados de entrada para cadastro ou atualização de um animal, em caso de atualização, " +
         "Durante atualizações, apenas os campos desejados podem ser enviados.")

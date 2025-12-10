@@ -1,6 +1,10 @@
 package br.com.ocauamotta.PetLar.models;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,11 +21,15 @@ import java.util.List;
  * {@code UserDetails} do Spring Security, permitindo que esta classe seja usada
  * diretamente no processo de autenticação.
  */
+@Getter
+@Setter
+@Builder
 @Document(collection = "Users")
 public class User implements UserDetails {
 
     @Id
     private String id;
+    @Indexed(unique = true)
     private String email;
     private String password;
 

@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Email;
  * @param password A senha fornecida pelo usuário.
  */
 public record AuthRequestDto(
-        @Email
+        @Email(message = "Formato de email inválido.")
         String email,
         String password
 ) {}

@@ -1,6 +1,7 @@
 package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
+import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.exceptions.CustomValidationException;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class GlobalExceptionHandler {
      * contendo uma mensagem genérica de erro de login.
      */
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
         ErrorResponse response = new ErrorResponse(
                 request.getDescription(false).replace("uri=", ""),
                 HttpStatus.UNAUTHORIZED.value(),
@@ -46,6 +47,27 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    /**
+     * Manipula exceções de e-mail duplicado {@code DuplicateEmailException}.
+     * Esta exceção é lançada pela camada de serviço/validação para indicar que o
+     * registro falhou devido a um e-mail já existente no sistema.
+     * Mapeia a exceção para o status HTTP 409 CONFLICT.
+     *
+     * @param ex A exceção {@code DuplicateEmailException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 409 e o corpo {@code ErrorResponse}.
+     */
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEmailException(DuplicateEmailException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     /**

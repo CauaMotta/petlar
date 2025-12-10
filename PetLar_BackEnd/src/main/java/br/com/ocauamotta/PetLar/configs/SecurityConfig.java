@@ -37,7 +37,7 @@ public class SecurityConfig {
      * <ul>
      * <li>Desabilita o CSRF (Cross-Site Request Forgery).</li>
      * <li>Define a política de criação de sessão como {@code SessionCreationPolicy.STATELESS}.</li>
-     * <li>Permite acesso público ao endpoint de login.</li>
+     * <li>Permite acesso público ao endpoint de login e de cadastro.</li>
      * <li>Exige autenticação para todas as outras requisições.</li>
      * <li>Define handlers customizados {@code CustomAuthenticationEntryPoint} e {@code CustomAccessDeniedHandler}
      * para tratar falhas de autenticação 401 Unauthorized e autorização 403 Forbidden.</li>
@@ -56,11 +56,13 @@ public class SecurityConfig {
                                                    CustomAccessDeniedHandler accessDeniedHandler,
                                                    CustomAuthenticationEntryPoint entryPoint) throws Exception {
         String loginPath = apiPrefix + "/login";
+        String registerPath = apiPrefix + "/users/cadastrar";
 
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(loginPath).permitAll();
+                    req.requestMatchers(registerPath).permitAll();
                     req.anyRequest().authenticated();
                 })
                 .exceptionHandling(ex -> ex

@@ -27,5 +27,15 @@ public interface IUserRepository extends MongoRepository<User, String> {
      * se um usuário com o email fornecido for encontrado. Retorna um {@code Optional} vázio
      * se o usuário não existir.
      */
-    Optional<UserDetails> findByEmail(String email);
+    Optional<UserDetails> findByEmailIgnoreCase(String email);
+
+    /**
+     * Verifica a existência de um usuário no banco de dados com o email fornecido.
+     * <p>
+     * Utilizado principalmente para validação de unicidade de e-mail no momento do registro.
+     *
+     * @param email O email a ser verificado.
+     * @return {@code true} se um usuário com o email já existir; {@code false} caso contrário.
+     */
+    Boolean existsByEmailIgnoreCase(String email);
 }
