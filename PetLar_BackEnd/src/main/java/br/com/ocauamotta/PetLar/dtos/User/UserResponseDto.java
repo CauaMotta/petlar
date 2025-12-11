@@ -5,5 +5,12 @@ package br.com.ocauamotta.PetLar.dtos.User;
  * <p>
  * O DTO de resposta expõe apenas os dados não sensíveis, garantindo a segurança ao evitar a exposição da senha.
  */
-public record UserResponseDto(String id, String email) {
+public record UserResponseDto(
+        String id,
+        String email,
+        String name,
+        String createdAt,
+        String updatedAt,
+        String deletedAt
+) {
 }

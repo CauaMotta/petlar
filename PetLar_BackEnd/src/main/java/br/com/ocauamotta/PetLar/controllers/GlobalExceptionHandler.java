@@ -4,6 +4,7 @@ import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.exceptions.CustomValidationException;
+import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -68,6 +69,27 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    /**
+     * Manipula exceções de senha idêntica {@code SamePasswordException}.
+     * Esta exceção é lançada pela camada de validação quando o usuário tenta
+     * alterar sua senha para uma que é igual à sua senha atual.
+     * Mapeia a exceção para o status HTTP 400 BAD REQUEST.
+     *
+     * @param ex A exceção {@code SamePasswordException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}.
+     */
+    @ExceptionHandler(SamePasswordException.class)
+    public ResponseEntity<ErrorResponse> handleSamePasswordException(SamePasswordException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     /**

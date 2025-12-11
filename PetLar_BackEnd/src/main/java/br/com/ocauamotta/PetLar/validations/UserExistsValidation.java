@@ -19,14 +19,15 @@ public class UserExistsValidation implements IValidation {
     /**
      * Executa a validação de e-mail duplicado.
      * <p>
-     * Utiliza o método {@code existsByEmailIgnoreCase} do repositório para realizar uma busca.
+     * Utiliza o método {@code existsByEmailIgnoreCaseAndDeletedAtIsNull} do repositório para realizar uma busca por
+     * usuarios não deletados.
      *
      * @param user O objeto {@code User} a ser validado.
      * @throws DuplicateEmailException Se já existir um usuário cadastrado com o mesmo e-mail.
      */
     @Override
     public void validate(User user) {
-        if (repository.existsByEmailIgnoreCase(user.getEmail())) {
+        if (repository.existsByEmailIgnoreCaseAndDeletedAtIsNull(user.getEmail())) {
             throw new DuplicateEmailException("Este email já está cadastrado.");
         }
     }

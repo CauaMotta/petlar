@@ -32,6 +32,11 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String email;
     private String password;
+    private String name;
+
+    private String createdAt;
+    private String updatedAt;
+    private String deletedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

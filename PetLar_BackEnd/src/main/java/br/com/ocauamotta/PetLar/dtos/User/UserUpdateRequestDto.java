@@ -5,18 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 /**
- * DTO utilizado para receber dados necessários para cadastrar um usuário.
+ * DTO utilizado para receber dados para a atualização
+ * das informações de um usuário existente.
  * <p>
- * Este DTO é usado na operação de criação, garantindo
- * que todos os campos obrigatórios sejam validados.
+ * Contém regras de validação para garantir a integridade dos novos dados.
  */
-public record UserRequestDto(
+public record UserUpdateRequestDto(
         @NotBlank(message = "O campo email é obrigatório.")
         @Email(message = "Formato de email inválido.")
         String email,
-        @NotBlank(message = "O campo senha é obrigatório.")
-        @Size(min = 6, max = 50, message = "A senha deve conter entre 6 e 50 caracteres.")
-        String password,
         @NotBlank(message = "O campo nome é obrigatório.")
         @Size(min = 3, max = 110, message = "O nome deve conter entre 3 e 110 caracteres.")
         String name

@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository
 public interface IUserRepository extends MongoRepository<User, String> {
     /**
-     * Busca um usuário pelo seu email.
+     * Busca um usuário ativo pelo seu email.
      * <p>
      * Este método é essencial para o processo de autenticação do Spring Security.
      *
@@ -27,15 +27,27 @@ public interface IUserRepository extends MongoRepository<User, String> {
      * se um usuário com o email fornecido for encontrado. Retorna um {@code Optional} vázio
      * se o usuário não existir.
      */
-    Optional<UserDetails> findByEmailIgnoreCase(String email);
+    Optional<UserDetails> findByEmailIgnoreCaseAndDeletedAtIsNull(String email);
 
     /**
-     * Verifica a existência de um usuário no banco de dados com o email fornecido.
+     * Verifica a existência de um usuário ativo no banco de dados com o email fornecido.
      * <p>
-     * Utilizado principalmente para validação de unicidade de e-mail no momento do registro.
+     * Um usuário é considerado ativo quando o campo {@code deletedAt} é nulo.
+     * Utilizado para prevenir o cadastro de e-mails que já estão em uso por contas ativas.
      *
      * @param email O email a ser verificado.
-     * @return {@code true} se um usuário com o email já existir; {@code false} caso contrário.
+     * @return {@code true} se um usuário ativo com o email já existir; {@code false} caso contrário.
      */
-    Boolean existsByEmailIgnoreCase(String email);
+    Boolean existsByEmailIgnoreCaseAndDeletedAtIsNull(String email);
+
+    /**
+     * Verifica a existência de um usuário logicamente deletado no banco de dados com o email fornecido.
+     * <p>
+     * Um usuário é considerado deletado quando o campo {@code deletedAt} possui um valor diferente de nulo.
+     * Utilizado para tratar separadamente e-mails de contas inativas.
+     *
+     * @param email O email a ser verificado.
+     * @return {@code true} se um usuário deletado com o email já existir; {@code false} caso contrário.
+     */
+    Boolean existsByEmailIgnoreCaseAndDeletedAtIsNotNull(String email);
 }

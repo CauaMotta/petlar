@@ -32,7 +32,11 @@ public class UserMapper {
 
         return new UserResponseDto(
                 entity.getId(),
-                entity.getEmail()
+                entity.getEmail(),
+                entity.getName(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                entity.getDeletedAt()
         );
     }
 
@@ -48,6 +52,7 @@ public class UserMapper {
         return User.builder()
                 .email(dto.email())
                 .password(dto.password())
+                .name(dto.name())
                 .build();
     }
 }
