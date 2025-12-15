@@ -57,12 +57,16 @@ public class SecurityConfig {
                                                    CustomAuthenticationEntryPoint entryPoint) throws Exception {
         String loginPath = apiPrefix + "/login";
         String registerPath = apiPrefix + "/users/cadastrar";
+        String apiDocs = "/v3/api-docs/**";
+        String swaggerUi = "/swagger-ui/**";
 
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(loginPath).permitAll();
                     req.requestMatchers(registerPath).permitAll();
+                    req.requestMatchers(apiDocs).permitAll();
+                    req.requestMatchers(swaggerUi).permitAll();
                     req.anyRequest().authenticated();
                 })
                 .exceptionHandling(ex -> ex
