@@ -5,9 +5,9 @@ import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
-import br.com.ocauamotta.PetLar.validations.SamePasswordValidation;
-import br.com.ocauamotta.PetLar.validations.UserExistsButDeletedValidation;
-import br.com.ocauamotta.PetLar.validations.UserExistsValidation;
+import br.com.ocauamotta.PetLar.validations.User.SamePasswordUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.UserExistsButDeletedUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.UserExistsUserValidation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,13 +38,13 @@ class UserServiceTest {
     private TokenService tokenService;
 
     @Mock
-    private UserExistsValidation userExistsValidation;
+    private UserExistsUserValidation userExistsValidation;
 
     @Mock
-    private UserExistsButDeletedValidation userExistsButDeletedValidation;
+    private UserExistsButDeletedUserValidation userExistsButDeletedValidation;
 
     @Mock
-    private SamePasswordValidation samePasswordValidation;
+    private SamePasswordUserValidation samePasswordValidation;
     
     @InjectMocks
     private UserService service;

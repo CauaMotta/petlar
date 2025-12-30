@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.validations;
+package br.com.ocauamotta.PetLar.validations.User;
 
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * Aplica uma regra de segurança para evitar a reutilização imediata da última senha.
  */
 @Component
-public class SamePasswordValidation implements IValidation{
+public class SamePasswordUserValidation implements IUserValidation {
 
     @Autowired
     private IUserRepository repository;

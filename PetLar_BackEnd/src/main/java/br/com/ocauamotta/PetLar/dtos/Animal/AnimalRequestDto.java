@@ -21,7 +21,7 @@ public record AnimalRequestDto(
         @Schema(description = "Data de nascimento do animal", example = "2025-11-10")
         @NotNull(message = "A data de nascimento é obrigatória.")
         @PastOrPresent(message = "A data de nascimento deve ser igual ou anterior à data atual")
-        LocalDate dob,
+        LocalDate birthDate,
         @Schema(description = "Peso do animal (em gramas)", example = "1200")
         @NotNull(message = "O peso é obrigatório.")
         @Min(value = 1, message = "O peso deve ser maior que zero.")

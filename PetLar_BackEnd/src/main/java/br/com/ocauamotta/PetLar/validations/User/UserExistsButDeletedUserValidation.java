@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.validations;
+package br.com.ocauamotta.PetLar.validations.User;
 
 import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.models.User;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * que foi marcado como deletado (soft delete).
  */
 @Component
-public class UserExistsButDeletedValidation implements IValidation {
+public class UserExistsButDeletedUserValidation implements IUserValidation {
 
     @Autowired
     private IUserRepository repository;

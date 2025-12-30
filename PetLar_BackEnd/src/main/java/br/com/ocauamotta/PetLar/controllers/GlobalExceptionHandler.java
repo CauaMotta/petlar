@@ -1,10 +1,7 @@
 package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
-import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
-import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
-import br.com.ocauamotta.PetLar.exceptions.CustomValidationException;
-import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
+import br.com.ocauamotta.PetLar.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -27,6 +24,29 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * Manipula exceções de animal não pertencente ao usuário autenticado {@code UserWhoIsNotTheOwnerOfTheAnimalException}.
+     * Esta exceção é lançada pelo {@code AnimalOwnerUserValidation} quando o usuário autenticado
+     * não é o autor do registro do animal.
+     * Mapeia a exceção para o status HTTP 403 FORBIDDEN.
+     *
+     * @param ex A exceção {@code UserWhoIsNotTheOwnerOfTheAnimalException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 403 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(UserWhoIsNotTheOwnerOfTheAnimalException.class)
+    public ResponseEntity<ErrorResponse> handleUserWhoIsNotTheOwnerOfTheAnimalException(
+            UserWhoIsNotTheOwnerOfTheAnimalException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.FORBIDDEN.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
 
     /**
      * Manipula exceções de credenciais inválidas {@code BadCredentialsException}.

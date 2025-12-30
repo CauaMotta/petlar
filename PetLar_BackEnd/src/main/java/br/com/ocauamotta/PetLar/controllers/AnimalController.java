@@ -3,6 +3,7 @@ package br.com.ocauamotta.PetLar.controllers;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
+import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.services.AnimalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -126,6 +128,7 @@ public class AnimalController {
      * Cadastra um novo animal.
      *
      * @param dto {@code AnimalRequestDto} contendo os dados do novo animal.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
      * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal cadastrado.
      */
     @Operation(
@@ -172,8 +175,8 @@ public class AnimalController {
             }
     )
     @PostMapping
-    public ResponseEntity<AnimalResponseDto> save(@RequestBody @Valid AnimalRequestDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto));
+    public ResponseEntity<AnimalResponseDto> save(@RequestBody @Valid AnimalRequestDto dto, @AuthenticationPrincipal User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto, user));
     }
 
     /**
@@ -181,6 +184,7 @@ public class AnimalController {
      *
      * @param id Identificador do animal.
      * @param dto {@code AnimalRequestDto} contendo os dados a serem atualizados.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
      * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal atualizado.
      */
     @Operation(
@@ -190,6 +194,21 @@ public class AnimalController {
                     @ApiResponse(responseCode = "200", description = "Animal atualizado com sucesso",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = AnimalResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 403,
+                                                                "message": "Você não possui permissão para alterar este animal."
+                                                            }
+                                                            """
+                                            )
+                                    })),
                     @ApiResponse(responseCode = "404", description = "Animal não encontrado",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponse.class),
@@ -223,14 +242,17 @@ public class AnimalController {
             }
     )
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id, @RequestBody @Valid AnimalRequestDto dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+    public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id,
+                                                    @RequestBody @Valid AnimalRequestDto dto,
+                                                    @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.update(id, dto, user));
     }
 
     /**
      * Exclui permanentemente um animal do sistema pelo seu ID.
      *
      * @param id Identificador do animal.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
      * @return Um {@code ResponseEntity} vazio indicando sucesso na exclusão.
      */
     @Operation(
@@ -238,6 +260,21 @@ public class AnimalController {
             description = "Remove permanentemente um animal do banco de dados de acordo com o ID informado.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Animal excluído com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 403,
+                                                                "message": "Você não possui permissão para alterar este animal."
+                                                            }
+                                                            """
+                                            )
+                                    })),
                     @ApiResponse(responseCode = "404", description = "Animal não encontrado",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponse.class),
@@ -271,8 +308,8 @@ public class AnimalController {
             }
     )
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id, @AuthenticationPrincipal User user) {
+        service.delete(id, user);
         return ResponseEntity.noContent().build();
     }
 }

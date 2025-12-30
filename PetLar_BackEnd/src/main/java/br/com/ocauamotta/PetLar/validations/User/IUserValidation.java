@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.validations;
+package br.com.ocauamotta.PetLar.validations.User;
 
 import br.com.ocauamotta.PetLar.models.User;
 
@@ -8,6 +8,6 @@ import br.com.ocauamotta.PetLar.models.User;
  * <p>
  * Este padrão permite a injeção de múltiplas regras de validação em uma lista para serem executadas sequencialmente.
  */
-public interface IValidation {
+public interface IUserValidation {
     void validate(User user);
 }

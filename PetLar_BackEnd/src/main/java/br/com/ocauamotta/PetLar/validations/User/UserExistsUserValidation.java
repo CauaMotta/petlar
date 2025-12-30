@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.validations;
+package br.com.ocauamotta.PetLar.validations.User;
 
 import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.models.User;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * no banco de dados com o mesmo endereço de e-mail. Garante a unicidade do e-mail.
  */
 @Component
-public class UserExistsValidation implements IValidation {
+public class UserExistsUserValidation implements IUserValidation {
 
     @Autowired
     private IUserRepository repository;

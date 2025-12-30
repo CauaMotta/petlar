@@ -3,6 +3,7 @@ package br.com.ocauamotta.PetLar.validations;
 import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
+import br.com.ocauamotta.PetLar.validations.User.UserExistsButDeletedUserValidation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +23,7 @@ class UserExistsButDeletedValidationTest {
     private IUserRepository repository;
 
     @InjectMocks
-    private UserExistsButDeletedValidation userExistsButDeletedValidation;
+    private UserExistsButDeletedUserValidation userExistsButDeletedValidation;
 
     @Test
     @DisplayName("Não deve lançar exceção quando o email não existir em usuários logicamente deletados.")

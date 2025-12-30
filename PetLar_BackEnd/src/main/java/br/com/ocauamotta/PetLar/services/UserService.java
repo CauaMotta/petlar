@@ -4,9 +4,9 @@ import br.com.ocauamotta.PetLar.dtos.User.*;
 import br.com.ocauamotta.PetLar.mappers.UserMapper;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
-import br.com.ocauamotta.PetLar.validations.SamePasswordValidation;
-import br.com.ocauamotta.PetLar.validations.UserExistsButDeletedValidation;
-import br.com.ocauamotta.PetLar.validations.UserExistsValidation;
+import br.com.ocauamotta.PetLar.validations.User.SamePasswordUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.UserExistsButDeletedUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.UserExistsUserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,13 +31,13 @@ public class UserService {
     private TokenService tokenService;
 
     @Autowired
-    private UserExistsValidation userExistsValidation;
+    private UserExistsUserValidation userExistsValidation;
 
     @Autowired
-    private UserExistsButDeletedValidation userExistsButDeletedValidation;
+    private UserExistsButDeletedUserValidation userExistsButDeletedValidation;
 
     @Autowired
-    private SamePasswordValidation samePasswordValidation;
+    private SamePasswordUserValidation samePasswordValidation;
 
     /**
      * Registra um novo usuário no sistema.

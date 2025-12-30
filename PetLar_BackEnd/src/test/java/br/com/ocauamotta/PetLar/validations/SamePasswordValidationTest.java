@@ -3,6 +3,7 @@ package br.com.ocauamotta.PetLar.validations;
 import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
+import br.com.ocauamotta.PetLar.validations.User.SamePasswordUserValidation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +27,7 @@ class SamePasswordValidationTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private SamePasswordValidation samePasswordValidation;
+    private SamePasswordUserValidation samePasswordValidation;
 
     @Test
     @DisplayName("Não deve lançar exceção quando as senhas são diferentes")

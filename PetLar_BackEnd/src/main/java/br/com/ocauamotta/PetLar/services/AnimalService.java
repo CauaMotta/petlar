@@ -7,15 +7,17 @@ import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.mappers.AnimalMapper;
 import br.com.ocauamotta.PetLar.models.Animal;
+import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
+import br.com.ocauamotta.PetLar.validations.Animal.AnimalOwnerUserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Camada de Serviço responsável por implementar a lógica de negócio
@@ -27,6 +29,9 @@ public class AnimalService {
 
     @Autowired
     private IAnimalRepository repository;
+
+    @Autowired
+    private AnimalOwnerUserValidation animalOwnerUserValidation;
 
     /**
      * Busca uma página de animais, permitindo a filtragem por status de adoção
@@ -58,15 +63,23 @@ public class AnimalService {
 
     /**
      * Salva um novo animal no sistema.
-     * Define automaticamente a data de registro e o status como {@code DISPONIVEL}.
+     * Define automaticamente a data de registro, data de atualização,
+     * id do autor e o status como {@code DISPONIVEL}.
      *
      * @param dto O DTO de requisição contendo os dados do animal.
+     * @param user O usuário autenticado.
      * @return O {@code AnimalResponseDto} do animal recém-salvo, incluindo seu ID.
      */
-    public AnimalResponseDto save(AnimalRequestDto dto) {
+    public AnimalResponseDto save(AnimalRequestDto dto, User user) {
+        String time = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString();
+
         Animal entity = AnimalMapper.toEntity(dto);
-        entity.setRegistrationDate(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+
+        entity.setAuthorId(user.getId());
         entity.setStatus(AdoptionStatus.DISPONIVEL);
+        entity.setCreatedAt(time);
+        entity.setUpdatedAt(time);
+
         return AnimalMapper.toDTO(repository.insert(entity));
     }
 
@@ -75,12 +88,19 @@ public class AnimalService {
      *
      * @param id O ID do animal a ser atualizado.
      * @param dto O DTO de requisição contendo os dados de atualização.
+     * @param user O usuário autenticado.
      * @return O {@code AnimalResponseDto} do animal atualizado.
      * @throws EntityNotFoundException Se o animal com o ID fornecido não for encontrado.
      */
-    public AnimalResponseDto update(String id, AnimalRequestDto dto) {
+    public AnimalResponseDto update(String id, AnimalRequestDto dto, User user) {
         Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
+
+        animalOwnerUserValidation.validate(entity, user);
+
+        entity.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+
         updateAnimalFields(AnimalMapper.toEntity(dto), entity);
+
         return AnimalMapper.toDTO(repository.save(entity));
     }
 
@@ -88,12 +108,14 @@ public class AnimalService {
      * Remove um animal do sistema pelo seu identificador único.
      *
      * @param id O ID do animal a ser excluído.
+     * @param user O usuário autenticado.
      */
-    public void delete(String id) {
-        if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Nenhum registro encontrado com ID - " + id);
-        }
-        repository.deleteById(id);
+    public void delete(String id, User user) {
+        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
+
+        animalOwnerUserValidation.validate(entity, user);
+
+        repository.delete(entity);
     }
 
     /**
