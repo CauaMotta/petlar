@@ -1,11 +1,14 @@
 package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
+import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.exceptions.CustomValidationException;
+import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +27,70 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * Manipula exceções de credenciais inválidas {@code BadCredentialsException}.
+     * Esta exceção é lançada pelo {@code AuthenticationManager} quando a combinação
+     * de e-mail e senha fornecida pelo usuário não é valida.
+     * Mapeia a exceção para o status HTTP 401 UNAUTHORIZED.
+     *
+     * @param ex A exceção {@code BadCredentialsException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 401 e o corpo {@code ErrorResponse},
+     * contendo uma mensagem genérica de erro de login.
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.UNAUTHORIZED.value(),
+                "Email ou senha incorretos."
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    /**
+     * Manipula exceções de e-mail duplicado {@code DuplicateEmailException}.
+     * Esta exceção é lançada pela camada de serviço/validação para indicar que o
+     * registro falhou devido a um e-mail já existente no sistema.
+     * Mapeia a exceção para o status HTTP 409 CONFLICT.
+     *
+     * @param ex A exceção {@code DuplicateEmailException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 409 e o corpo {@code ErrorResponse}.
+     */
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEmailException(DuplicateEmailException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    /**
+     * Manipula exceções de senha idêntica {@code SamePasswordException}.
+     * Esta exceção é lançada pela camada de validação quando o usuário tenta
+     * alterar sua senha para uma que é igual à sua senha atual.
+     * Mapeia a exceção para o status HTTP 400 BAD REQUEST.
+     *
+     * @param ex A exceção {@code SamePasswordException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}.
+     */
+    @ExceptionHandler(SamePasswordException.class)
+    public ResponseEntity<ErrorResponse> handleSamePasswordException(SamePasswordException ex, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 
     /**
      * Manipula exceções de {@code EntityNotFoundException}.
@@ -157,7 +224,7 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(
                 request.getDescription(false).replace("uri=", ""),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage() + "Ocorreu um erro no servidor."
+                "Ocorreu um erro no servidor."
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

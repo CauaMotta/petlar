@@ -1,7 +1,7 @@
 package br.com.ocauamotta.PetLar.controllers;
 
-import br.com.ocauamotta.PetLar.dtos.AnimalRequestDto;
-import br.com.ocauamotta.PetLar.dtos.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser
 class AnimalControllerTest {
 
     @Autowired
