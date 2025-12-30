@@ -26,7 +26,7 @@ class UserExistsValidationTest {
 
     @Test
     @DisplayName("Não deve lançar exceção quando o email não existir.")
-    void validate_NotShouldThrowException() {
+    void testValidate_NotShouldThrowException() {
         User user = createUser();
         when(repository.existsByEmailIgnoreCaseAndDeletedAtIsNull(user.getEmail()))
                 .thenReturn(false);
@@ -39,7 +39,7 @@ class UserExistsValidationTest {
 
     @Test
     @DisplayName("Deve lançar exceção quando o email existir.")
-    void validate_ShouldThrowException() {
+    void testValidate_ShouldThrowException() {
         User user = createUser();
         when(repository.existsByEmailIgnoreCaseAndDeletedAtIsNull(user.getEmail()))
                 .thenReturn(true);

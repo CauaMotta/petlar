@@ -30,7 +30,7 @@ class SamePasswordValidationTest {
 
     @Test
     @DisplayName("Não deve lançar exceção quando as senhas são diferentes")
-    void validate_NotShouldThrowException() {
+    void testValidate_NotShouldThrowException() {
         User storedUser = createUser();
         when(repository.findById("1")).thenReturn(Optional.of(storedUser));
         when(passwordEncoder.matches("123456789", storedUser.getPassword()))
@@ -47,7 +47,7 @@ class SamePasswordValidationTest {
 
     @Test
     @DisplayName("Deve lançar exceção quando as senhas são iguais")
-    void validate_ShouldThrowException() {
+    void testValidate_ShouldThrowException() {
         User user = createUser();
         when(repository.findById("1")).thenReturn(Optional.of(user));
         when(passwordEncoder.matches("secretPassword", user.getPassword()))

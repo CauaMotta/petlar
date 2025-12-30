@@ -131,6 +131,7 @@ public class UserService {
 
         String password = encoder.encode(user.getPassword());
         user.setPassword(password);
+        user.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
 
         return UserMapper.toDTO(repository.save(user));
     }

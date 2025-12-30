@@ -26,7 +26,7 @@ class UserExistsButDeletedValidationTest {
 
     @Test
     @DisplayName("Não deve lançar exceção quando o email não existir em usuários logicamente deletados.")
-    void validate_NotShouldThrowException() {
+    void testValidate_NotShouldThrowException() {
         User user = createUser();
         when(repository.existsByEmailIgnoreCaseAndDeletedAtIsNotNull(user.getEmail()))
                 .thenReturn(false);
@@ -39,7 +39,7 @@ class UserExistsButDeletedValidationTest {
 
     @Test
     @DisplayName("Deve lançar exceção quando o email existir em um usuário logicamente deletado.")
-    void validate_ShouldThrowException() {
+    void testValidate_ShouldThrowException() {
         User user = createUser();
         when(repository.existsByEmailIgnoreCaseAndDeletedAtIsNotNull(user.getEmail()))
                 .thenReturn(true);
