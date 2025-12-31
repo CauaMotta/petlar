@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.validations.Animal;
 
-import br.com.ocauamotta.PetLar.exceptions.UserWhoIsNotTheOwnerOfTheAnimalException;
+import br.com.ocauamotta.PetLar.exceptions.Animal.UserWhoIsNotTheOwnerOfTheAnimalException;
 import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import org.springframework.stereotype.Component;

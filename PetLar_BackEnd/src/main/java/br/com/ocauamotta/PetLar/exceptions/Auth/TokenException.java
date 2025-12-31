@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.exceptions;
+package br.com.ocauamotta.PetLar.exceptions.Auth;
 
 import org.springframework.security.core.AuthenticationException;
 

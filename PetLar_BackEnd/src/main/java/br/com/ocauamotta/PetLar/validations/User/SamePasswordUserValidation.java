@@ -1,7 +1,7 @@
 package br.com.ocauamotta.PetLar.validations.User;
 
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
-import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
+import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

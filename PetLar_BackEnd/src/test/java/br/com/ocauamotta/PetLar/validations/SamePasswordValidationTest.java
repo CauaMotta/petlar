@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.validations;
 
-import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
+import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import br.com.ocauamotta.PetLar.validations.User.SamePasswordUserValidation;

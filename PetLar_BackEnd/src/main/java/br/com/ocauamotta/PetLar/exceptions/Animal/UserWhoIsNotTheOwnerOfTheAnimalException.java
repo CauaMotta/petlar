@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.exceptions;
+package br.com.ocauamotta.PetLar.exceptions.Animal;
 
 /**
  * Exceção personalizada lançada para indicar que o usuário

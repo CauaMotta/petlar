@@ -2,6 +2,10 @@ package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.exceptions.*;
+import br.com.ocauamotta.PetLar.exceptions.Adoption.AdoptionException;
+import br.com.ocauamotta.PetLar.exceptions.Animal.UserWhoIsNotTheOwnerOfTheAnimalException;
+import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
+import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -46,6 +50,33 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    /**
+     * Manipula exceções generalizadas de adoção {@code AdoptionException}.
+     * <p>
+     * É disparado quando uma regra de negócio de adoção é violada. Retorna o status HTTP 400 BAD_REQUEST
+     * ou HTTP 403 FORBIDDEN.
+     *
+     * @param ex A exceção {@code AdoptionException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status e o corpo {@code ErrorResponse} contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(AdoptionException.class)
+    public ResponseEntity<ErrorResponse> handleAdoptionException(AdoptionException ex, WebRequest request) {
+        var httpStatus = HttpStatus.BAD_REQUEST;
+
+        if (ex.getCause() instanceof UserWhoIsNotTheOwnerOfTheAnimalException) {
+            httpStatus = HttpStatus.FORBIDDEN;
+        }
+
+        ErrorResponse response = new ErrorResponse(
+                request.getDescription(false).replace("uri=", ""),
+                httpStatus.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(httpStatus).body(response);
     }
 
     /**

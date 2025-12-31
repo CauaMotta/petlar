@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.validations.User;
 
-import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
+import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -52,7 +52,7 @@ public class AnimalMapper {
      * Converte um DTO de Requisição {@code AnimalRequestDto} em uma nova entidade {@code Animal}.
      *
      * @param dto O DTO de requisição do animal.
-     * @return A nova entidade {@code Animal} (sem ID, data de registro ou status definidos).
+     * @return A nova entidade {@code Animal}.
      */
     public static Animal toEntity(AnimalRequestDto dto) {
         if (dto == null) return null;

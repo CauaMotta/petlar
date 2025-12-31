@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.exceptions;
+package br.com.ocauamotta.PetLar.exceptions.User;
 
 /**
  * Exceção personalizada lançada para indicar que a operação de mudança de senha

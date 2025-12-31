@@ -1,8 +1,8 @@
 package br.com.ocauamotta.PetLar.services;
 
 import br.com.ocauamotta.PetLar.dtos.User.*;
-import br.com.ocauamotta.PetLar.exceptions.DuplicateEmailException;
-import br.com.ocauamotta.PetLar.exceptions.SamePasswordException;
+import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
+import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import org.junit.jupiter.api.AfterEach;

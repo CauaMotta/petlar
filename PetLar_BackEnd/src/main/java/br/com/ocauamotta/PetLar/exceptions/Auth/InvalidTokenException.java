@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.exceptions;
+package br.com.ocauamotta.PetLar.exceptions.Auth;
 
 /**
  * Exceção personalizada lançada para indicar algum erro

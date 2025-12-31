@@ -1,7 +1,7 @@
 package br.com.ocauamotta.PetLar.services;
 
-import br.com.ocauamotta.PetLar.exceptions.InvalidTokenException;
-import br.com.ocauamotta.PetLar.exceptions.TokenException;
+import br.com.ocauamotta.PetLar.exceptions.Auth.InvalidTokenException;
+import br.com.ocauamotta.PetLar.exceptions.Auth.TokenException;
 import br.com.ocauamotta.PetLar.models.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
