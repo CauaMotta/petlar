@@ -17,6 +17,8 @@ public record AdoptionResponseDto(
         AdoptionStatus status,
         @Schema(description = "ID do animal que está sendo adotado.", example = "72af45b0...")
         String animalId,
+        @Schema(description = "ID do autor do animal que está sendo adotado.", example = "73ehj89cc...")
+        String animalOwnerId,
         @Schema(description = "ID do usuário que solicitou a adoção.", example = "10af45b0...")
         String adopterId,
         @Schema(description = "Motivo/Justificativa fornecida pelo adotante.",

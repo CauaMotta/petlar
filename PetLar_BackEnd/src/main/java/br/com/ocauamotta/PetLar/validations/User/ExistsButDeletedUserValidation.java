@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * que foi marcado como deletado (soft delete).
  */
 @Component
-public class UserExistsButDeletedUserValidation implements IUserValidation {
+public class ExistsButDeletedUserValidation implements IUserValidation {
 
     @Autowired
     private IUserRepository repository;

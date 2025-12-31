@@ -32,6 +32,7 @@ public class AdoptionMapper {
                 entity.getId(),
                 entity.getStatus(),
                 entity.getAnimalId(),
+                entity.getAnimalOwnerId(),
                 entity.getAdopterId(),
                 entity.getReason(),
                 entity.getCreatedAt(),

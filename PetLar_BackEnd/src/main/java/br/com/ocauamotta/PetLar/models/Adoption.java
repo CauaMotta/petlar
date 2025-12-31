@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * Entidade de domínio que representa uma solicitação de adoção no sistema.
  * <p>
  * Esta classe é mapeada para a coleção {@code Adoptions} no MongoDB e armazena
- * o vínculo entre um {@code User} (adotante) e um {@code Animal}, além do
+ * o vínculo entre um {@code User} (adotante), o {@code User} autor do animal e um {@code Animal}, além do
  * status atual do processo e a justificativa fornecida.
  */
 @Setter
@@ -24,6 +24,7 @@ public class Adoption {
 
     private AdoptionStatus status;
     private String animalId;
+    private String animalOwnerId;
     private String adopterId;
     private String reason;
 

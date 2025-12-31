@@ -6,6 +6,7 @@ import br.com.ocauamotta.PetLar.exceptions.Adoption.*;
 import br.com.ocauamotta.PetLar.exceptions.Animal.UserWhoIsNotTheOwnerOfTheAnimalException;
 import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
+import br.com.ocauamotta.PetLar.exceptions.User.UserInactiveException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -28,6 +29,24 @@ import java.util.Map;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * Manipula exceções de operações realizadas por usuários inativos.
+     * <p>
+     * Quando uma ação tenta ser realizada envolvendo um usuário que sofreu *soft delete*, esta
+     * exceção é capturada e retorna o status 400 BAD REQUEST, sinalizando
+     * que a conta informada não é elegível para processamento.
+     *
+     * @param ex A exceção {@code UserInactiveException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(UserInactiveException.class)
+    public ResponseEntity<ErrorResponse> handleUserInactiveException(
+            UserInactiveException ex, WebRequest request) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
 
     /**
      * Manipula exceções de animal não pertencente ao usuário autenticado {@code UserWhoIsNotTheOwnerOfTheAnimalException}.

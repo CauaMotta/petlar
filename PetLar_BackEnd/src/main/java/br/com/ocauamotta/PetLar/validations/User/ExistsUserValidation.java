@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * no banco de dados com o mesmo endereço de e-mail. Garante a unicidade do e-mail.
  */
 @Component
-public class UserExistsUserValidation implements IUserValidation {
+public class ExistsUserValidation implements IUserValidation {
 
     @Autowired
     private IUserRepository repository;

@@ -3,7 +3,6 @@ package br.com.ocauamotta.PetLar.controllers;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionResponseDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.EditReasonDto;
-import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.services.AdoptionService;

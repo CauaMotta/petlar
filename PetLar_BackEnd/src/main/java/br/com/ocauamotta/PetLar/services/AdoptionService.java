@@ -15,6 +15,7 @@ import br.com.ocauamotta.PetLar.validations.Adoption.AdoptionOwnershipValidation
 import br.com.ocauamotta.PetLar.validations.Adoption.PendingAdoptionValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.TryAdoptionYourOwnPetValidation;
+import br.com.ocauamotta.PetLar.validations.User.UserActiveYetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,9 @@ public class AdoptionService {
     @Autowired
     private AdoptionOwnershipValidation adoptionOwnershipValidation;
 
+    @Autowired
+    private UserActiveYetValidation userActiveYetValidation;
+
     /**
      * Inicia o processo de solicitação de adoção para um animal específico.
      * <p>
@@ -59,6 +63,7 @@ public class AdoptionService {
      * <li>Verificar a existência do animal no banco de dados.</li>
      * <li>Validar se o adotante não é o dono do animal.</li>
      * <li>Validar se o animal está com status "DISPONIVEL".</li>
+     * <li>Validar se o autor do animal ainda está ativo no sistema.</li>
      * <li>Criar o registro de adoção com status "PENDENTE".</li>
      * <li>Atualizar o status do animal para "PENDENTE" para evitar múltiplas solicitações simultâneas.</li>
      * </ol>
@@ -76,9 +81,11 @@ public class AdoptionService {
 
         tryAdoptionYourOwnPetValidation.validate(entity, user);
         animalNotAvailableValidation.validate(entity, null);
+        userActiveYetValidation.validate(createUserReference(entity.getAuthorId()));
 
         Adoption adoption = AdoptionMapper.toEntity(dto);
         adoption.setAdopterId(user.getId());
+        adoption.setAnimalOwnerId(entity.getAuthorId());
         adoption.setReason(dto.reason());
         adoption.setStatus(AdoptionStatus.PENDENTE);
         adoption.setCreatedAt(time);
@@ -165,5 +172,15 @@ public class AdoptionService {
         adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
 
         return AdoptionMapper.toDTO(adoptionRepository.save(adoption));
+    }
+
+    /**
+     * Cria uma instância de referência da entidade {@code User} contendo apenas o ID.
+     *
+     * @param id O identificador único do usuário.
+     * @return Uma instância de {@code User} "parcial" contendo apenas o campo {@code id} preenchido.
+     */
+    private User createUserReference(String id) {
+        return User.builder().id(id).build();
     }
 }

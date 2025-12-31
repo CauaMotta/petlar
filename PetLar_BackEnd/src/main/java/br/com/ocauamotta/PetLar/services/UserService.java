@@ -5,8 +5,8 @@ import br.com.ocauamotta.PetLar.mappers.UserMapper;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import br.com.ocauamotta.PetLar.validations.User.SamePasswordUserValidation;
-import br.com.ocauamotta.PetLar.validations.User.UserExistsButDeletedUserValidation;
-import br.com.ocauamotta.PetLar.validations.User.UserExistsUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.ExistsButDeletedUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.ExistsUserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,10 +31,10 @@ public class UserService {
     private TokenService tokenService;
 
     @Autowired
-    private UserExistsUserValidation userExistsValidation;
+    private ExistsUserValidation userExistsValidation;
 
     @Autowired
-    private UserExistsButDeletedUserValidation userExistsButDeletedValidation;
+    private ExistsButDeletedUserValidation userExistsButDeletedValidation;
 
     @Autowired
     private SamePasswordUserValidation samePasswordValidation;

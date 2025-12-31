@@ -3,7 +3,7 @@ package br.com.ocauamotta.PetLar.validations;
 import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
-import br.com.ocauamotta.PetLar.validations.User.UserExistsUserValidation;
+import br.com.ocauamotta.PetLar.validations.User.ExistsUserValidation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ class UserExistsValidationTest {
     private IUserRepository repository;
 
     @InjectMocks
-    private UserExistsUserValidation userExistsValidation;
+    private ExistsUserValidation userExistsValidation;
 
     @Test
     @DisplayName("Não deve lançar exceção quando o email não existir.")
