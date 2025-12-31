@@ -2,6 +2,7 @@ package br.com.ocauamotta.PetLar.services;
 
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Adoption.EditReasonDto;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.exceptions.EntityNotFoundException;
 import br.com.ocauamotta.PetLar.mappers.AdoptionMapper;
@@ -139,5 +140,30 @@ public class AdoptionService {
         animalRepository.save(entity);
 
         return AdoptionMapper.toDTO(savedAdoption);
+    }
+
+    /**
+     * Atualiza a justificativa de uma solicitação de adoção pendente.
+     * <p>
+     * Este método valida se o usuário é o autor da solicitação e se o status
+     * permite edição antes de persistir a nova mensagem.
+     *
+     * @param id O ID da adoção a ser editada.
+     * @param dto O DTO contendo a nova justificativa.
+     * @param user O usuário autenticado solicitando a alteração.
+     * @return O {@code AdoptionResponseDto} com a justificativa e data de atualização modificadas.
+     * @throws EntityNotFoundException Se a adoção não existir.
+     */
+    public AdoptionResponseDto editReason(String id, EditReasonDto dto, User user) {
+        Adoption adoption = adoptionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
+
+        adoptionOwnershipValidation.validate(adoption, user);
+        pendingAdoptionValidation.validate(adoption, null);
+
+        adoption.setReason(dto.reason());
+        adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+
+        return AdoptionMapper.toDTO(adoptionRepository.save(adoption));
     }
 }

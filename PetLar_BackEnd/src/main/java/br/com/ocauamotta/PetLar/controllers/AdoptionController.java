@@ -2,6 +2,7 @@ package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Adoption.EditReasonDto;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.models.User;
@@ -246,5 +247,110 @@ public class AdoptionController {
     public ResponseEntity<AdoptionResponseDto> cancelAdoption(@PathVariable(value = "id") String id,
                                                               @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(service.cancelAdoption(id, user));
+    }
+
+    /**
+     * Edita a justificativa de uma solicitação de adoção existente.
+     * <p>
+     * Utiliza o método PATCH para indicar uma alteração parcial no recurso,
+     * permitindo que o usuário corrija ou adicione informações à sua proposta de adoção.
+     *
+     * @param id O ID da adoção passado na URL.
+     * @param dto O corpo da requisição com a nova justificativa validada.
+     * @param user O usuário autenticado.
+     * @return O {@code AdoptionResponseDto} atualizado.
+     */
+    @Operation(
+            summary = "Alterar justificativa da adoção",
+            description = "Permite que o adotante altere o texto da justificativa da sua solicitação de adoção.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Justificativa atualizada com sucesso.",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "400", description = "Dados fornecidos inválidos",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123",
+                                                                "status": 400,
+                                                                "message": "Houve um erro de validação em um ou mais campos.",
+                                                                "errors": {
+                                                                    "reason": "A justificativa é obrigatória."
+                                                                }
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "403", description = "Usuário não é o adotante.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123",
+                                                                "status": 403,
+                                                                "message": "Não possui permissão para alterar esta socilitação de adoção."
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "404", description = "Registros não encontrados.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "Solicitação não encontrada.",
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123",
+                                                                "status": 404,
+                                                                "message": "Solicitação de adoção não encontrada."
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "409", description = "Solicitação já processada.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123",
+                                                                "status": 409,
+                                                                "message": "Não foi possivel alterar o status desta solicitação."
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
+            }
+    )
+    @PatchMapping(value = "{id}")
+    public ResponseEntity<AdoptionResponseDto> editReason(@PathVariable(value = "id") String id,
+                                                          @RequestBody @Valid EditReasonDto dto,
+                                                          @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.editReason(id, dto, user));
     }
 }
