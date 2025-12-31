@@ -50,6 +50,17 @@ public class AnimalService {
     }
 
     /**
+     * Busca  uma página de animais pelo usuário autor.
+     *
+     * @param pageable Objeto que contém informações de paginação e ordenação.
+     * @param user O usuário autenticado.
+     * @return Uma {@code Page} de {@code AnimalResponseDto} correspondente.
+     */
+    public Page<AnimalResponseDto> findMyAnimals(Pageable pageable, User user) {
+        return repository.findByAuthorId(user.getId(), pageable).map(AnimalMapper::toDTO);
+    }
+
+    /**
      * Busca um animal específico pelo seu identificador único.
      *
      * @param id O ID do animal a ser buscado.

@@ -75,6 +75,41 @@ public class AnimalController {
     }
 
     /**
+     * Retorna uma lista paginada de animais de acordo com o usuário autor.
+     *
+     * @param pageable Informações de paginação.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
+     * @return Um {@code ResponseEntity} contendo uma {@code Page} de {@code AnimalResponseDto} correspondente.
+     */
+    @Operation(
+            summary = "Listar animais pelo usuário autor",
+            description = "Retorna uma lista paginada de animais de acordo com o usuário autor.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de animais retornada com sucesso",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
+            }
+    )
+    @GetMapping(value = "/my")
+    public ResponseEntity<Page<AnimalResponseDto>> findMyAnimals(Pageable pageable, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.findMyAnimals(pageable, user));
+    }
+
+    /**
      * Busca um animal pelo seu ID.
      *
      * @param id Identificador do animal.
