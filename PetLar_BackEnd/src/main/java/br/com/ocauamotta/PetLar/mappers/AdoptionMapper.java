@@ -2,7 +2,11 @@ package br.com.ocauamotta.PetLar.mappers;
 
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalSummaryDto;
+import br.com.ocauamotta.PetLar.dtos.User.UserSummaryDto;
 import br.com.ocauamotta.PetLar.models.Adoption;
+import br.com.ocauamotta.PetLar.models.Animal;
+import br.com.ocauamotta.PetLar.models.User;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,15 +29,15 @@ public class AdoptionMapper {
      * @param entity A entidade {@code Adoption} a ser convertida.
      * @return O DTO de resposta correspondente, ou {@code null} se a entidade de entrada for nula.
      */
-    public static AdoptionResponseDto toDTO(Adoption entity) {
+    public static AdoptionResponseDto toDTO(Adoption entity, Animal animal, User animalOwner, User adopter) {
         if (entity == null) return null;
 
         return new AdoptionResponseDto(
                 entity.getId(),
                 entity.getStatus(),
-                entity.getAnimalId(),
-                entity.getAnimalOwnerId(),
-                entity.getAdopterId(),
+                toAnimalSummary(animal),
+                new UserSummaryDto(animalOwner.getId(), animalOwner.getName()),
+                new UserSummaryDto(adopter.getId(), adopter.getName()),
                 entity.getReason(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
@@ -53,5 +57,29 @@ public class AdoptionMapper {
                 .animalId(dto.animalId())
                 .reason(dto.reason())
                 .build();
+    }
+
+    /**
+     * Converte uma entidade {@code Animal} para um objeto de transferência de dados simplificado {@code AnimalSummaryDto}.
+     * <p>
+     * Este método é utilizado para fornecer uma visão resumida do animal em contextos onde
+     * o objeto completo não é necessário.
+     *
+     * @param entity A entidade {@code Animal}.
+     * @return Um {@code AnimalSummaryDto} populado ou {@code null} se a entidade fornecida for nula.
+     */
+    private static AnimalSummaryDto toAnimalSummary(Animal entity) {
+        if (entity == null) return null;
+
+        return new AnimalSummaryDto(
+                entity.getId(),
+                entity.getName(),
+                entity.getBirthDate(),
+                entity.getWeight(),
+                entity.getType(),
+                entity.getSex(),
+                entity.getSize(),
+                entity.getDescription()
+        );
     }
 }

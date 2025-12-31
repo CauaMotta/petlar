@@ -11,6 +11,7 @@ import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAdoptionRepository;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
+import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import br.com.ocauamotta.PetLar.validations.Adoption.AdopterOwnershipValidation;
 import br.com.ocauamotta.PetLar.validations.Adoption.AnimalOwnershipValidation;
 import br.com.ocauamotta.PetLar.validations.Adoption.PendingAdoptionValidation;
@@ -24,6 +25,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Camada de Serviço responsável por gerenciar o ciclo das adoções.
@@ -40,6 +46,9 @@ public class AdoptionService {
 
     @Autowired
     private IAnimalRepository animalRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
 
     @Autowired
     private TryAdoptionYourOwnPetValidation tryAdoptionYourOwnPetValidation;
@@ -80,9 +89,7 @@ public class AdoptionService {
     public AdoptionResponseDto initAdoption(AdoptionRequestDto dto, User user) {
         String time = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString();
 
-        Animal entity = animalRepository.findById(dto.animalId())
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + dto.animalId()));
-
+        Animal entity = getAnimal(dto.animalId());
         tryAdoptionYourOwnPetValidation.validate(entity, user);
         animalNotAvailableValidation.validate(entity, null);
         userActiveYetValidation.validate(createUserReference(entity.getAuthorId()));
@@ -100,7 +107,7 @@ public class AdoptionService {
         entity.setStatus(AdoptionStatus.PENDENTE);
         animalRepository.save(entity);
 
-        return AdoptionMapper.toDTO(savedAdoption);
+        return AdoptionMapper.toDTO(savedAdoption, entity, getUser(entity.getAuthorId()), user);
     }
 
     /**
@@ -114,7 +121,8 @@ public class AdoptionService {
      * @return Uma página de {@code AdoptionResponseDto} representando o histórico do usuário.
      */
     public Page<AdoptionResponseDto> getAdoptionsRequestedByMe(Pageable pageable, User user) {
-        return adoptionRepository.findByAdopterId(user.getId(), pageable).map(AdoptionMapper::toDTO);
+        Page<Adoption> adoptions = adoptionRepository.findByAdopterId(user.getId(), pageable);
+        return mapAdoptionsWithUsers(adoptions);
     }
 
     /**
@@ -135,10 +143,8 @@ public class AdoptionService {
      * @throws EntityNotFoundException Se a adoção ou o animal não forem encontrados.
      */
     public AdoptionResponseDto cancelAdoption(String id, User user) {
-        Adoption adoption = adoptionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
-        Animal entity = animalRepository.findById(adoption.getAnimalId())
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
+        Adoption adoption = getAdoption(id);
+        Animal entity = getAnimal(adoption.getAnimalId());
 
         adopterOwnershipValidation.validate(adoption, user);
         pendingAdoptionValidation.validate(adoption, null);
@@ -150,7 +156,7 @@ public class AdoptionService {
         entity.setStatus(AdoptionStatus.DISPONIVEL);
         animalRepository.save(entity);
 
-        return AdoptionMapper.toDTO(savedAdoption);
+        return AdoptionMapper.toDTO(savedAdoption, entity, getUser(entity.getAuthorId()), user);
     }
 
     /**
@@ -170,10 +176,8 @@ public class AdoptionService {
      * @throws EntityNotFoundException Se a adoção ou o animal não forem encontrados.
      */
     public AdoptionResponseDto acceptAdoption(String id, User user) {
-        Adoption adoption = adoptionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
-        Animal entity = animalRepository.findById(adoption.getAnimalId())
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
+        Adoption adoption = getAdoption(id);
+        Animal entity = getAnimal(adoption.getAnimalId());
 
         animalOwnershipValidation.validate(adoption, user);
         pendingAdoptionValidation.validate(adoption, null);
@@ -185,7 +189,7 @@ public class AdoptionService {
         entity.setStatus(AdoptionStatus.ADOTADO);
         animalRepository.save(entity);
 
-        return AdoptionMapper.toDTO(savedAdoption);
+        return AdoptionMapper.toDTO(savedAdoption, entity, user, getUser(adoption.getAdopterId()));
     }
 
     /**
@@ -206,10 +210,8 @@ public class AdoptionService {
      * @throws EntityNotFoundException Se a adoção ou o animal não forem encontrados.
      */
     public AdoptionResponseDto denyAdoption(String id, User user) {
-        Adoption adoption = adoptionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
-        Animal entity = animalRepository.findById(adoption.getAnimalId())
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
+        Adoption adoption = getAdoption(id);
+        Animal entity = getAnimal(adoption.getAnimalId());
 
         animalOwnershipValidation.validate(adoption, user);
         pendingAdoptionValidation.validate(adoption, null);
@@ -221,7 +223,7 @@ public class AdoptionService {
         entity.setStatus(AdoptionStatus.DISPONIVEL);
         animalRepository.save(entity);
 
-        return AdoptionMapper.toDTO(savedAdoption);
+        return AdoptionMapper.toDTO(savedAdoption, entity, user, getUser(adoption.getAdopterId()));
     }
 
     /**
@@ -237,8 +239,7 @@ public class AdoptionService {
      * @throws EntityNotFoundException Se a adoção não existir.
      */
     public AdoptionResponseDto editReason(String id, EditReasonDto dto, User user) {
-        Adoption adoption = adoptionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
+        Adoption adoption = getAdoption(id);
 
         adopterOwnershipValidation.validate(adoption, user);
         pendingAdoptionValidation.validate(adoption, null);
@@ -246,7 +247,11 @@ public class AdoptionService {
         adoption.setReason(dto.reason());
         adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
 
-        return AdoptionMapper.toDTO(adoptionRepository.save(adoption));
+        return AdoptionMapper.toDTO(
+                adoptionRepository.save(adoption),
+                getAnimal(adoption.getAnimalId()),
+                getUser(adoption.getAnimalOwnerId()),
+                user);
     }
 
     /**
@@ -260,7 +265,8 @@ public class AdoptionService {
      * @return Uma página de {@code AdoptionResponseDto} representando o histórico do usuário.
      */
     public Page<AdoptionResponseDto> getRequestsForMyAnimals(Pageable pageable, User user) {
-        return adoptionRepository.findByAnimalOwnerId(user.getId(), pageable).map(AdoptionMapper::toDTO);
+        Page<Adoption> adoptions = adoptionRepository.findByAnimalOwnerId(user.getId(), pageable);
+        return mapAdoptionsWithUsers(adoptions);
     }
 
     /**
@@ -271,5 +277,83 @@ public class AdoptionService {
      */
     private User createUserReference(String id) {
         return User.builder().id(id).build();
+    }
+
+    /**
+     * Recupera um usuário pelo ID ou lança exceção.
+     */
+    private User getUser(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
+    }
+
+    /**
+     * Recupera um animal pelo ID ou lança exceção.
+     */
+    private Animal getAnimal(String id) {
+        return animalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
+    }
+
+    /**
+     * Recupera uma solicitação de adoção pelo ID ou lança exceção.
+     */
+    private Adoption getAdoption(String id) {
+        return adoptionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
+    }
+
+    /**
+     * Enriquece uma página de registros de adoção com dados completos de Animais, Adotantes e Doadores.
+     * <p>
+     * Para evitar múltiplas consultas ao banco de dados (problema N+1), este método:
+     * <ol>
+     * <li>Extrai todos os IDs únicos de Adotantes e Doadores em um único {@code Set}.</li>
+     * <li>Extrai todos os IDs únicos de Animais.</li>
+     * <li>Realiza buscas em lote {@code findAllById} para carregar todos os objetos necessários.</li>
+     * <li>Cria mapas de busca em memória para associar as entidades rapidamente.</li>
+     * <li>Valida a integridade das referências antes de realizar o mapeamento para DTO.</li>
+     * </ol>
+     *
+     * @param adoptions Uma página de entidades {@code Adoption}.
+     * @return Uma página de {@code AdoptionResponseDto} totalmente populada.
+     * @throws EntityNotFoundException Caso algum objeto relacionado não seja encontrado no banco.
+     */
+    private Page<AdoptionResponseDto> mapAdoptionsWithUsers(Page<Adoption> adoptions) {
+        Set<String> userIds = adoptions.getContent().stream()
+                .flatMap(adoption -> Stream.of(
+                        adoption.getAdopterId(),
+                        adoption.getAnimalOwnerId()
+                ))
+                .collect(Collectors.toSet());
+
+        Set<String> animalIds = adoptions.getContent().stream()
+                .map(Adoption::getAnimalId)
+                .collect(Collectors.toSet());
+
+        Map<String, User> usersMap = userRepository.findAllById(userIds)
+                .stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+
+        Map<String, Animal> animalsMap = animalRepository.findAllById(animalIds)
+                .stream().collect(Collectors.toMap(Animal::getId, Function.identity()));
+
+        return adoptions.map(adoption -> {
+
+            Animal animal = animalsMap.get(adoption.getAnimalId());
+            User adopter = usersMap.get(adoption.getAdopterId());
+            User animalOwner = usersMap.get(adoption.getAnimalOwnerId());
+
+            if (adopter == null || animalOwner == null) {
+                throw new EntityNotFoundException("Usuário relacionado à adoção não encontrado.");
+            }
+
+            return AdoptionMapper.toDTO(
+                    adoption,
+                    animal,
+                    animalOwner,
+                    adopter
+            );
+        });
     }
 }

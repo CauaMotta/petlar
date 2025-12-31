@@ -2,10 +2,12 @@ package br.com.ocauamotta.PetLar.mappers;
 
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.User.UserSummaryDto;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.models.Animal;
+import br.com.ocauamotta.PetLar.models.User;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,7 +31,7 @@ public class AnimalMapper {
      * @param entity A entidade {@code Animal} a ser convertida.
      * @return O DTO de resposta correspondente, ou {@code null} se a entidade de entrada for nula.
      */
-    public static AnimalResponseDto toDTO(Animal entity) {
+    public static AnimalResponseDto toDTO(Animal entity, User user) {
         if (entity == null) return null;
 
         return new AnimalResponseDto(
@@ -41,7 +43,7 @@ public class AnimalMapper {
                 entity.getSex(),
                 entity.getSize(),
                 entity.getStatus(),
-                entity.getAuthorId(),
+                new UserSummaryDto(user.getId(), user.getName()),
                 entity.getDescription(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()

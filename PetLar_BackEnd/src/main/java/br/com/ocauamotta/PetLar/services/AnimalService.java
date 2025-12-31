@@ -9,6 +9,7 @@ import br.com.ocauamotta.PetLar.mappers.AnimalMapper;
 import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
+import br.com.ocauamotta.PetLar.repositories.IUserRepository;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalOwnerUserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Camada de Serviço responsável por implementar a lógica de negócio
@@ -30,6 +35,9 @@ public class AnimalService {
 
     @Autowired
     private IAnimalRepository repository;
+
+    @Autowired
+    private IUserRepository userRepository;
 
     @Autowired
     private AnimalOwnerUserValidation animalOwnerUserValidation;
@@ -47,10 +55,18 @@ public class AnimalService {
      * @return Uma {@code Page} de {@code AnimalResponseDto} correspondente aos critérios de filtro.
      */
     public Page<AnimalResponseDto> findAll(Pageable pageable, String status, String type) {
+        Page<Animal> animals;
+
         if (type == null || type.isBlank()) {
-            return repository.findByStatus(AdoptionStatus.fromString(status), pageable).map(AnimalMapper::toDTO);
+            animals = repository.findByStatus(AdoptionStatus.fromString(status), pageable);
+        } else {
+            animals = repository.findByStatusAndType(
+                    AdoptionStatus.fromString(status),
+                    AnimalType.fromString(type),
+                    pageable);
         }
-        return repository.findByStatusAndType(AdoptionStatus.fromString(status), AnimalType.fromString(type), pageable).map(AnimalMapper::toDTO);
+
+        return mapAnimalsWithAuthors(animals);
     }
 
     /**
@@ -61,7 +77,8 @@ public class AnimalService {
      * @return Uma {@code Page} de {@code AnimalResponseDto} correspondente.
      */
     public Page<AnimalResponseDto> findMyAnimals(Pageable pageable, User user) {
-        return repository.findByAuthorId(user.getId(), pageable).map(AnimalMapper::toDTO);
+        return repository.findByAuthorId(user.getId(), pageable)
+                .map(animal -> AnimalMapper.toDTO(animal, user));
     }
 
     /**
@@ -72,8 +89,11 @@ public class AnimalService {
      * @throws EntityNotFoundException Se nenhum animal for encontrado com o ID fornecido.
      */
     public AnimalResponseDto findById(String id) {
-        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
-        return AnimalMapper.toDTO(entity);
+        Animal entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
+        User user = userRepository.findById(entity.getAuthorId())
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + entity.getAuthorId()));
+        return AnimalMapper.toDTO(entity, user);
     }
 
     /**
@@ -95,7 +115,7 @@ public class AnimalService {
         entity.setCreatedAt(time);
         entity.setUpdatedAt(time);
 
-        return AnimalMapper.toDTO(repository.insert(entity));
+        return AnimalMapper.toDTO(repository.insert(entity), user);
     }
 
     /**
@@ -118,7 +138,7 @@ public class AnimalService {
 
         updateAnimalFields(AnimalMapper.toEntity(dto), entity);
 
-        return AnimalMapper.toDTO(repository.save(entity));
+        return AnimalMapper.toDTO(repository.save(entity), user);
     }
 
     /**
@@ -160,5 +180,40 @@ public class AnimalService {
                 throw new IllegalStateException("Erro ao tentar atualizar o campo " + field.getName());
             }
         }
+    }
+
+    /**
+     * Enriquece uma página de animais com os dados de seus respectivos autores (usuários).
+     * <p>
+     * Este método utiliza uma estratégia de busca em lote (Batch Loading) para evitar o
+     * problema de performance N+1. O processo consiste em:
+     * <ol>
+     * <li>Coletar todos os IDs únicos de autores presentes na página de animais.</li>
+     * <li>Realizar uma única consulta ao repositório para buscar todos esses usuários.</li>
+     * <li>Mapear os usuários em um {@code Map} para acesso rápido O(1).</li>
+     * <li>Converter cada {@code Animal} para {@code AnimalResponseDto} injetando seu autor correspondente.</li>
+     * </ol>
+     *
+     * @param animals Uma página de entidades {@code Animal}.
+     * @return Uma nova {@code Page} contendo {@code AnimalResponseDto} com os dados dos autores populados.
+     * @throws EntityNotFoundException Se um autor referenciado no animal não for encontrado no banco de dados.
+     */
+    private Page<AnimalResponseDto> mapAnimalsWithAuthors(Page<Animal> animals) {
+        Set<String> authorIds = animals.getContent().stream()
+                .map(Animal::getAuthorId)
+                .collect(Collectors.toSet());
+
+        Map<String, User> authorsMap = userRepository.findAllById(authorIds)
+                .stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+        return animals.map(animal -> {
+            User author = authorsMap.get(animal.getAuthorId());
+
+            if (author == null) {
+                throw new EntityNotFoundException("Autor não encontrado");
+            }
+
+            return AnimalMapper.toDTO(animal, author);
+        });
     }
 }

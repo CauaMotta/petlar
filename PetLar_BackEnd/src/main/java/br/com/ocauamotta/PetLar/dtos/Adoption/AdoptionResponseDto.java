@@ -1,5 +1,7 @@
 package br.com.ocauamotta.PetLar.dtos.Adoption;
 
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalSummaryDto;
+import br.com.ocauamotta.PetLar.dtos.User.UserSummaryDto;
 import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -15,12 +17,12 @@ public record AdoptionResponseDto(
         String id,
         @Schema(description = "Status atual da adoção.", example = "PENDENTE")
         AdoptionStatus status,
-        @Schema(description = "ID do animal que está sendo adotado.", example = "72af45b0...")
-        String animalId,
-        @Schema(description = "ID do autor do animal que está sendo adotado.", example = "73ehj89cc...")
-        String animalOwnerId,
-        @Schema(description = "ID do usuário que solicitou a adoção.", example = "10af45b0...")
-        String adopterId,
+        @Schema(description = "ID do animal que está sendo adotado.")
+        AnimalSummaryDto animal,
+        @Schema(description = "Autor do animal que está sendo adotado.")
+        UserSummaryDto animalOwner,
+        @Schema(description = "Usuário que solicitou a adoção.")
+        UserSummaryDto adopter,
         @Schema(description = "Motivo/Justificativa fornecida pelo adotante.",
                 example = "Tenho um quintal amplo e procuro um companheiro para caminhadas.")
         String reason,
