@@ -189,6 +189,42 @@ public class AdoptionService {
     }
 
     /**
+     * Recusa uma solicitação de adoção pendente.
+     * <p>
+     * Este método permite que o proprietário do animal negue uma proposta recebida.
+     * O processo realiza as seguintes operações:
+     * <ol>
+     * <li>Validação de que o executor é o dono do animal (Doador).</li>
+     * <li>Verificação se a solicitação ainda permite alteração.</li>
+     * <li>Atualização da solicitação para o status {@code RECUSADO}.</li>
+     * <li>Retorno do animal para o status {@code DISPONIVEL}, liberando-o para outras solicitações.</li>
+     * </ol>
+     *
+     * @param id O ID da solicitação de adoção.
+     * @param user O usuário autenticado (deve ser o proprietário do animal).
+     * @return O {@code AdoptionResponseDto} refletindo a recusa e data de atualização.
+     * @throws EntityNotFoundException Se a adoção ou o animal não forem encontrados.
+     */
+    public AdoptionResponseDto denyAdoption(String id, User user) {
+        Adoption adoption = adoptionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
+        Animal entity = animalRepository.findById(adoption.getAnimalId())
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
+
+        animalOwnershipValidation.validate(adoption, user);
+        pendingAdoptionValidation.validate(adoption, null);
+
+        adoption.setStatus(AdoptionStatus.RECUSADO);
+        adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+        Adoption savedAdoption = adoptionRepository.save(adoption);
+
+        entity.setStatus(AdoptionStatus.DISPONIVEL);
+        animalRepository.save(entity);
+
+        return AdoptionMapper.toDTO(savedAdoption);
+    }
+
+    /**
      * Atualiza a justificativa de uma solicitação de adoção pendente.
      * <p>
      * Este método valida se o usuário é o autor da solicitação e se o status
