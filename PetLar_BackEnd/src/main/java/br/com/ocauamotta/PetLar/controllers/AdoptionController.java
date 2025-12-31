@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -145,10 +146,46 @@ public class AdoptionController {
                                     }))
             }
     )
-    @GetMapping
-    public ResponseEntity<Page<AdoptionResponseDto>> getMyAdoptionRequests(Pageable pageable,
+    @GetMapping(value = "/me/requests")
+    public ResponseEntity<Page<AdoptionResponseDto>> getAdoptionsRequestedByMe(Pageable pageable,
                                                                            @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(service.getMyAdoptionRequests(pageable, user));
+        return ResponseEntity.ok(service.getAdoptionsRequestedByMe(pageable, user));
+    }
+
+    /**
+     * Lista todas as solicitações de adoção feitas aos animais do usuário autenticado.
+     *
+     * @param pageable Informações de paginação.
+     * @param user O usuário autenticado obtido do contexto de segurança.
+     * @return Uma {@code ResponseEntity} com a página de solicitações.
+     */
+    @Operation(
+            summary = "Buscar todas as solicitações de adoção feitas aos animais do usuário",
+            description = "Busca por uma lista paginada de todas as solicitações de adoção realizadas aos animais do usuário.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso.",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
+            }
+    )
+    @GetMapping(value = "/me/animals")
+    public ResponseEntity<Page<AdoptionResponseDto>> getRequestsForMyAnimals(Pageable pageable,
+                                                                           @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.getRequestsForMyAnimals(pageable, user));
     }
 
     /**

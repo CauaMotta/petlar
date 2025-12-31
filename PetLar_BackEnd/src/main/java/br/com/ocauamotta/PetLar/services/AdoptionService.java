@@ -109,7 +109,7 @@ public class AdoptionService {
      * @param user O usuário autenticado cujas adoções devem ser buscadas.
      * @return Uma página de {@code AdoptionResponseDto} representando o histórico do usuário.
      */
-    public Page<AdoptionResponseDto> getMyAdoptionRequests(Pageable pageable, User user) {
+    public Page<AdoptionResponseDto> getAdoptionsRequestedByMe(Pageable pageable, User user) {
         return adoptionRepository.findByAdopterId(user.getId(), pageable).map(AdoptionMapper::toDTO);
     }
 
@@ -172,6 +172,20 @@ public class AdoptionService {
         adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
 
         return AdoptionMapper.toDTO(adoptionRepository.save(adoption));
+    }
+
+    /**
+     * Obtém o histórico de solicitações de adoção realizadas ao usuário autenticado.
+     * <p>
+     * Utiliza a paginação para otimizar o consumo de recursos e o tempo de resposta,
+     * convertendo cada entidade {@code Adoption} da página para {@code AdoptionResponseDto}.
+     *
+     * @param pageable Configurações de paginação passadas pelo cliente.
+     * @param user O usuário autenticado cujas adoções devem ser buscadas.
+     * @return Uma página de {@code AdoptionResponseDto} representando o histórico do usuário.
+     */
+    public Page<AdoptionResponseDto> getRequestsForMyAnimals(Pageable pageable, User user) {
+        return adoptionRepository.findByAnimalOwnerId(user.getId(), pageable).map(AdoptionMapper::toDTO);
     }
 
     /**
