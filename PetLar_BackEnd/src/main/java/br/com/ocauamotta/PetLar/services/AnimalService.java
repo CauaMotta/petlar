@@ -9,6 +9,7 @@ import br.com.ocauamotta.PetLar.mappers.AnimalMapper;
 import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
+import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalOwnerUserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,9 @@ public class AnimalService {
 
     @Autowired
     private AnimalOwnerUserValidation animalOwnerUserValidation;
+
+    @Autowired
+    private AnimalNotAvailableValidation animalNotAvailableValidation;
 
     /**
      * Busca uma página de animais, permitindo a filtragem por status de adoção
@@ -104,9 +108,11 @@ public class AnimalService {
      * @throws EntityNotFoundException Se o animal com o ID fornecido não for encontrado.
      */
     public AnimalResponseDto update(String id, AnimalRequestDto dto, User user) {
-        Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
+        Animal entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
 
         animalOwnerUserValidation.validate(entity, user);
+        animalNotAvailableValidation.validate(entity, null);
 
         entity.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
 
@@ -125,6 +131,7 @@ public class AnimalService {
         Animal entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + id));
 
         animalOwnerUserValidation.validate(entity, user);
+        animalNotAvailableValidation.validate(entity, null);
 
         repository.delete(entity);
     }

@@ -6,6 +6,7 @@ import br.com.ocauamotta.PetLar.handlers.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -59,12 +60,14 @@ public class SecurityConfig {
         String registerPath = apiPrefix + "/users/cadastrar";
         String apiDocs = "/v3/api-docs/**";
         String swaggerUi = "/swagger-ui/**";
+        String animalsList = apiPrefix + "/animals";
 
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(loginPath).permitAll();
                     req.requestMatchers(registerPath).permitAll();
+                    req.requestMatchers(HttpMethod.GET, animalsList).permitAll();
                     req.requestMatchers(apiDocs).permitAll();
                     req.requestMatchers(swaggerUi).permitAll();
                     req.anyRequest().authenticated();
