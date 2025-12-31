@@ -2,6 +2,7 @@ package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionResponseDto;
+import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.services.AdoptionService;
@@ -13,13 +14,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller que gerencia os endpoints relacionados ao processo de adoção de animais.
@@ -113,5 +113,18 @@ public class AdoptionController {
     public ResponseEntity<AdoptionResponseDto> initAdoption(@RequestBody @Valid AdoptionRequestDto dto,
                                                             @AuthenticationPrincipal User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.initAdoption(dto, user));
+    }
+
+    /**
+     * Lista todas as solicitações de adoção feitas pelo usuário autenticado.
+     *
+     * @param pageable Informações de paginação.
+     * @param user O usuário autenticado obtido do contexto de segurança.
+     * @return Uma {@code ResponseEntity} com a página de solicitações.
+     */
+    @GetMapping
+    public ResponseEntity<Page<AdoptionResponseDto>> getMyAdoptionRequests(Pageable pageable,
+                                                                           @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.getMyAdoptionRequests(pageable, user));
     }
 }

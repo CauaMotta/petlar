@@ -13,6 +13,8 @@ import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.TryAdoptionYourOwnPetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -79,5 +81,19 @@ public class AdoptionService {
         animalRepository.save(entity);
 
         return AdoptionMapper.toDTO(savedAdoption);
+    }
+
+    /**
+     * Obtém o histórico de solicitações de adoção realizadas pelo usuário autenticado.
+     * <p>
+     * Utiliza a paginação para otimizar o consumo de recursos e o tempo de resposta,
+     * convertendo cada entidade {@code Adoption} da página para {@code AdoptionResponseDto}.
+     *
+     * @param pageable Configurações de paginação passadas pelo cliente.
+     * @param user O usuário autenticado cujas adoções devem ser buscadas.
+     * @return Uma página de {@code AdoptionResponseDto} representando o histórico do usuário.
+     */
+    public Page<AdoptionResponseDto> getMyAdoptionRequests(Pageable pageable, User user) {
+        return adoptionRepository.findByAdopterId(user.getId(), pageable).map(AdoptionMapper::toDTO);
     }
 }

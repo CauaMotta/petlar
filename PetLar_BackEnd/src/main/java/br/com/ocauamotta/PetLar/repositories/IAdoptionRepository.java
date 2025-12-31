@@ -1,6 +1,10 @@
 package br.com.ocauamotta.PetLar.repositories;
 
+import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.models.Adoption;
+import br.com.ocauamotta.PetLar.models.Animal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +17,16 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface IAdoptionRepository extends MongoRepository<Adoption, String> {
+
+    /**
+     * Recupera uma página de registros de adoção associados a um adotante específico.
+     * <p>
+     * O Spring Data MongoDB gera automaticamente a consulta baseada no nome do método,
+     * aplicando os critérios de paginação e ordenação fornecidos no objeto {@code Pageable}.
+     *
+     * @param id O id do usuário adotante.
+     * @param pageable Configurações de paginação.
+     * @return Uma {@code Page<Adoption>} contendo os registros encontrados e metadados da paginação.
+     */
+    Page<Adoption> findByAdopterId(String id, Pageable pageable);
 }
