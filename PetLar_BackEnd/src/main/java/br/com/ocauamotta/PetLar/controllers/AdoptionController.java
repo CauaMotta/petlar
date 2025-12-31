@@ -122,6 +122,29 @@ public class AdoptionController {
      * @param user O usuário autenticado obtido do contexto de segurança.
      * @return Uma {@code ResponseEntity} com a página de solicitações.
      */
+    @Operation(
+            summary = "Buscar todas as solicitações de adoção",
+            description = "Busca por uma lista paginada de todas as solicitações de adoção do usuário autenticado.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso.",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
+            }
+    )
     @GetMapping
     public ResponseEntity<Page<AdoptionResponseDto>> getMyAdoptionRequests(Pageable pageable,
                                                                            @AuthenticationPrincipal User user) {
