@@ -10,6 +10,8 @@ import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAdoptionRepository;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
+import br.com.ocauamotta.PetLar.validations.Adoption.AdoptionOwnershipValidation;
+import br.com.ocauamotta.PetLar.validations.Adoption.PendingAdoptionValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.TryAdoptionYourOwnPetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,12 @@ public class AdoptionService {
 
     @Autowired
     private AnimalNotAvailableValidation animalNotAvailableValidation;
+
+    @Autowired
+    private PendingAdoptionValidation pendingAdoptionValidation;
+
+    @Autowired
+    private AdoptionOwnershipValidation adoptionOwnershipValidation;
 
     /**
      * Inicia o processo de solicitação de adoção para um animal específico.
@@ -95,5 +103,41 @@ public class AdoptionService {
      */
     public Page<AdoptionResponseDto> getMyAdoptionRequests(Pageable pageable, User user) {
         return adoptionRepository.findByAdopterId(user.getId(), pageable).map(AdoptionMapper::toDTO);
+    }
+
+    /**
+     * Cancela uma solicitação de adoção existente.
+     * <p>
+     * O processo realiza as seguintes operações:
+     * <ol>
+     * <li>Recupera a adoção e o animal associado.</li>
+     * <li>Valida se o usuário que solicita o cancelamento é o dono da solicitação.</li>
+     * <li>Valida se a adoção ainda está pendente (não é possível cancelar algo já aprovado/rejeitado).</li>
+     * <li>Altera o status da adoção para {@code CANCELADO}.</li>
+     * <li>Libera o animal, voltando seu status para {@code DISPONIVEL}.</li>
+     * </ol>
+     *
+     * @param id O ID da solicitação de adoção a ser cancelada.
+     * @param user O usuário autenticado realizando a operação.
+     * @return O {@code AdoptionResponseDto} com o status atualizado para cancelado.
+     * @throws EntityNotFoundException Se a adoção ou o animal não forem encontrados.
+     */
+    public AdoptionResponseDto cancelAdoption(String id, User user) {
+        Adoption adoption = adoptionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
+        Animal entity = animalRepository.findById(adoption.getAnimalId())
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
+
+        adoptionOwnershipValidation.validate(adoption, user);
+        pendingAdoptionValidation.validate(adoption, null);
+
+        adoption.setStatus(AdoptionStatus.CANCELADO);
+        adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+        Adoption savedAdoption = adoptionRepository.save(adoption);
+
+        entity.setStatus(AdoptionStatus.DISPONIVEL);
+        animalRepository.save(entity);
+
+        return AdoptionMapper.toDTO(savedAdoption);
     }
 }

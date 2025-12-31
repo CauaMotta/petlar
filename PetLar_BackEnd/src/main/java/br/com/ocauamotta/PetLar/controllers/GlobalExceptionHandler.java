@@ -2,7 +2,7 @@ package br.com.ocauamotta.PetLar.controllers;
 
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
 import br.com.ocauamotta.PetLar.exceptions.*;
-import br.com.ocauamotta.PetLar.exceptions.Adoption.AdoptionException;
+import br.com.ocauamotta.PetLar.exceptions.Adoption.*;
 import br.com.ocauamotta.PetLar.exceptions.Animal.UserWhoIsNotTheOwnerOfTheAnimalException;
 import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
@@ -43,40 +43,63 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserWhoIsNotTheOwnerOfTheAnimalException.class)
     public ResponseEntity<ErrorResponse> handleUserWhoIsNotTheOwnerOfTheAnimalException(
             UserWhoIsNotTheOwnerOfTheAnimalException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.FORBIDDEN.value(),
-                ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        return buildError(HttpStatus.FORBIDDEN, ex.getMessage(), request);
     }
 
     /**
-     * Manipula exceções generalizadas de adoção {@code AdoptionException}.
-     * <p>
-     * É disparado quando uma regra de negócio de adoção é violada. Retorna o status HTTP 400 BAD_REQUEST
-     * ou HTTP 403 FORBIDDEN.
+     * Trata tentativas de um usuário adotar o próprio animal cadastrado.
      *
-     * @param ex A exceção {@code AdoptionException} lançada.
+     * @param ex A exceção {@code TryAdoptionYourOwnPetException} lançada.
      * @param request O contexto da requisição web para obter o path.
-     * @return Uma {@code ResponseEntity} com o status e o corpo {@code ErrorResponse} contendo a mensagem detalhada.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
      */
-    @ExceptionHandler(AdoptionException.class)
-    public ResponseEntity<ErrorResponse> handleAdoptionException(AdoptionException ex, WebRequest request) {
-        var httpStatus = HttpStatus.BAD_REQUEST;
+    @ExceptionHandler(TryAdoptionYourOwnPetException.class)
+    public ResponseEntity<ErrorResponse> handleTryAdoptionYourOwnPetException(
+            TryAdoptionYourOwnPetException ex, WebRequest request) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
 
-        if (ex.getCause() instanceof UserWhoIsNotTheOwnerOfTheAnimalException) {
-            httpStatus = HttpStatus.FORBIDDEN;
-        }
+    /**
+     * Trata tentativas de adotar animais que não estão com status 'DISPONIVEL'.
+     *
+     * @param ex A exceção {@code AnimalNotAvailableException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(AnimalNotAvailableException.class)
+    public ResponseEntity<ErrorResponse> handleAnimalNotAvailableException(
+            AnimalNotAvailableException ex, WebRequest request) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+    }
 
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                httpStatus.value(),
-                ex.getMessage()
-        );
+    /**
+     * Trata tentativas de modificar uma adoção que já foi finalizada (Aprovada/Rejeitada/Cancelada).
+     *
+     * @param ex A exceção {@code AdoptionAlreadyProcessedException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(AdoptionAlreadyProcessedException.class)
+    public ResponseEntity<ErrorResponse> handleAdoptionAlreadyProcessedException(
+            AdoptionAlreadyProcessedException ex, WebRequest request) {
+        return buildError(HttpStatus.CONFLICT, ex.getMessage(), request);
+    }
 
-        return ResponseEntity.status(httpStatus).body(response);
+    /**
+     * Trata violações de propriedade, onde um usuário tenta agir sobre uma adoção de terceiro.
+     *
+     * @param ex A exceção {@code UserNotAdopterException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(UserNotAdopterException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotAdopterException(
+            UserNotAdopterException ex, WebRequest request) {
+        return buildError(HttpStatus.FORBIDDEN, ex.getMessage(), request);
     }
 
     /**
@@ -92,13 +115,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.UNAUTHORIZED.value(),
-                "Email ou senha incorretos."
-        );
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return buildError(HttpStatus.UNAUTHORIZED, "Email ou senha incorretos.", request);
     }
 
     /**
@@ -113,13 +130,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateEmailException(DuplicateEmailException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.CONFLICT.value(),
-                ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        return buildError(HttpStatus.CONFLICT, ex.getMessage(), request);
     }
 
     /**
@@ -134,13 +145,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(SamePasswordException.class)
     public ResponseEntity<ErrorResponse> handleSamePasswordException(SamePasswordException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     /**
@@ -153,13 +158,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
 
     /**
@@ -172,13 +171,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage()
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
     /**
@@ -227,13 +220,7 @@ public class GlobalExceptionHandler {
             customMessage = "Formato de data inválido. Formato esperado: 'yyyy-MM-dd'";
         }
 
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.BAD_REQUEST.value(),
-                customMessage
-        );
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return buildError(HttpStatus.BAD_REQUEST, customMessage, request);
     }
 
     /**
@@ -252,13 +239,7 @@ public class GlobalExceptionHandler {
             customMessage = "Método POST não é suportado.";
         }
 
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.METHOD_NOT_ALLOWED.value(),
-                customMessage
-        );
-
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
+        return buildError(HttpStatus.METHOD_NOT_ALLOWED, customMessage, request);
     }
 
     /**
@@ -272,11 +253,22 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                request.getDescription(false).replace("uri=", ""),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Ocorreu um erro no servidor."
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro no servidor.", request);
+    }
+
+    /**
+     * Método utilitário para construir a resposta de erro padronizada da API.
+     *
+     * @param status O status HTTP apropriado para o erro.
+     * @param message A mensagem explicativa da exceção.
+     * @param req A requisição web para extração do endpoint.
+     * @return Uma {@code ResponseEntity} contendo o objeto {@code ErrorResponse}.
+     */
+    private ResponseEntity<ErrorResponse> buildError(HttpStatus status, String message, WebRequest req) {
+        return ResponseEntity.status(status).body(new ErrorResponse(
+                req.getDescription(false).replace("uri=", ""),
+                status.value(),
+                message
+        ));
     }
 }
