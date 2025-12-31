@@ -1,6 +1,6 @@
 package br.com.ocauamotta.PetLar.validations.Adoption;
 
-import br.com.ocauamotta.PetLar.exceptions.Adoption.UserNotAdopterException;
+import br.com.ocauamotta.PetLar.exceptions.Adoption.UserNotOwnershipException;
 import br.com.ocauamotta.PetLar.models.Adoption;
 import br.com.ocauamotta.PetLar.models.User;
 import org.springframework.stereotype.Component;
@@ -12,19 +12,19 @@ import org.springframework.stereotype.Component;
  * tenha permissão para realizar ações.
  */
 @Component
-public class AdoptionOwnershipValidation implements IAdoptionValidation {
+public class AdopterOwnershipValidation implements IAdoptionValidation {
 
     /**
      * Compara o ID do adotante registrado na solicitação com o ID do usuário autenticado.
      *
      * @param adoption A adoção alvo da operação.
      * @param user O usuário autenticado tentando a operação.
-     * @throws UserNotAdopterException Se o usuário não for o autor da solicitação de adoção.
+     * @throws UserNotOwnershipException Se o usuário não for o autor da solicitação de adoção.
      */
     @Override
     public void validate(Adoption adoption, User user) {
         if (!adoption.getAdopterId().equals(user.getId())) {
-            throw new UserNotAdopterException("Não possui permissão para alterar esta socilitação de adoção.");
+            throw new UserNotOwnershipException("Não possui permissão para alterar esta socilitação de adoção.");
         }
     }
 }

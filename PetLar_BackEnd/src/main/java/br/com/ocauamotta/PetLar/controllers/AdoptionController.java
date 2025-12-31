@@ -286,6 +286,103 @@ public class AdoptionController {
     }
 
     /**
+     * Aceita formalmente uma solicitação de adoção.
+     * <p>
+     * Endpoint restrito ao proprietário do animal. Uma vez aceita, a adoção
+     * não pode ser revertida para pendente e o animal é marcado como adotado.
+     *
+     * @param id O ID da solicitação de adoção fornecido na URL.
+     * @param user O usuário autenticado (proprietário do animal), injetado automaticamente pelo Spring Security.
+     * @return Uma {@code ResponseEntity} contendo o {@code AdoptionResponseDto} com o status
+     * atualizado para {@code APROVADO}.
+     */
+    @Operation(
+            summary = "Aprovar solicitação de adoção",
+            description = "Altera o status de uma adoção para 'APROVADO'. Operação permitida apenas para o doador do animal.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Adoção aprovada com sucesso.",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "403", description = "Usuário não é o doador do animal.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123/accept",
+                                                                "status": 403,
+                                                                "message": "Não possui permissão para alterar esta socilitação de adoção."
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "404", description = "Registros não encontrados.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    name = "Solicitação não encontrada.",
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123/accept",
+                                                                "status": 404,
+                                                                "message": "Solicitação de adoção não encontrada."
+                                                            }
+                                                            """
+                                            ),
+                                            @ExampleObject(
+                                                    name = "Registro do animal não encontrado.",
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123/accept",
+                                                                "status": 404,
+                                                                "message": "Nenhum registro encontrado com ID - 456"
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "409", description = "Solicitação já processada.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123/accept",
+                                                                "status": 409,
+                                                                "message": "Não foi possivel alterar o status desta solicitação."
+                                                            }
+                                                            """
+                                            )
+                                    })),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123/cancel",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
+            }
+    )
+    @PatchMapping(value = "/{id}/accept")
+    public ResponseEntity<AdoptionResponseDto> acceptAdoption(@PathVariable(value = "id") String id,
+                                                              @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.acceptAdoption(id, user));
+    }
+
+    /**
      * Edita a justificativa de uma solicitação de adoção existente.
      * <p>
      * Utiliza o método PATCH para indicar uma alteração parcial no recurso,

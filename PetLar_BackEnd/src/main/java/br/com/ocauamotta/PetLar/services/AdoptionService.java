@@ -11,7 +11,8 @@ import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAdoptionRepository;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
-import br.com.ocauamotta.PetLar.validations.Adoption.AdoptionOwnershipValidation;
+import br.com.ocauamotta.PetLar.validations.Adoption.AdopterOwnershipValidation;
+import br.com.ocauamotta.PetLar.validations.Adoption.AnimalOwnershipValidation;
 import br.com.ocauamotta.PetLar.validations.Adoption.PendingAdoptionValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.TryAdoptionYourOwnPetValidation;
@@ -50,10 +51,13 @@ public class AdoptionService {
     private PendingAdoptionValidation pendingAdoptionValidation;
 
     @Autowired
-    private AdoptionOwnershipValidation adoptionOwnershipValidation;
+    private AdopterOwnershipValidation adopterOwnershipValidation;
 
     @Autowired
     private UserActiveYetValidation userActiveYetValidation;
+
+    @Autowired
+    private AnimalOwnershipValidation animalOwnershipValidation;
 
     /**
      * Inicia o processo de solicitação de adoção para um animal específico.
@@ -136,7 +140,7 @@ public class AdoptionService {
         Animal entity = animalRepository.findById(adoption.getAnimalId())
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
 
-        adoptionOwnershipValidation.validate(adoption, user);
+        adopterOwnershipValidation.validate(adoption, user);
         pendingAdoptionValidation.validate(adoption, null);
 
         adoption.setStatus(AdoptionStatus.CANCELADO);
@@ -144,6 +148,41 @@ public class AdoptionService {
         Adoption savedAdoption = adoptionRepository.save(adoption);
 
         entity.setStatus(AdoptionStatus.DISPONIVEL);
+        animalRepository.save(entity);
+
+        return AdoptionMapper.toDTO(savedAdoption);
+    }
+
+    /**
+     * Aprova uma solicitação de adoção pendente.
+     * <p>
+     * Este método encerra o processo de adoção com sucesso, realizando:
+     * <ol>
+     * <li>A validação de que o executor é o proprietário do animal (Doador).</li>
+     * <li>A validação de que a solicitação ainda está pendente.</li>
+     * <li>A atualização do status da adoção para {@code APROVADO}.</li>
+     * <li>A alteração definitiva do status do animal para {@code ADOTADO}.</li>
+     * </ol>
+     *
+     * @param id O identificador da solicitação de adoção.
+     * @param user O usuário autenticado (que deve ser o dono do animal).
+     * @return O {@code AdoptionResponseDto} com o status atualizado.
+     * @throws EntityNotFoundException Se a adoção ou o animal não forem encontrados.
+     */
+    public AdoptionResponseDto acceptAdoption(String id, User user) {
+        Adoption adoption = adoptionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
+        Animal entity = animalRepository.findById(adoption.getAnimalId())
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum registro encontrado com ID - " + adoption.getAnimalId()));
+
+        animalOwnershipValidation.validate(adoption, user);
+        pendingAdoptionValidation.validate(adoption, null);
+
+        adoption.setStatus(AdoptionStatus.APROVADO);
+        adoption.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+        Adoption savedAdoption = adoptionRepository.save(adoption);
+
+        entity.setStatus(AdoptionStatus.ADOTADO);
         animalRepository.save(entity);
 
         return AdoptionMapper.toDTO(savedAdoption);
@@ -165,7 +204,7 @@ public class AdoptionService {
         Adoption adoption = adoptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Solicitação de adoção não encontrada."));
 
-        adoptionOwnershipValidation.validate(adoption, user);
+        adopterOwnershipValidation.validate(adoption, user);
         pendingAdoptionValidation.validate(adoption, null);
 
         adoption.setReason(dto.reason());

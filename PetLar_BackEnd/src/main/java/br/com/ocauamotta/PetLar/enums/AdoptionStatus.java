@@ -11,10 +11,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Status de adoção disponíveis")
 public enum AdoptionStatus {
     DISPONIVEL("disponivel"),
+    ADOTADO("adotado"),
     PENDENTE("pendente"),
     CANCELADO("cancelado"),
     RECUSADO("recusado"),
-    ADOTADO("adotado");
+    APROVADO("aprovado");
 
     private final String label;
 

@@ -115,9 +115,9 @@ public class GlobalExceptionHandler {
      * @return Uma {@code ResponseEntity} com o status 400 e o corpo {@code ErrorResponse}
      * contendo a mensagem detalhada.
      */
-    @ExceptionHandler(UserNotAdopterException.class)
+    @ExceptionHandler(UserNotOwnershipException.class)
     public ResponseEntity<ErrorResponse> handleUserNotAdopterException(
-            UserNotAdopterException ex, WebRequest request) {
+            UserNotOwnershipException ex, WebRequest request) {
         return buildError(HttpStatus.FORBIDDEN, ex.getMessage(), request);
     }
 
