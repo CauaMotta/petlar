@@ -60,14 +60,18 @@ public class SecurityConfig {
         String registerPath = apiPrefix + "/users/cadastrar";
         String apiDocs = "/v3/api-docs/**";
         String swaggerUi = "/swagger-ui/**";
-        String animalsList = apiPrefix + "/animals";
+        String findAllAnimals = apiPrefix + "/animals";
+        String findAnimalById = apiPrefix + "/animals/{id}";
+        String findMyAnimals = apiPrefix + "/animals/my";
 
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(loginPath).permitAll();
                     req.requestMatchers(registerPath).permitAll();
-                    req.requestMatchers(HttpMethod.GET, animalsList).permitAll();
+                    req.requestMatchers(HttpMethod.GET, findMyAnimals).authenticated();
+                    req.requestMatchers(HttpMethod.GET, findAnimalById).permitAll();
+                    req.requestMatchers(HttpMethod.GET, findAllAnimals).permitAll();
                     req.requestMatchers(apiDocs).permitAll();
                     req.requestMatchers(swaggerUi).permitAll();
                     req.anyRequest().authenticated();
