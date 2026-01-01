@@ -31,6 +31,7 @@ Os modelos representam as **entidades principais do domínio** da aplicação e 
 - 📖 [SpringDoc OpenAPI](https://springdoc.org/) - Geração automática de documentação Swagger para a API
 - 🍃 [MongoDB](https://www.mongodb.com/) - Banco de dados NoSQL orientado a documentos
 - 📦 [Flapdoodle Embedded MongoDB](https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo) – Banco de dados MongoDB embarcado para testes de integração
+- 📁 [Apache Commons IO](https://commons.apache.org/proper/commons-io/) – Utilitários para manipulação de arquivos, streams e diretórios
 
 ### > Frontend
 

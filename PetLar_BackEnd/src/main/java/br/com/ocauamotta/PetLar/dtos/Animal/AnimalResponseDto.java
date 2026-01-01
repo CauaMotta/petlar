@@ -45,6 +45,8 @@ public record AnimalResponseDto(
         AdoptionStatus status,
         @Schema(description = "Autor do registro do animal")
         UserSummaryDto author,
+        @Schema(description = "URL da imagem de perfil do animal", example = "/public/animals/luna.jpg")
+        String imagePath,
         @Schema(
                 description = "Descrição ou observações sobre o animal",
                 example = "Luna é uma cadela dócil e brincalhona, vacinada e castrada."

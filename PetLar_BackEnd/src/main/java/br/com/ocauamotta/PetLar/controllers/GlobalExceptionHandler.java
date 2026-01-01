@@ -66,6 +66,25 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Manipula falhas ocorridas durante a tentativa de persistência física de imagens.
+     * <p>
+     * Este método captura a exceção {@code ImageNotSavedException}, que pode ser disparada
+     * por problemas no sistema de arquivos ou falhas na escrita dos bytes. Ao retornar
+     * 500 INTERNAL SERVER ERROR, a API informa ao cliente que a operação de upload não
+     * pôde ser concluída e que a entidade não foi persistida.
+     *
+     * @param ex A exceção {@code ImageNotSavedException} lançada.
+     * @param request O contexto da requisição web para obter o path.
+     * @return Uma {@code ResponseEntity} com o status 500 e o corpo {@code ErrorResponse}
+     * contendo a mensagem detalhada.
+     */
+    @ExceptionHandler(ImageNotSavedException.class)
+    public ResponseEntity<ErrorResponse> handleImageNotSavedException(
+            ImageNotSavedException ex, WebRequest request) {
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request);
+    }
+
+    /**
      * Trata tentativas de um usuário adotar o próprio animal cadastrado.
      *
      * @param ex A exceção {@code TryAdoptionYourOwnPetException} lançada.

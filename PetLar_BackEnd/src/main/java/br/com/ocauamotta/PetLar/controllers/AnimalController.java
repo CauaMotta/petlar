@@ -18,9 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller responsável pelos endpoints de gerenciamento de animais.
@@ -171,7 +173,7 @@ public class AnimalController {
      */
     @Operation(
             summary = "Cadastrar novo animal",
-            description = "Cria um novo registro de animal no sistema.",
+            description = "Cria um novo registro de animal no sistema. Envie os dados em JSON no campo 'data' e o arquivo de imagem no campo 'image'.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Animal cadastrado com sucesso",
                             content = @Content(mediaType = "application/json",
@@ -212,9 +214,16 @@ public class AnimalController {
                                     }))
             }
     )
-    @PostMapping
-    public ResponseEntity<AnimalResponseDto> save(@RequestBody @Valid AnimalRequestDto dto, @AuthenticationPrincipal User user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto, user));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AnimalResponseDto> save(
+            @Parameter(description = "Dados do animal em formato JSON", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @RequestPart("data") @Valid AnimalRequestDto dto,
+
+            @Parameter(description = "Arquivo de imagem do animal.")
+            @RequestPart(value = "image", required = false) MultipartFile image,
+
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto, image, user));
     }
 
     /**
@@ -227,7 +236,7 @@ public class AnimalController {
      */
     @Operation(
             summary = "Atualizar animal existente",
-            description = "Atualiza as informações de um animal com base no ID informado.",
+            description = "Atualiza as informações e/ou a imagem de um animal com base no ID informado.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Animal atualizado com sucesso",
                             content = @Content(mediaType = "application/json",
@@ -279,11 +288,18 @@ public class AnimalController {
                                     }))
             }
     )
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id,
-                                                    @RequestBody @Valid AnimalRequestDto dto,
-                                                    @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(service.update(id, dto, user));
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AnimalResponseDto> update(
+            @PathVariable(value = "id") String id,
+
+            @Parameter(description = "Dados atualizados do animal.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @RequestPart("data") @Valid AnimalRequestDto dto,
+
+            @Parameter(description = "Nova imagem do animal (opcional).")
+            @RequestPart(value = "image", required = false) MultipartFile image,
+
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.update(id, dto, image, user));
     }
 
     /**

@@ -35,6 +35,8 @@ public record AnimalSummaryDto(
                 example = "MEDIO"
         )
         AnimalSize size,
+        @Schema(description = "URL da imagem de perfil do animal", example = "/public/animals/luna.jpg")
+        String imagePath,
         @Schema(
                 description = "Descrição ou observações sobre o animal",
                 example = "Luna é uma cadela dócil e brincalhona, vacinada e castrada."

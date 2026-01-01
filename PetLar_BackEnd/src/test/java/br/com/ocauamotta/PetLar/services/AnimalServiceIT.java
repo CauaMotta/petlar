@@ -128,7 +128,7 @@ class AnimalServiceIT {
     Animal createAnimal(String name, AnimalType type, AnimalSex sex, AdoptionStatus status) {
         return Animal.builder()
                 .name(name)
-                .dob(LocalDate.of(2025, 10, 10))
+                .birthDate(LocalDate.of(2025, 10, 10))
                 .weight(1200)
                 .type(type)
                 .sex(sex)

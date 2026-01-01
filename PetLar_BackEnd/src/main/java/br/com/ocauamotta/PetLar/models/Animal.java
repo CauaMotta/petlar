@@ -33,6 +33,7 @@ public class Animal {
     private AnimalSize size;
     private AdoptionStatus status;
     private String authorId;
+    private String imagePath;
     private String description;
 
     private String createdAt;

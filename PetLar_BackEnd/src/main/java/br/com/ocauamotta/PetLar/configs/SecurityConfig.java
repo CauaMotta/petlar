@@ -63,6 +63,7 @@ public class SecurityConfig {
         String findAllAnimals = apiPrefix + "/animals";
         String findAnimalById = apiPrefix + "/animals/{id}";
         String findMyAnimals = apiPrefix + "/animals/my";
+        String publicImages = "public/animals/**";
 
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -72,6 +73,7 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.GET, findMyAnimals).authenticated();
                     req.requestMatchers(HttpMethod.GET, findAnimalById).permitAll();
                     req.requestMatchers(HttpMethod.GET, findAllAnimals).permitAll();
+                    req.requestMatchers(publicImages).permitAll();
                     req.requestMatchers(apiDocs).permitAll();
                     req.requestMatchers(swaggerUi).permitAll();
                     req.anyRequest().authenticated();

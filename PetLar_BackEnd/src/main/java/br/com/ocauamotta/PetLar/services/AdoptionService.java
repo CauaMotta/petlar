@@ -122,7 +122,7 @@ public class AdoptionService {
      */
     public Page<AdoptionResponseDto> getAdoptionsRequestedByMe(Pageable pageable, User user) {
         Page<Adoption> adoptions = adoptionRepository.findByAdopterId(user.getId(), pageable);
-        return mapAdoptionsWithUsers(adoptions);
+        return buildAdoptionResponsePage(adoptions);
     }
 
     /**
@@ -266,7 +266,7 @@ public class AdoptionService {
      */
     public Page<AdoptionResponseDto> getRequestsForMyAnimals(Pageable pageable, User user) {
         Page<Adoption> adoptions = adoptionRepository.findByAnimalOwnerId(user.getId(), pageable);
-        return mapAdoptionsWithUsers(adoptions);
+        return buildAdoptionResponsePage(adoptions);
     }
 
     /**
@@ -319,7 +319,7 @@ public class AdoptionService {
      * @return Uma página de {@code AdoptionResponseDto} totalmente populada.
      * @throws EntityNotFoundException Caso algum objeto relacionado não seja encontrado no banco.
      */
-    private Page<AdoptionResponseDto> mapAdoptionsWithUsers(Page<Adoption> adoptions) {
+    private Page<AdoptionResponseDto> buildAdoptionResponsePage(Page<Adoption> adoptions) {
         Set<String> userIds = adoptions.getContent().stream()
                 .flatMap(adoption -> Stream.of(
                         adoption.getAdopterId(),

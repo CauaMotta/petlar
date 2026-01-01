@@ -79,6 +79,7 @@ public class AdoptionMapper {
                 entity.getType(),
                 entity.getSex(),
                 entity.getSize(),
+                entity.getImagePath(),
                 entity.getDescription()
         );
     }
