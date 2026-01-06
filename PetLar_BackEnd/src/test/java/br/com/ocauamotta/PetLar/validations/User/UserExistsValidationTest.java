@@ -1,9 +1,8 @@
-package br.com.ocauamotta.PetLar.validations;
+package br.com.ocauamotta.PetLar.validations.User;
 
 import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
-import br.com.ocauamotta.PetLar.validations.User.ExistsUserValidation;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
