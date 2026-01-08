@@ -1,10 +1,12 @@
-package br.com.ocauamotta.PetLar.services;
+package br.com.ocauamotta.PetLar.services.User;
 
 import br.com.ocauamotta.PetLar.dtos.User.*;
 import br.com.ocauamotta.PetLar.exceptions.User.DuplicateEmailException;
 import br.com.ocauamotta.PetLar.exceptions.User.SamePasswordException;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
+import br.com.ocauamotta.PetLar.services.TokenService;
+import br.com.ocauamotta.PetLar.services.UserService;
 import br.com.ocauamotta.PetLar.validations.User.SamePasswordUserValidation;
 import br.com.ocauamotta.PetLar.validations.User.ExistsButDeletedUserValidation;
 import br.com.ocauamotta.PetLar.validations.User.ExistsUserValidation;

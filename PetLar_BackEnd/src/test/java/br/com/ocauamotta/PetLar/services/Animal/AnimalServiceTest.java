@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.services;
+package br.com.ocauamotta.PetLar.services.Animal;
 
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
@@ -13,6 +13,7 @@ import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
+import br.com.ocauamotta.PetLar.services.AnimalService;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalNotAvailableValidation;
 import br.com.ocauamotta.PetLar.validations.Animal.AnimalOwnerUserValidation;
 import org.junit.jupiter.api.DisplayName;

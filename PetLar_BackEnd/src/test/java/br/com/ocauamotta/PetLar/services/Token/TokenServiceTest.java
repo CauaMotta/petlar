@@ -1,6 +1,7 @@
-package br.com.ocauamotta.PetLar.services;
+package br.com.ocauamotta.PetLar.services.Token;
 
 import br.com.ocauamotta.PetLar.models.User;
+import br.com.ocauamotta.PetLar.services.TokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

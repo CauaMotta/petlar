@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.services;
+package br.com.ocauamotta.PetLar.services.Adoption;
 
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Adoption.AdoptionResponseDto;
@@ -13,6 +13,7 @@ import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.repositories.IAdoptionRepository;
 import br.com.ocauamotta.PetLar.repositories.IAnimalRepository;
 import br.com.ocauamotta.PetLar.repositories.IUserRepository;
+import br.com.ocauamotta.PetLar.services.AdoptionService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
