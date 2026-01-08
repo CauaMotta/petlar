@@ -14,7 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +31,7 @@ class IAnimalRepositoryIT {
     }
 
     @Test
-    @DisplayName("Deve buscar uma lista de animais paginada e filtrada por status")
+    @DisplayName("Deve buscar uma lista de animais paginada e filtrada por status.")
     void testFindByStatus() {
         repository.insert(createAnimal("Rex", AnimalType.CACHORRO, AnimalSex.MACHO, AdoptionStatus.DISPONIVEL));
         repository.insert(createAnimal("Lua", AnimalType.GATO, AnimalSex.FEMEA, AdoptionStatus.ADOTADO));
@@ -42,7 +43,7 @@ class IAnimalRepositoryIT {
     }
 
     @Test
-    @DisplayName("Deve buscar uma lista de animais paginada, filtrada por status e espécie")
+    @DisplayName("Deve buscar uma lista de animais paginada, filtrada por status e espécie.")
     void testFindByStatusAndType() {
         repository.insert(createAnimal("Rex", AnimalType.CACHORRO, AnimalSex.MACHO, AdoptionStatus.DISPONIVEL));
         repository.insert(createAnimal("Miau", AnimalType.GATO, AnimalSex.MACHO, AdoptionStatus.DISPONIVEL));
@@ -55,17 +56,34 @@ class IAnimalRepositoryIT {
         assertEquals(AnimalType.GATO, page.getContent().get(0).getType());
     }
 
+    @Test
+    @DisplayName("Deve buscar uma lista de animais paginada e filtrada pelo ID do autor.")
+    void testFindByAuthorId() {
+        repository.insert(createAnimal("Rex", AnimalType.CACHORRO, AnimalSex.MACHO, AdoptionStatus.DISPONIVEL));
+        repository.insert(createAnimal("Lua", AnimalType.GATO, AnimalSex.FEMEA, AdoptionStatus.ADOTADO));
+
+        Page<Animal> page = repository.findByAuthorId("1", PageRequest.of(0, 10));
+
+        assertEquals(2, page.getTotalElements());
+    }
+
     Animal createAnimal(String name, AnimalType type, AnimalSex sex, AdoptionStatus status) {
+        String time = ZonedDateTime
+                .of(2025, 10, 15, 12, 5, 10, 15, ZoneId.of("America/Sao_Paulo"))
+                .toString();
+
         return Animal.builder()
                 .name(name)
-                .dob(LocalDate.of(2025, 10, 10))
+                .birthDate(LocalDate.of(2025, 10, 10))
                 .weight(1200)
                 .type(type)
                 .sex(sex)
                 .size(AnimalSize.PEQUENO)
-                .registrationDate(LocalDateTime.of(2025, 10, 10, 12, 00, 00))
                 .status(status)
+                .authorId("1")
                 .description("Animal docil")
+                .createdAt(time)
+                .updatedAt(time)
                 .build();
     }
 }
