@@ -1,18 +1,30 @@
+declare type Author = {
+  id: string
+  name: string
+}
+
 declare type Animal = {
   id: string
   name: string
-  age: number
-  type: string
-  breed: string
-  sex: string
+  birthDate: string
   weight: number
+  type: string
+  sex: string
   size: string
-  registrationDate: string
   status: string
+  author: Author
+  imagePath?: string
   description?: string
-  urlImage?: string
-  author: string
-  phone: string
+}
+
+declare type ApiResponse = {
+  content: Animal[]
+  totalPages: number
+  totalElements: number
+  number: number
+  size: number
+  first: boolean
+  last: boolean
 }
 
 declare type CreateAnimal = {

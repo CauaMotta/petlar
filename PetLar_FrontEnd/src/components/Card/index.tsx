@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 
-import { convertType, formatAge } from '../../utils'
+import { convertType, formatDate } from '../../utils'
 
 import * as S from './styles'
 import { Button, Line } from '../../styles'
+import { API_URL } from '../../main'
 
 type Props = {
   animal: Animal
@@ -15,8 +16,8 @@ const Card = ({ animal }: Props) => {
   return (
     <S.Card>
       <div className="image">
-        {animal.urlImage != null ? (
-          <img src={animal.urlImage} alt={animal.name} />
+        {animal.imagePath != null ? (
+          <img src={API_URL + animal.imagePath} alt={animal.name} />
         ) : (
           <div data-testid="noImage" className="noImage">
             <i className="fa-solid fa-image"></i>
@@ -27,21 +28,24 @@ const Card = ({ animal }: Props) => {
         <h2>{animal.name}</h2>
         <Line />
         <p className="text--small">
-          <b>Idade:</b> {formatAge(animal.age)}
+          <b>data de nascimento:</b> {formatDate(animal.birthDate)}
         </p>
         <p className="text--small">
-          <b>Sexo:</b> {animal.sex}
+          <b>espécie:</b> {animal.type}
         </p>
         <p className="text--small">
           <b>Porte:</b> {animal.size}
         </p>
+        <p className="text--small">
+          <b>Sexo:</b> {animal.sex}
+        </p>
         <Button
-          disabled={animal.status === 'Adotado' ? true : false}
+          disabled={animal.status === 'ADOTADO' ? true : false}
           onClick={() =>
             navigate(`/details/${convertType(animal.type)}/${animal.id}`)
           }
         >
-          {animal.status === 'Adotado' ? (
+          {animal.status === 'ADOTADO' ? (
             <>Adotado!</>
           ) : (
             <>

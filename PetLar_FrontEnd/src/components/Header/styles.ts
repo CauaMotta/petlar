@@ -1,10 +1,6 @@
 import styled from 'styled-components'
 import variables from '../../styles/variables'
 
-type Props = {
-  icon: string
-}
-
 export const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.backgroundColor};
   border-bottom: 3px solid ${({ theme }) => theme.colors.primaryColor};
@@ -172,14 +168,4 @@ export const Container = styled.div`
       }
     }
   }
-`
-
-export const Icon = styled.span<Props>`
-  display: block;
-  width: 24px;
-  height: 24px;
-  background-image: url('/assets/icons/dog.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
 `

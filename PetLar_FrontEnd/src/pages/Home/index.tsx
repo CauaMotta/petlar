@@ -1,40 +1,86 @@
-import { useNavigate } from 'react-router-dom'
+import Card from '../../components/Card'
+import AdoptionCallSection from '../../components/AdoptionCallSection'
+import Loader from '../../components/Loader'
 
-import { birdTheme, catTheme, dogTheme, otherTheme } from '../../themes'
+import { useAnimalsApi } from '../../hooks/useAnimalsApi'
 
-import { Container, HomeButton } from './styles'
+import { Container, CardContainer, CardInfo } from './styles'
 import { Line } from '../../styles'
 
 const Home = () => {
-  const navigate = useNavigate()
+  const {
+    data: available,
+    isLoading,
+    isError
+  } = useAnimalsApi('?status=disponivel')
+  const { data: adopted } = useAnimalsApi('?status=adotado')
+
+  if (isLoading)
+    return (
+      <Container>
+        <div className="box">
+          <Loader />
+        </div>
+      </Container>
+    )
+
+  if (isError)
+    return (
+      <Container>
+        <div className="box">
+          <i className="fa-solid fa-file-circle-xmark"></i>
+          <p className="text">
+            Ops...Ocorreu um erro, tente novamente mais tarde!
+          </p>
+        </div>
+      </Container>
+    )
 
   return (
-    <Container>
-      <div className="welcome">
-        <div className="image">
-          <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
-        </div>
-        <h1>Bem-vindo ao PetLar!</h1>
-        <p className="text">
-          Encontre um novo amigo e dê um lar cheio de carinho.
-        </p>
-      </div>
-      <div className="btnGroup">
-        <HomeButton color={dogTheme} onClick={() => navigate('/dogs')}>
-          <i className="fa-solid fa-dog"></i> Cachorros
-        </HomeButton>
-        <HomeButton color={catTheme} onClick={() => navigate('/cats')}>
-          <i className="fa-solid fa-cat"></i> Gatos
-        </HomeButton>
-        <HomeButton color={birdTheme} onClick={() => navigate('/birds')}>
-          <i className="fa-solid fa-dove"></i> Aves
-        </HomeButton>
-        <HomeButton color={otherTheme} onClick={() => navigate('/others')}>
-          <i className="fa-solid fa-fish-fins"></i> Outros
-        </HomeButton>
-      </div>
-      <div className="info">
-        <h2 className="title--small">Sobre este projeto</h2>
+    <>
+      <Container>
+        {available?.length == 0 && (
+          <div className="box">
+            <p className="text">
+              Parece que não temos nenhum pet para adoção no momento, volte
+              outra hora!
+            </p>
+          </div>
+        )}
+        {available && available.length > 0 && (
+          <>
+            <p className="text">
+              Então você está em busca de um AUmigo? De uma olhada nessas
+              fofuras que estão a espera de um lar:
+            </p>
+            <CardContainer>
+              {available.map((entity) => (
+                <Card key={entity.name} animal={entity} />
+              ))}
+            </CardContainer>
+          </>
+        )}
+
+        {adopted && adopted.length > 0 && (
+          <>
+            <p className="text">
+              De uma olhada nestes amiguinhos que já conseguiram um lar:
+            </p>
+            <CardContainer>
+              {adopted.map((entity) => (
+                <Card key={entity.name} animal={entity} />
+              ))}
+            </CardContainer>
+          </>
+        )}
+        <Line />
+      </Container>
+      <AdoptionCallSection />
+      <CardInfo>
+        <h2 className="title--small">
+          <i className="fa-solid fa-triangle-exclamation"></i> Sobre este
+          projeto
+        </h2>
         <Line />
         <p className="text">
           Este site não representa uma instituição de adoção real. Trata-se de
@@ -45,8 +91,8 @@ const Home = () => {
           como vitrine para demonstrar habilidades em programação, arquitetura
           de software e boas práticas de desenvolvimento.
         </p>
-      </div>
-    </Container>
+      </CardInfo>
+    </>
   )
 }
 

@@ -26,34 +26,11 @@ const Header = () => {
           <button
             onClick={() => {
               setIsActive(false)
-              navigate('/dogs')
+              navigate('/login')
             }}
           >
-            Cachorros
-          </button>
-          <button
-            onClick={() => {
-              setIsActive(false)
-              navigate('/cats')
-            }}
-          >
-            Gatos
-          </button>
-          <button
-            onClick={() => {
-              setIsActive(false)
-              navigate('/birds')
-            }}
-          >
-            Aves
-          </button>
-          <button
-            onClick={() => {
-              setIsActive(false)
-              navigate('/others')
-            }}
-          >
-            Outros
+            Login/Cadastro{' '}
+            <i className="fa-solid fa-arrow-right-to-bracket"></i>
           </button>
         </nav>
       </S.Container>

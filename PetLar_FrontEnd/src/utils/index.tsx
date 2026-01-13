@@ -19,13 +19,13 @@ export const formatAge = (ageInMonths: number) => {
 
 export const convertType = (type: string) => {
   switch (type) {
-    case 'Cachorro':
+    case 'CACHORRO':
       return 'dogs'
-    case 'Gato':
+    case 'GATO':
       return 'cats'
-    case 'Ave':
+    case 'PASSARO':
       return 'birds'
-    case 'Outro':
+    case 'OUTRO':
       return 'others'
   }
 }
