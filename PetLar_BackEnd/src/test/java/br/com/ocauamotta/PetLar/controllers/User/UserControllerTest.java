@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.controllers;
+package br.com.ocauamotta.PetLar.controllers.User;
 
 import br.com.ocauamotta.PetLar.dtos.User.*;
 import br.com.ocauamotta.PetLar.models.User;

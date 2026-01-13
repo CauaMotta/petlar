@@ -1,4 +1,4 @@
-package br.com.ocauamotta.PetLar.controllers;
+package br.com.ocauamotta.PetLar.controllers.Auth;
 
 import br.com.ocauamotta.PetLar.dtos.Auth.AuthRequestDto;
 import br.com.ocauamotta.PetLar.models.User;
