@@ -50,4 +50,17 @@ public interface IUserRepository extends MongoRepository<User, String> {
      * @return {@code true} se um usuário deletado com o email já existir; {@code false} caso contrário.
      */
     Boolean existsByEmailIgnoreCaseAndDeletedAtIsNotNull(String email);
+
+    /**
+     * Verifica se existe um registro ativo para o ID fornecido.
+     * <p>
+     * Este método realiza uma consulta otimizada para confirmar se o usuário
+     * não apenas existe no banco de dados, mas também se sua conta não foi
+     * marcada como excluída.
+     *
+     * @param id O ID do usuário a ser verificado.
+     * @return {@code true} se um usuário ativo com este ID existir;
+     * {@code false} caso ele não exista ou tenha sido deletado.
+     */
+    Boolean existsByIdAndDeletedAtIsNull(String id);
 }

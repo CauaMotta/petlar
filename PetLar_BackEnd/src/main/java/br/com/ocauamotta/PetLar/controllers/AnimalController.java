@@ -3,6 +3,7 @@ package br.com.ocauamotta.PetLar.controllers;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
 import br.com.ocauamotta.PetLar.dtos.ErrorResponse;
+import br.com.ocauamotta.PetLar.models.User;
 import br.com.ocauamotta.PetLar.services.AnimalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,14 +11,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller responsável pelos endpoints de gerenciamento de animais.
@@ -63,6 +68,7 @@ public class AnimalController {
                                     }))
             }
     )
+    @SecurityRequirements({})
     @GetMapping
     public ResponseEntity<Page<AnimalResponseDto>> findAll(Pageable pageable,
                                                            @Parameter(description = "Status do animal, por padrão é disponivel")
@@ -70,6 +76,41 @@ public class AnimalController {
                                                            @Parameter(description = "Tipo de animal, por exemplo cachorro, gato, etc.")
                                                            @RequestParam(required = false) String type) {
         return ResponseEntity.ok(service.findAll(pageable, status, type));
+    }
+
+    /**
+     * Retorna uma lista paginada de animais de acordo com o usuário autor.
+     *
+     * @param pageable Informações de paginação.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
+     * @return Um {@code ResponseEntity} contendo uma {@code Page} de {@code AnimalResponseDto} correspondente.
+     */
+    @Operation(
+            summary = "Listar animais pelo usuário autor",
+            description = "Retorna uma lista paginada de animais de acordo com o usuário autor.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de animais retornada com sucesso",
+                            useReturnTypeSchema = true),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals",
+                                                                "status": 500,
+                                                                "message": "Ocorreu um erro no servidor."
+                                                            }
+                                                            """
+                                            )
+                                    }))
+            }
+    )
+    @GetMapping(value = "/my")
+    public ResponseEntity<Page<AnimalResponseDto>> findMyAnimals(Pageable pageable, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.findMyAnimals(pageable, user));
     }
 
     /**
@@ -117,6 +158,7 @@ public class AnimalController {
                                     }))
             }
     )
+    @SecurityRequirements({})
     @GetMapping(value = "/{id}")
     public ResponseEntity<AnimalResponseDto> findById(@PathVariable(value = "id") String id) {
         return ResponseEntity.ok(service.findById(id));
@@ -126,11 +168,12 @@ public class AnimalController {
      * Cadastra um novo animal.
      *
      * @param dto {@code AnimalRequestDto} contendo os dados do novo animal.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
      * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal cadastrado.
      */
     @Operation(
             summary = "Cadastrar novo animal",
-            description = "Cria um novo registro de animal no sistema.",
+            description = "Cria um novo registro de animal no sistema. Envie os dados em JSON no campo 'data' e o arquivo de imagem no campo 'image'.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Animal cadastrado com sucesso",
                             content = @Content(mediaType = "application/json",
@@ -171,9 +214,16 @@ public class AnimalController {
                                     }))
             }
     )
-    @PostMapping
-    public ResponseEntity<AnimalResponseDto> save(@RequestBody @Valid AnimalRequestDto dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AnimalResponseDto> save(
+            @Parameter(description = "Dados do animal em formato JSON", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @RequestPart("data") @Valid AnimalRequestDto dto,
+
+            @Parameter(description = "Arquivo de imagem do animal.")
+            @RequestPart(value = "image", required = false) MultipartFile image,
+
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dto, image, user));
     }
 
     /**
@@ -181,15 +231,31 @@ public class AnimalController {
      *
      * @param id Identificador do animal.
      * @param dto {@code AnimalRequestDto} contendo os dados a serem atualizados.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
      * @return Um {@code ResponseEntity} contendo o {@code AnimalResponseDto} com as informações do animal atualizado.
      */
     @Operation(
             summary = "Atualizar animal existente",
-            description = "Atualiza as informações de um animal com base no ID informado.",
+            description = "Atualiza as informações e/ou a imagem de um animal com base no ID informado.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Animal atualizado com sucesso",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = AnimalResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 403,
+                                                                "message": "Você não possui permissão para alterar este animal."
+                                                            }
+                                                            """
+                                            )
+                                    })),
                     @ApiResponse(responseCode = "404", description = "Animal não encontrado",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponse.class),
@@ -222,15 +288,25 @@ public class AnimalController {
                                     }))
             }
     )
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<AnimalResponseDto> update(@PathVariable(value = "id") String id, @RequestBody @Valid AnimalRequestDto dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AnimalResponseDto> update(
+            @PathVariable(value = "id") String id,
+
+            @Parameter(description = "Dados atualizados do animal.", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
+            @RequestPart("data") @Valid AnimalRequestDto dto,
+
+            @Parameter(description = "Nova imagem do animal (opcional).")
+            @RequestPart(value = "image", required = false) MultipartFile image,
+
+            @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(service.update(id, dto, image, user));
     }
 
     /**
      * Exclui permanentemente um animal do sistema pelo seu ID.
      *
      * @param id Identificador do animal.
+     * @param user O usuário autenticado, injetado pelo Spring Security.
      * @return Um {@code ResponseEntity} vazio indicando sucesso na exclusão.
      */
     @Operation(
@@ -238,6 +314,21 @@ public class AnimalController {
             description = "Remove permanentemente um animal do banco de dados de acordo com o ID informado.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Animal excluído com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Usuário sem permissão",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class),
+                                    examples = {
+                                            @ExampleObject(
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/animals/123",
+                                                                "status": 403,
+                                                                "message": "Você não possui permissão para alterar este animal."
+                                                            }
+                                                            """
+                                            )
+                                    })),
                     @ApiResponse(responseCode = "404", description = "Animal não encontrado",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ErrorResponse.class),
@@ -271,8 +362,8 @@ public class AnimalController {
             }
     )
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") String id, @AuthenticationPrincipal User user) {
+        service.delete(id, user);
         return ResponseEntity.noContent().build();
     }
 }

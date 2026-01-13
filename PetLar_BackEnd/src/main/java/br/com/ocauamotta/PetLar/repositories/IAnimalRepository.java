@@ -34,4 +34,13 @@ public interface IAnimalRepository extends MongoRepository<Animal, String> {
      * @return Uma {@code Page} contendo os animais que correspondem ao status e ao tipo.
      */
     Page<Animal> findByStatusAndType(AdoptionStatus adoptionStatus, AnimalType type, Pageable pageable);
+
+    /**
+     * Busca uma página de animais que correspondem ao ID do usuário autor.
+     *
+     * @param id O ID do usuário autor.
+     * @param pageable Objeto que contém informações de paginação e ordenação.
+     * @return Uma {@code Page} contendo os animais que correspondem ao status e ao tipo.
+     */
+    Page<Animal> findByAuthorId(String id, Pageable pageable);
 }

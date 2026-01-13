@@ -2,11 +2,15 @@ package br.com.ocauamotta.PetLar.mappers;
 
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalRequestDto;
 import br.com.ocauamotta.PetLar.dtos.Animal.AnimalResponseDto;
+import br.com.ocauamotta.PetLar.dtos.User.UserSummaryDto;
 import br.com.ocauamotta.PetLar.enums.AnimalSex;
 import br.com.ocauamotta.PetLar.enums.AnimalSize;
 import br.com.ocauamotta.PetLar.enums.AnimalType;
 import br.com.ocauamotta.PetLar.models.Animal;
+import br.com.ocauamotta.PetLar.models.User;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 /**
  * Classe utilitária responsável por converter objetos entre a camada de Entidade
@@ -29,20 +33,27 @@ public class AnimalMapper {
      * @param entity A entidade {@code Animal} a ser convertida.
      * @return O DTO de resposta correspondente, ou {@code null} se a entidade de entrada for nula.
      */
-    public static AnimalResponseDto toDTO(Animal entity) {
+    public static AnimalResponseDto toDTO(Animal entity, User user) {
         if (entity == null) return null;
+
+        String publicUrl = (entity.getImagePath() != null)
+                ? "/public/animals/" + new File(entity.getImagePath()).getName()
+                : null;
 
         return new AnimalResponseDto(
                 entity.getId(),
                 entity.getName(),
-                entity.getDob(),
+                entity.getBirthDate(),
                 entity.getWeight(),
                 entity.getType(),
                 entity.getSex(),
                 entity.getSize(),
-                entity.getRegistrationDate(),
                 entity.getStatus(),
-                entity.getDescription()
+                new UserSummaryDto(user.getId(), user.getName()),
+                publicUrl,
+                entity.getDescription(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
         );
     }
 
@@ -50,14 +61,14 @@ public class AnimalMapper {
      * Converte um DTO de Requisição {@code AnimalRequestDto} em uma nova entidade {@code Animal}.
      *
      * @param dto O DTO de requisição do animal.
-     * @return A nova entidade {@code Animal} (sem ID, data de registro ou status definidos).
+     * @return A nova entidade {@code Animal}.
      */
     public static Animal toEntity(AnimalRequestDto dto) {
         if (dto == null) return null;
 
         return Animal.builder()
                 .name(dto.name())
-                .dob(dto.dob())
+                .birthDate(dto.birthDate())
                 .weight(dto.weight())
                 .type(AnimalType.fromString(dto.type()))
                 .sex(AnimalSex.fromString(dto.sex()))

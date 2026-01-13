@@ -6,8 +6,11 @@ services:
       - "8080:8080"
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://petlaruser:petlarpass@petlar-mongo:27017/petlardb?authSource=admin
+      - TOKEN_SECRET=secret
     depends_on:
       - petlar-mongo
+    networks:
+      - petlar_network
 
   petlar-mongo:
     image: mongo:latest
@@ -20,6 +23,12 @@ services:
       - MONGO_INITDB_DATABASE=petlardb
     volumes:
       - petlar-mongo-data:/data/db
+    networks:
+      - petlar_network
+
+networks:
+  petlar_network:
+    driver: bridge
 
 volumes:
   petlar-mongo-data:

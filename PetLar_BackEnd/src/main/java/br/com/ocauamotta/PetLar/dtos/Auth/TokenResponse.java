@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "DTO de Resposta contendo o Token JWT gerado após a autenticação bem-sucedida.")
 public record TokenResponse(
         @Schema(description = "O Token JWT assinado que deve ser usado para autenticar futuras requisições via cabeçalho 'Authorization'.",
-                example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJQZXRMYXIiLCJzdWIiOiIxMjM0NTY3ODkwIiwiZXhwIjoxNTE2MjM5MDIyfQ.00xXyY1ZzJ2kK_hA_00wZ_000nQjK9fA0_000wL0")
+                example = "eyJhbG...")
         String token
 ) {
 }
