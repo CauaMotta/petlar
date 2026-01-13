@@ -129,3 +129,12 @@ Os **Data Transfer Objects (DTOs)** são utilizados para garantir a segurança, 
 | Campo   | Tipo     | Descrição                              |
 | :------ | :------- | :------------------------------------- |
 | `token` | `String` | Token JWT utilizado para autenticação. |
+
+#### 3. `UserSummaryDto` (Resposta simplificada)
+
+Este DTO é usado para **retornar** os dados simplificados de um usuário em respostas de operações relacionadas as adoções:
+
+| Campo      | Tipo     | Descrição                       |
+| :--------- | :------- | :------------------------------ |
+| **`id`**   | `String` | Identificador único do usuário. |
+| **`name`** | `String` | Nome do usuário.                |

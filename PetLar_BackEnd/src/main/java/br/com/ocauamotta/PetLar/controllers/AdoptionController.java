@@ -366,7 +366,7 @@ public class AdoptionController {
                                                     value = """
                                                             {
                                                                 "timestamp": "2025-11-10T12:00:00.123456-03:00",
-                                                                "path": "/api/adoptions/123/cancel",
+                                                                "path": "/api/adoptions/123/accept",
                                                                 "status": 500,
                                                                 "message": "Ocorreu um erro no servidor."
                                                             }
@@ -462,7 +462,7 @@ public class AdoptionController {
                                                     value = """
                                                             {
                                                                 "timestamp": "2025-11-10T12:00:00.123456-03:00",
-                                                                "path": "/api/adoptions/123/cancel",
+                                                                "path": "/api/adoptions/123/deny",
                                                                 "status": 500,
                                                                 "message": "Ocorreu um erro no servidor."
                                                             }
@@ -539,6 +539,17 @@ public class AdoptionController {
                                                                 "path": "/api/adoptions/123",
                                                                 "status": 404,
                                                                 "message": "Solicitação de adoção não encontrada."
+                                                            }
+                                                            """
+                                            ),
+                                            @ExampleObject(
+                                                    name = "Registro do animal não encontrado.",
+                                                    value = """
+                                                            {
+                                                                "timestamp": "2025-11-10T12:00:00.123456-03:00",
+                                                                "path": "/api/adoptions/123",
+                                                                "status": 404,
+                                                                "message": "Nenhum registro encontrado com ID - 456"
                                                             }
                                                             """
                                             )

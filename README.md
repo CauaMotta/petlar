@@ -15,6 +15,7 @@ Os modelos representam as **entidades principais do domínio** da aplicação e 
 
 - 🐶 [Animal](Animal.md) – Representa os animais disponíveis para adoção
 - 👤 [User](User.md) – Representa os usuários da aplicação
+- 📝 [Adoption](Adoption.md) – Representa uma solicitação de adoção
 
 ## 🛠️ Tecnologias Utilizadas
 
