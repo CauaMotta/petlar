@@ -120,10 +120,9 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.initAdoption(createAdoptionRequestDto(), createUser("2")));
-        verify(animalRepository, times(1)).findById("3");
-        verify(adoptionRepository, never()).insert(any(Adoption.class));
-        verify(animalRepository, never()).save(any(Animal.class));
-        verify(userRepository, never()).findById(any());
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(animalRepository);
+        verifyNoInteractions(adoptionRepository, userRepository);
     }
 
     @Test
@@ -139,11 +138,10 @@ class AdoptionServiceTest {
 
         assertThrows(TryAdoptionYourOwnPetException.class,
                 () -> service.initAdoption(dto, donor));
-        verify(animalRepository, times(1)).findById("3");
-        verify(tryAdoptionYourOwnPetValidation, times(1)).validate(any(Animal.class), eq(donor));
-        verify(adoptionRepository, never()).insert(any(Adoption.class));
-        verify(animalRepository, never()).save(any(Animal.class));
-        verify(userRepository, never()).findById(any());
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(animalRepository);
+        verify(tryAdoptionYourOwnPetValidation).validate(any(Animal.class), eq(donor));
+        verifyNoInteractions(adoptionRepository, userRepository);
     }
 
     @Test
@@ -160,11 +158,10 @@ class AdoptionServiceTest {
 
         assertThrows(AnimalNotAvailableException.class,
                 () -> service.initAdoption(dto, adopter));
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalNotAvailableValidation, times(1)).validate(eq(animal), isNull());
-        verify(adoptionRepository, never()).insert(any(Adoption.class));
-        verify(animalRepository, never()).save(any(Animal.class));
-        verify(userRepository, never()).findById(any());
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(animalRepository);
+        verify(animalNotAvailableValidation).validate(eq(animal), isNull());
+        verifyNoInteractions(adoptionRepository, userRepository);
     }
 
     @Test
@@ -184,11 +181,10 @@ class AdoptionServiceTest {
 
         assertThrows(UserInactiveException.class,
                 () -> service.initAdoption(dto, adopter));
-        verify(animalRepository, times(1)).findById("3");
-        verify(userActiveYetValidation, times(1)).validate(any(User.class));
-        verify(adoptionRepository, never()).insert(any(Adoption.class));
-        verify(animalRepository, never()).save(any(Animal.class));
-        verify(userRepository, never()).findById(any());
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(animalRepository);
+        verify(userActiveYetValidation).validate(any(User.class));
+        verifyNoInteractions(adoptionRepository, userRepository);
     }
 
     @Test
@@ -219,9 +215,9 @@ class AdoptionServiceTest {
         assertEquals("2", dto.animalOwner().id());
         assertEquals("1", dto.adopter().id());
 
-        verify(adoptionRepository, times(1)).findByAdopterId("1", pageable);
-        verify(userRepository, times(1)).findAllById(Set.of("1", "2"));
-        verify(animalRepository, times(1)).findAllById(Set.of("3"));
+        verify(adoptionRepository).findByAdopterId("1", pageable);
+        verify(userRepository).findAllById(Set.of("1", "2"));
+        verify(animalRepository).findAllById(Set.of("3"));
     }
 
     @Test
@@ -257,13 +253,9 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.cancelAdoption("1", createUser("1")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, never()).findById(any());
-        verify(adopterOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verifyNoMoreInteractions(adoptionRepository);
+        verifyNoInteractions(adopterOwnershipValidation, pendingAdoptionValidation, animalRepository, userRepository);
     }
 
     @Test
@@ -274,13 +266,10 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.cancelAdoption("1", createUser("1")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(adopterOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(adopterOwnershipValidation, pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -296,13 +285,11 @@ class AdoptionServiceTest {
 
         assertThrows(UserNotOwnershipException.class,
                 () -> service.cancelAdoption("1", authenticatedUser));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(adopterOwnershipValidation, times(1)).validate(adoption, authenticatedUser);
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verify(adopterOwnershipValidation).validate(adoption, authenticatedUser);
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -318,13 +305,12 @@ class AdoptionServiceTest {
 
         assertThrows(AdoptionAlreadyProcessedException.class,
                 () -> service.cancelAdoption("1", createUser("1")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(adopterOwnershipValidation, times(1)).validate(any(), any());
-        verify(pendingAdoptionValidation, times(1)).validate(eq(adoption), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verify(adopterOwnershipValidation).validate(any(), any());
+        verify(pendingAdoptionValidation).validate(eq(adoption), isNull());
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(userRepository);
     }
 
     @Test
@@ -360,13 +346,9 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.acceptAdoption("1", createUser("2")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, never()).findById(any());
-        verify(animalOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verifyNoMoreInteractions(adoptionRepository);
+        verifyNoInteractions(animalRepository, animalOwnershipValidation, pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -377,13 +359,10 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.acceptAdoption("1", createUser("2")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(animalOwnershipValidation, pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -399,13 +378,11 @@ class AdoptionServiceTest {
 
         assertThrows(UserNotOwnershipException.class,
                 () -> service.acceptAdoption("1", authenticatedUser));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalOwnershipValidation, times(1)).validate(adoption, authenticatedUser);
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verify(animalOwnershipValidation).validate(adoption, authenticatedUser);
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -421,13 +398,12 @@ class AdoptionServiceTest {
 
         assertThrows(AdoptionAlreadyProcessedException.class,
                 () -> service.acceptAdoption("1", createUser("2")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalOwnershipValidation, times(1)).validate(any(), any());
-        verify(pendingAdoptionValidation, times(1)).validate(eq(adoption), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verify(animalOwnershipValidation).validate(any(), any());
+        verify(pendingAdoptionValidation).validate(eq(adoption), isNull());
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(userRepository);
     }
 
     @Test
@@ -463,13 +439,9 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.denyAdoption("1", createUser("2")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, never()).findById(any());
-        verify(animalOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verifyNoMoreInteractions(adoptionRepository);
+        verifyNoInteractions(animalRepository, animalOwnershipValidation, pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -480,13 +452,10 @@ class AdoptionServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.denyAdoption("1", createUser("2")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(animalOwnershipValidation, pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -502,13 +471,11 @@ class AdoptionServiceTest {
 
         assertThrows(UserNotOwnershipException.class,
                 () -> service.denyAdoption("1", authenticatedUser));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalOwnershipValidation, times(1)).validate(adoption, authenticatedUser);
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verify(animalOwnershipValidation).validate(adoption, authenticatedUser);
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(pendingAdoptionValidation, userRepository);
     }
 
     @Test
@@ -524,13 +491,12 @@ class AdoptionServiceTest {
 
         assertThrows(AdoptionAlreadyProcessedException.class,
                 () -> service.denyAdoption("1", createUser("2")));
-        verify(adoptionRepository, times(1)).findById("1");
-        verify(animalRepository, times(1)).findById("3");
-        verify(animalOwnershipValidation, times(1)).validate(any(), any());
-        verify(pendingAdoptionValidation, times(1)).validate(eq(adoption), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).save(any());
-        verify(userRepository, never()).findById(any());
+        verify(adoptionRepository).findById("1");
+        verify(animalRepository).findById("3");
+        verify(animalOwnershipValidation).validate(any(), any());
+        verify(pendingAdoptionValidation).validate(eq(adoption), isNull());
+        verifyNoMoreInteractions(adoptionRepository, animalRepository);
+        verifyNoInteractions(userRepository);
     }
 
     @Test
@@ -560,11 +526,8 @@ class AdoptionServiceTest {
         assertThrows(EntityNotFoundException.class,
                 () -> service.editReason("1", new EditReasonDto("Possuo um quintal amplo."), authenticatedUser));
         verify(adoptionRepository).findById("1");
-        verify(adopterOwnershipValidation, never()).validate(any(), any());
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).findById(any());
-        verify(userRepository, never()).findById(any());
+        verifyNoMoreInteractions(adoptionRepository);
+        verifyNoInteractions(adopterOwnershipValidation, pendingAdoptionValidation, animalRepository, userRepository);
     }
 
     @Test
@@ -579,11 +542,9 @@ class AdoptionServiceTest {
         assertThrows(UserNotOwnershipException.class,
                 () -> service.editReason("1", new EditReasonDto("Possuo um quintal amplo."), authenticatedUser));
         verify(adoptionRepository).findById("1");
-        verify(adopterOwnershipValidation, times(1)).validate(any(Adoption.class), eq(authenticatedUser));
-        verify(pendingAdoptionValidation, never()).validate(any(), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).findById(any());
-        verify(userRepository, never()).findById(any());
+        verify(adopterOwnershipValidation).validate(any(Adoption.class), eq(authenticatedUser));
+        verifyNoMoreInteractions(adoptionRepository);
+        verifyNoInteractions(pendingAdoptionValidation, animalRepository, userRepository);
     }
 
     @Test
@@ -598,11 +559,10 @@ class AdoptionServiceTest {
         assertThrows(AdoptionAlreadyProcessedException.class,
                 () -> service.editReason("1", new EditReasonDto("Possuo um quintal amplo."), authenticatedUser));
         verify(adoptionRepository).findById("1");
-        verify(adopterOwnershipValidation, times(1)).validate(any(Adoption.class), eq(authenticatedUser));
-        verify(pendingAdoptionValidation, times(1)).validate(any(Adoption.class), isNull());
-        verify(adoptionRepository, never()).save(any());
-        verify(animalRepository, never()).findById(any());
-        verify(userRepository, never()).findById(any());
+        verify(adopterOwnershipValidation).validate(any(Adoption.class), eq(authenticatedUser));
+        verify(pendingAdoptionValidation).validate(any(Adoption.class), isNull());
+        verifyNoMoreInteractions(adoptionRepository);
+        verifyNoInteractions(animalRepository, userRepository);
     }
 
     @Test
@@ -633,9 +593,9 @@ class AdoptionServiceTest {
         assertEquals("2", dto.animalOwner().id());
         assertEquals("1", dto.adopter().id());
 
-        verify(adoptionRepository, times(1)).findByAnimalOwnerId("2", pageable);
-        verify(userRepository, times(1)).findAllById(Set.of("1", "2"));
-        verify(animalRepository, times(1)).findAllById(Set.of("3"));
+        verify(adoptionRepository).findByAnimalOwnerId("2", pageable);
+        verify(userRepository).findAllById(Set.of("1", "2"));
+        verify(animalRepository).findAllById(Set.of("3"));
     }
 
     Adoption createAdoption() {

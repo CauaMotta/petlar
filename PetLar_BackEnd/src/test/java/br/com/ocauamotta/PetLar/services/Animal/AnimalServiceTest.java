@@ -71,7 +71,7 @@ class AnimalServiceTest {
         assertEquals(AdoptionStatus.DISPONIVEL, savedAnimalDto.status());
         assertNotNull(savedAnimalDto.createdAt());
         assertNotNull(savedAnimalDto.updatedAt());
-        verify(repository, times(1)).insert(any(Animal.class));
+        verify(repository).insert(any(Animal.class));
     }
 
     @Test
@@ -87,8 +87,8 @@ class AnimalServiceTest {
         assertNotNull(updatedAnimalDto);
         assertEquals("Luna", updatedAnimalDto.name());
         assertEquals(AnimalType.GATO, updatedAnimalDto.type());
-        verify(repository, times(1)).findById("1");
-        verify(repository,times(1)).save((any(Animal.class)));
+        verify(repository).findById("1");
+        verify(repository).save((any(Animal.class)));
     }
 
     @Test
@@ -100,9 +100,9 @@ class AnimalServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.update("1", dto, null, createUser("1")));
-        verify(animalOwnerUserValidation, never()).validate(any(), any());
-        verify(animalNotAvailableValidation, never()).validate(any(), isNull());
-        verify(repository, never()).save(any());
+        verify(repository).findById("1");
+        verifyNoInteractions(animalOwnerUserValidation, animalNotAvailableValidation);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
@@ -116,9 +116,10 @@ class AnimalServiceTest {
 
         assertThrows(UserWhoIsNotTheOwnerOfTheAnimalException.class,
                 () -> service.update("1", dto, null, createUser("2")));
-        verify(animalOwnerUserValidation, times(1)).validate(any(Animal.class), any(User.class));
-        verify(animalNotAvailableValidation, never()).validate(any(), isNull());
-        verify(repository, never()).save(any());
+        verify(repository).findById("1");
+        verify(animalOwnerUserValidation).validate(any(Animal.class), any(User.class));
+        verifyNoInteractions(animalNotAvailableValidation);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
@@ -132,9 +133,10 @@ class AnimalServiceTest {
 
         assertThrows(AnimalNotAvailableException.class,
                 () -> service.update("1", dto, null, createUser("1")));
-        verify(animalOwnerUserValidation, times(1)).validate(any(Animal.class), any(User.class));
-        verify(animalNotAvailableValidation, times(1)).validate(any(Animal.class), isNull());
-        verify(repository, never()).save(any());
+        verify(repository).findById("1");
+        verify(animalOwnerUserValidation).validate(any(Animal.class), any(User.class));
+        verify(animalNotAvailableValidation).validate(any(Animal.class), isNull());
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
@@ -144,8 +146,8 @@ class AnimalServiceTest {
 
         service.delete("1", createUser("1"));
 
-        verify(repository, times(1)).findById("1");
-        verify(repository, times(1)).delete(any(Animal.class));
+        verify(repository).findById("1");
+        verify(repository).delete(any(Animal.class));
     }
 
     @Test
@@ -156,10 +158,9 @@ class AnimalServiceTest {
 
         assertThrows(EntityNotFoundException.class,
                 () -> service.delete("1", createUser("1")));
-        verify(repository, times(1)).findById("1");
-        verify(animalOwnerUserValidation, never()).validate(any(), any());
-        verify(animalNotAvailableValidation, never()).validate(any(), isNull());
-        verify(repository, never()).delete(any());
+        verify(repository).findById("1");
+        verifyNoInteractions(animalOwnerUserValidation, animalNotAvailableValidation);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
@@ -172,10 +173,10 @@ class AnimalServiceTest {
 
         assertThrows(UserWhoIsNotTheOwnerOfTheAnimalException.class,
                 () -> service.delete("1", createUser("1")));
-        verify(repository, times(1)).findById("1");
+        verify(repository).findById("1");
         verify(animalOwnerUserValidation, times(1)).validate(any(Animal.class), any(User.class));
-        verify(animalNotAvailableValidation, never()).validate(any(), isNull());
-        verify(repository, never()).delete(any());
+        verifyNoInteractions(animalNotAvailableValidation);
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
@@ -188,10 +189,10 @@ class AnimalServiceTest {
 
         assertThrows(AnimalNotAvailableException.class,
                 () -> service.delete("1", createUser("1")));
-        verify(repository, times(1)).findById("1");
-        verify(animalOwnerUserValidation, times(1)).validate(any(Animal.class), any(User.class));
-        verify(animalNotAvailableValidation, times(1)).validate(any(Animal.class), isNull());
-        verify(repository, never()).delete(any());
+        verify(repository).findById("1");
+        verify(animalOwnerUserValidation).validate(any(Animal.class), any(User.class));
+        verify(animalNotAvailableValidation).validate(any(Animal.class), isNull());
+        verifyNoMoreInteractions(repository);
     }
 
     @Test
@@ -204,7 +205,7 @@ class AnimalServiceTest {
 
         assertNotNull(foundAnimal);
         assertEquals("1", foundAnimal.id());
-        verify(repository, times(1)).findById("1");
+        verify(repository).findById("1");
     }
 
     @Test
@@ -231,7 +232,7 @@ class AnimalServiceTest {
         assertEquals(2, result.getTotalElements());
         assertEquals("Rex", result.getContent().get(0).name());
         assertEquals("Lua", result.getContent().get(1).name());
-        verify(repository, times(1)).findByStatus(eq(AdoptionStatus.DISPONIVEL), any(Pageable.class));
+        verify(repository).findByStatus(eq(AdoptionStatus.DISPONIVEL), any(Pageable.class));
     }
 
     @Test
@@ -248,7 +249,7 @@ class AnimalServiceTest {
 
         assertEquals(1, result.getTotalElements());
         assertEquals("Lua", result.getContent().get(0).name());
-        verify(repository, times(1)).findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), any(Pageable.class));
+        verify(repository).findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), any(Pageable.class));
     }
 
     @Test
@@ -271,7 +272,7 @@ class AnimalServiceTest {
         assertEquals("Lua", result.getContent().get(1).name());
         assertEquals(AdoptionStatus.ADOTADO, result.getContent().get(0).status());
         assertEquals(AdoptionStatus.ADOTADO, result.getContent().get(1).status());
-        verify(repository, times(1)).findByStatus(eq(AdoptionStatus.ADOTADO), any(Pageable.class));
+        verify(repository).findByStatus(eq(AdoptionStatus.ADOTADO), any(Pageable.class));
     }
 
     @Test
