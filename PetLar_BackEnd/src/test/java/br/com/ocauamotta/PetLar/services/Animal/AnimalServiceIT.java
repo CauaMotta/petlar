@@ -139,7 +139,7 @@ class AnimalServiceIT {
         Page<AnimalResponseDto> page = service.findAll(PageRequest.of(0, 10), "disponivel", "gato");
 
         assertEquals(2, page.getTotalElements());
-        assertEquals(AnimalType.GATO, page.getContent().get(0).type());
+        assertEquals(AnimalType.GATO, page.getContent().getFirst().type());
     }
 
     @Test
@@ -157,7 +157,7 @@ class AnimalServiceIT {
         Page<AnimalResponseDto> page = service.findAll(PageRequest.of(0, 10), "adotado", null);
 
         assertEquals(2, page.getTotalElements());
-        assertEquals(AdoptionStatus.ADOTADO, page.getContent().get(0).status());
+        assertEquals(AdoptionStatus.ADOTADO, page.getContent().getFirst().status());
     }
 
     AnimalRequestDto createAnimalRequestDto(String name, String type, String sex) {

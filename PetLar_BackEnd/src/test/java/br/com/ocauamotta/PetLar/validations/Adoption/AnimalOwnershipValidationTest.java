@@ -1,6 +1,5 @@
 package br.com.ocauamotta.PetLar.validations.Adoption;
 
-import br.com.ocauamotta.PetLar.enums.AdoptionStatus;
 import br.com.ocauamotta.PetLar.exceptions.Adoption.UserNotOwnershipException;
 import br.com.ocauamotta.PetLar.models.Adoption;
 import br.com.ocauamotta.PetLar.models.User;

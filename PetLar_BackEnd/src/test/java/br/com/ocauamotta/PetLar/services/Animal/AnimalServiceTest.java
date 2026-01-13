@@ -248,7 +248,7 @@ class AnimalServiceTest {
         Page<AnimalResponseDto> result = service.findAll(pageable, "Disponivel", "Gato");
 
         assertEquals(1, result.getTotalElements());
-        assertEquals("Lua", result.getContent().get(0).name());
+        assertEquals("Lua", result.getContent().getFirst().name());
         verify(repository).findByStatusAndType(eq(AdoptionStatus.DISPONIVEL), eq(AnimalType.GATO), any(Pageable.class));
     }
 

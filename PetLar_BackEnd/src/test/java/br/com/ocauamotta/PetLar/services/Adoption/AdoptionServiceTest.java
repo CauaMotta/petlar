@@ -209,7 +209,7 @@ class AdoptionServiceTest {
         assertNotNull(response);
         assertEquals(1, response.getTotalElements());
 
-        AdoptionResponseDto dto = response.getContent().get(0);
+        AdoptionResponseDto dto = response.getContent().getFirst();
         assertEquals("1", dto.id());
         assertEquals("3", dto.animal().id());
         assertEquals("2", dto.animalOwner().id());
@@ -587,7 +587,7 @@ class AdoptionServiceTest {
         assertNotNull(response);
         assertEquals(1, response.getTotalElements());
 
-        AdoptionResponseDto dto = response.getContent().get(0);
+        AdoptionResponseDto dto = response.getContent().getFirst();
         assertEquals("1", dto.id());
         assertEquals("3", dto.animal().id());
         assertEquals("2", dto.animalOwner().id());
