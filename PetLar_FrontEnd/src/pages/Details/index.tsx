@@ -12,7 +12,6 @@ import { Line, Button } from '../../styles'
 
 type Params = {
   id: string
-  type: string
 }
 
 const Details = () => {

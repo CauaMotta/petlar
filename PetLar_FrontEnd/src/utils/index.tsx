@@ -1,5 +1,5 @@
 export const formatWeight = (weight: number) => {
-  return weight / 100
+  return weight / 1000
 }
 
 export const formatDate = (dateString: string) => {
@@ -7,12 +7,4 @@ export const formatDate = (dateString: string) => {
     const [year, month, day] = dateString.split('-')
     return `${day}/${month}/${year}`
   }
-}
-
-export const formatAge = (ageInMonths: number) => {
-  if (ageInMonths < 12) {
-    return `${ageInMonths} ${ageInMonths === 1 ? 'mês' : 'meses'}`
-  }
-  const years = Math.floor(ageInMonths / 12)
-  return `${years} ${years === 1 ? 'ano' : 'anos'}`
 }

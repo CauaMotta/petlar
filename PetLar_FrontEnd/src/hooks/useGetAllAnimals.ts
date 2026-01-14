@@ -3,11 +3,6 @@ import axios, { type AxiosPromise } from 'axios'
 
 import { API_URL } from '../main'
 
-type Filter = {
-  status?: string
-  type?: string
-}
-
 const fetchData = async (filter?: string): AxiosPromise<ApiResponse> => {
   const response = await axios.get<ApiResponse>(
     API_URL + '/api/animals' + filter

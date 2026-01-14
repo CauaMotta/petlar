@@ -1,19 +1,39 @@
+import Select from 'react-select'
+
 import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
 
 import { useGetAllAnimals } from '../../hooks/useGetAllAnimals'
 
-import { Container, CardContainer, CardInfo } from './styles'
+import {
+  Container,
+  CardContainer,
+  CardInfo,
+  StyledSelectWrapper
+} from './styles'
 import { Line } from '../../styles'
+import { useState } from 'react'
+
+const options = [
+  { value: '', label: 'Todos' },
+  { value: 'cachorro', label: 'Cachorro' },
+  { value: 'gato', label: 'Gato' },
+  { value: 'passaro', label: 'Pássaro' },
+  { value: 'outro', label: 'Outro' }
+]
 
 const Home = () => {
+  const [typeFilter, setTypeFilter] = useState<string>()
   const {
     data: available,
     isLoading,
     isError
-  } = useGetAllAnimals({ status: 'disponivel' })
-  const { data: adopted } = useGetAllAnimals({ status: 'adotado' })
+  } = useGetAllAnimals({ status: 'disponivel', type: typeFilter })
+  const { data: adopted } = useGetAllAnimals({
+    status: 'adotado',
+    type: typeFilter
+  })
 
   if (isLoading)
     return (
@@ -39,6 +59,25 @@ const Home = () => {
   return (
     <>
       <Container>
+        <div className="filterBox">
+          <p className="text--small">
+            <i className="fa-solid fa-filter"></i> Filtrar:
+          </p>
+          <StyledSelectWrapper>
+            <Select
+              classNamePrefix="custom-select"
+              value={
+                options.find((option) => option.value === typeFilter) ??
+                options[0]
+              }
+              onChange={(option) => {
+                setTypeFilter(option?.value ?? '')
+              }}
+              isSearchable={false}
+              options={options}
+            />
+          </StyledSelectWrapper>
+        </div>
         {available.length == 0 && (
           <div className="box">
             <p className="text">

@@ -27,6 +27,11 @@ declare type ApiResponse = {
   last: boolean
 }
 
+declare type Filter = {
+  status?: string
+  type?: string
+}
+
 declare type CreateAnimal = {
   name: string
   age: number
