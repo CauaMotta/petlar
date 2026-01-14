@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-import { convertType, formatDate } from '../../utils'
+import { formatDate } from '../../utils'
 
 import * as S from './styles'
 import { Button, Line } from '../../styles'
@@ -41,9 +41,7 @@ const Card = ({ animal }: Props) => {
         </p>
         <Button
           disabled={animal.status === 'ADOTADO' ? true : false}
-          onClick={() =>
-            navigate(`/details/${convertType(animal.type)}/${animal.id}`)
-          }
+          onClick={() => navigate(`/details/${animal.id}`)}
         >
           {animal.status === 'ADOTADO' ? (
             <>Adotado!</>

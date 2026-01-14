@@ -2,7 +2,7 @@ import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
 
-import { useAnimalsApi } from '../../hooks/useAnimalsApi'
+import { useGetAllAnimals } from '../../hooks/useGetAllAnimals'
 
 import { Container, CardContainer, CardInfo } from './styles'
 import { Line } from '../../styles'
@@ -12,8 +12,8 @@ const Home = () => {
     data: available,
     isLoading,
     isError
-  } = useAnimalsApi('?status=disponivel')
-  const { data: adopted } = useAnimalsApi('?status=adotado')
+  } = useGetAllAnimals({ status: 'disponivel' })
+  const { data: adopted } = useGetAllAnimals({ status: 'adotado' })
 
   if (isLoading)
     return (
@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <>
       <Container>
-        {available?.length == 0 && (
+        {available.length == 0 && (
           <div className="box">
             <p className="text">
               Parece que não temos nenhum pet para adoção no momento, volte
@@ -47,7 +47,7 @@ const Home = () => {
             </p>
           </div>
         )}
-        {available && available.length > 0 && (
+        {available.length > 0 && (
           <>
             <p className="text">
               Então você está em busca de um AUmigo? De uma olhada nessas
@@ -61,7 +61,7 @@ const Home = () => {
           </>
         )}
 
-        {adopted && adopted.length > 0 && (
+        {adopted.length > 0 && (
           <>
             <p className="text">
               De uma olhada nestes amiguinhos que já conseguiram um lar:

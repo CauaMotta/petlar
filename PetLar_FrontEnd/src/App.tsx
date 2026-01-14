@@ -20,7 +20,7 @@ function App() {
           element: <Home />
         },
         {
-          path: '/details/:type/:id',
+          path: '/details/:id',
           element: <Details />
         },
         {
