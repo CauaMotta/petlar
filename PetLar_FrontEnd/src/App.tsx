@@ -4,10 +4,11 @@ import { ThemeProvider } from 'styled-components'
 import Layout from './pages/Layout'
 import Home from './pages/Home'
 import Details from './pages/Details'
-import NewAnimal from './pages/NewAnimal'
+// import NewAnimal from './pages/NewAnimal'
 
 import { GlobalStyle } from './styles'
 import { principalTheme } from './themes'
+import Login from './pages/Login'
 
 function App() {
   const routes = createBrowserRouter([
@@ -20,13 +21,17 @@ function App() {
           element: <Home />
         },
         {
-          path: '/details/:id',
-          element: <Details />
+          path: '/login',
+          element: <Login />
         },
         {
-          path: '/register',
-          element: <NewAnimal />
+          path: '/details/:id',
+          element: <Details />
         }
+        // {
+        //   path: '/register',
+        //   element: <NewAnimal />
+        // }
       ]
     }
   ])

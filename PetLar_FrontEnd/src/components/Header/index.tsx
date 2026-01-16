@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <S.Header>
       <S.Container className={isActive ? 'active' : ''}>
-        <div className="logo">
+        <div onClick={() => navigate('/')} className="logo">
           <PetlarLogo width={40} height={40} />
           <h1>PetLar</h1>
         </div>

@@ -1,10 +1,11 @@
+import { useState } from 'react'
 import Select from 'react-select'
 
 import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
 
-import { useGetAllAnimals } from '../../hooks/useGetAllAnimals'
+import { useGetAllAnimals } from '../../hooks/useAnimals'
 
 import {
   Container,
@@ -13,7 +14,6 @@ import {
   StyledSelectWrapper
 } from './styles'
 import { Line } from '../../styles'
-import { useState } from 'react'
 
 const options = [
   { value: '', label: 'Todos' },
@@ -57,7 +57,7 @@ const Home = () => {
     )
 
   return (
-    <>
+    <div>
       <Container>
         <div className="filterBox">
           <p className="text--small">
@@ -94,7 +94,7 @@ const Home = () => {
             </p>
             <CardContainer>
               {available.map((entity) => (
-                <Card key={entity.name} animal={entity} />
+                <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
           </>
@@ -107,7 +107,7 @@ const Home = () => {
             </p>
             <CardContainer>
               {adopted.map((entity) => (
-                <Card key={entity.name} animal={entity} />
+                <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
           </>
@@ -131,7 +131,7 @@ const Home = () => {
           de software e boas práticas de desenvolvimento.
         </p>
       </CardInfo>
-    </>
+    </div>
   )
 }
 

@@ -1,3 +1,25 @@
+// Login
+
+declare type LoginPayload = {
+  email: string
+  password: string
+}
+
+declare type LoginResponse = {
+  token: string
+  user: User
+}
+
+// User
+
+declare type User = {
+  id: string
+  name: string
+  email: string
+}
+
+// Animal
+
 declare type Author = {
   id: string
   name: string
@@ -25,11 +47,6 @@ declare type ApiResponse = {
   size: number
   first: boolean
   last: boolean
-}
-
-declare type Filter = {
-  status?: string
-  type?: string
 }
 
 declare type CreateAnimal = {

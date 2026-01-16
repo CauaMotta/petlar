@@ -6,6 +6,7 @@ export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
   margin-bottom: 32px;
+  flex: 1;
 
   .filterBox {
     display: flex;

@@ -4,7 +4,7 @@ import BackButton from '../../components/BackButton'
 import Loader from '../../components/Loader'
 
 import { API_URL } from '../../main'
-import { useGetAnimalById } from '../../hooks/useGetAnimalById'
+import { useGetAnimalById } from '../../hooks/useAnimals'
 import { formatDate, formatWeight } from '../../utils'
 
 import { Card, Container, Description } from './styles'
@@ -16,7 +16,7 @@ type Params = {
 
 const Details = () => {
   const { id } = useParams() as Params
-  const { data, isLoading, isError } = useGetAnimalById({ id })
+  const { data, isLoading, isError } = useGetAnimalById(id)
 
   if (isLoading)
     return (

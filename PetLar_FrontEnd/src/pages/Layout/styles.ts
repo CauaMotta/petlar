@@ -13,4 +13,6 @@ export const Content = styled.main`
   margin: 0 auto;
   overflow-y: scroll;
   overflow-x: hidden;
+
+  display: flex;
 `
