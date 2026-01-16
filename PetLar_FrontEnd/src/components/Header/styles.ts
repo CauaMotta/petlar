@@ -38,6 +38,26 @@ export const Container = styled.div`
     align-items: center;
     gap: 16px;
 
+    hr {
+      align-self: stretch;
+      width: 2px;
+      background-color: ${({ theme }) => theme.colors.highlightColor};
+      border: none;
+    }
+
+    .profileBtn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-align: right;
+      line-height: 1;
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+
     button {
       color: ${({ theme }) => theme.colors.fontColor};
       font-size: 16px;
@@ -45,10 +65,6 @@ export const Container = styled.div`
 
       background-color: transparent;
       border: none;
-
-      display: flex;
-      align-items: center;
-      gap: 4px;
 
       cursor: pointer;
     }

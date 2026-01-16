@@ -1,14 +1,14 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
 
 import { useGetMe } from '../../hooks/useUser'
 
 import { setUser, logout } from '../../store/reducers/authSlice'
-import type { RootReducer } from '../../store'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch()
-  const { token } = useSelector((state: RootReducer) => state.auth)
+  const token = Cookies.get('token')
 
   const { data: user, isError } = useGetMe()
 

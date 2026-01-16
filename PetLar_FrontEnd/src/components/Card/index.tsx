@@ -47,7 +47,7 @@ const Card = ({ animal }: Props) => {
             <>Adotado!</>
           ) : (
             <>
-              Ver mais <i className="fa-solid fa-arrow-right"></i>
+              Ver mais <i className="fa-solid fa-eye"></i>
             </>
           )}
         </Button>

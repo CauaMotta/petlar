@@ -4,6 +4,7 @@ import variables from '../../styles/variables'
 export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
+  flex: 1;
 `
 
 export const Card = styled.div`
