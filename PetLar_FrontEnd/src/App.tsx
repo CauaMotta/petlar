@@ -3,12 +3,13 @@ import { ThemeProvider } from 'styled-components'
 
 import Layout from './pages/Layout'
 import Home from './pages/Home'
+import Login from './pages/Login'
+import RegisterUser from './pages/RegisterUser'
 import Details from './pages/Details'
 // import NewAnimal from './pages/NewAnimal'
 
 import { GlobalStyle } from './styles'
 import { principalTheme } from './themes'
-import Login from './pages/Login'
 
 function App() {
   const routes = createBrowserRouter([
@@ -23,6 +24,10 @@ function App() {
         {
           path: '/login',
           element: <Login />
+        },
+        {
+          path: '/register',
+          element: <RegisterUser />
         },
         {
           path: '/details/:id',

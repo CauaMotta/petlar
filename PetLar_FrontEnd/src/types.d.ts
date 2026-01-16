@@ -12,6 +12,12 @@ declare type LoginResponse = {
 
 // User
 
+declare type RegisterPayload = {
+  name: string
+  email: string
+  password: string
+}
+
 declare type User = {
   id: string
   name: string
