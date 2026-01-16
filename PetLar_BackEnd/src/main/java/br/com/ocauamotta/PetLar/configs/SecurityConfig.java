@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -63,9 +64,11 @@ public class SecurityConfig {
         String findAllAnimals = apiPrefix + "/animals";
         String findAnimalById = apiPrefix + "/animals/{id}";
         String findMyAnimals = apiPrefix + "/animals/my";
-        String publicImages = "public/animals/**";
+        String publicImages = "/public/animals/**";
 
-        return http.csrf(csrf -> csrf.disable())
+        return http
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(loginPath).permitAll();
