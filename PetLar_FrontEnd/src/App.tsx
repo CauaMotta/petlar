@@ -6,7 +6,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import RegisterUser from './pages/RegisterUser'
 import Details from './pages/Details'
-// import NewAnimal from './pages/NewAnimal'
+import RegisterAnimal from './pages/RegisterAnimal'
 
 import { GlobalStyle } from './styles'
 import { principalTheme } from './themes'
@@ -32,11 +32,11 @@ function App() {
         {
           path: '/details/:id',
           element: <Details />
+        },
+        {
+          path: '/registerAnimal',
+          element: <RegisterAnimal />
         }
-        // {
-        //   path: '/register',
-        //   element: <NewAnimal />
-        // }
       ]
     }
   ])

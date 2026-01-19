@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 
-import { formatDate } from '../../utils'
+import { formatDateBr } from '../../utils'
+import { API_URL } from '../../main'
 
 import * as S from './styles'
 import { Button, Line } from '../../styles'
-import { API_URL } from '../../main'
 
 type Props = {
   animal: Animal
@@ -28,7 +28,7 @@ const Card = ({ animal }: Props) => {
         <h2>{animal.name}</h2>
         <Line />
         <p className="text--small">
-          <b>data de nascimento:</b> {formatDate(animal.birthDate)}
+          <b>data de nascimento:</b> {formatDateBr(animal.birthDate)}
         </p>
         <p className="text--small">
           <b>espécie:</b> {animal.type}

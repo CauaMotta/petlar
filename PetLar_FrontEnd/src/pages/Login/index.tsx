@@ -4,13 +4,16 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { PulseLoader } from 'react-spinners'
 import { useTheme } from 'styled-components'
+import { useSelector } from 'react-redux'
 
 import { useLogin } from '../../hooks/useLogin'
+import type { RootReducer } from '../../store'
 
 import { Button } from '../../styles'
 import { Container } from './styles'
 
 const Login = () => {
+  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
   const theme = useTheme()
   const navigate = useNavigate()
   const { mutate, error, isPending, isSuccess } = useLogin()
@@ -43,6 +46,8 @@ const Login = () => {
   useEffect(() => {
     if (isSuccess) navigate('/')
   }, [navigate, isSuccess])
+
+  if (isAuthenticated) navigate('/')
 
   return (
     <Container>

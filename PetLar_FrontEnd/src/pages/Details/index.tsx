@@ -5,7 +5,7 @@ import Loader from '../../components/Loader'
 
 import { API_URL } from '../../main'
 import { useGetAnimalById } from '../../hooks/useAnimals'
-import { formatDate, formatWeight } from '../../utils'
+import { formatDateBr, formatWeight } from '../../utils'
 
 import { Card, Container, Description } from './styles'
 import { Line, Button } from '../../styles'
@@ -68,7 +68,7 @@ const Details = () => {
               <b>Peso:</b> {formatWeight(data.weight)} kg
             </p>
             <p className="text">
-              <b>Data de nascimento:</b> {formatDate(data.birthDate)}
+              <b>Data de nascimento:</b> {formatDateBr(data.birthDate)}
             </p>
           </div>
           <div className="contact">

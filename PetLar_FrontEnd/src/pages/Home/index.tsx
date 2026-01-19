@@ -1,18 +1,13 @@
 import { useState } from 'react'
-import Select from 'react-select'
 
 import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
+import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 
 import { useGetAllAnimals } from '../../hooks/useAnimals'
 
-import {
-  Container,
-  CardContainer,
-  CardInfo,
-  StyledSelectWrapper
-} from './styles'
+import { Container, CardContainer, CardInfo } from './styles'
 import { Line } from '../../styles'
 
 const options = [
@@ -63,20 +58,18 @@ const Home = () => {
           <p className="text--small">
             <i className="fa-solid fa-filter"></i> Filtrar:
           </p>
-          <StyledSelectWrapper>
-            <Select
-              classNamePrefix="custom-select"
-              value={
-                options.find((option) => option.value === typeFilter) ??
-                options[0]
-              }
-              onChange={(option) => {
-                setTypeFilter(option?.value ?? '')
-              }}
-              isSearchable={false}
-              options={options}
-            />
-          </StyledSelectWrapper>
+          <StyledSelectWrapper
+            placeholder="Selecione..."
+            value={
+              options.find((option) => option.value === typeFilter) ??
+              options[0]
+            }
+            onChange={(option) => {
+              setTypeFilter((option?.value as string) ?? '')
+            }}
+            options={options}
+            fontSize={12}
+          />
         </div>
         {available.length == 0 && (
           <div className="box">

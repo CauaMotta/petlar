@@ -3,13 +3,16 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { PulseLoader } from 'react-spinners'
 import { useTheme } from 'styled-components'
+import { useSelector } from 'react-redux'
 
 import { useRegisterUser } from '../../hooks/useUser'
+import type { RootReducer } from '../../store'
 
 import { Button } from '../../styles'
 import { Container } from './styles'
 
 const RegisterUser = () => {
+  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
   const theme = useTheme()
   const navigate = useNavigate()
   const { mutate, error, isPending, isSuccess } = useRegisterUser()
@@ -47,6 +50,8 @@ const RegisterUser = () => {
     return false
   }
 
+  if (isAuthenticated) navigate('/')
+
   if (isSuccess)
     return (
       <Container>
@@ -81,7 +86,11 @@ const RegisterUser = () => {
               type="text"
               value={form.values.name}
               onChange={form.handleChange}
-              onBlur={form.handleBlur}
+              onBlur={(e) => {
+                const trimmedValue = e.target.value.replace(/\s+/g, ' ').trim()
+                form.setFieldValue('name', trimmedValue)
+                form.handleBlur(e)
+              }}
             />
           </div>
           <div className="inputGroup">

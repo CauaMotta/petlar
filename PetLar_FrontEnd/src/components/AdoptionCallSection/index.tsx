@@ -22,7 +22,7 @@ const AdoptionCallSection = () => {
           gratuito e pode mudar o destino de um animal.
         </p>
         <div className="btnContainer">
-          <Button onClick={() => navigate('/register')}>
+          <Button onClick={() => navigate('/registerAnimal')}>
             Cadastrar um animalzinho <i className="fa-solid fa-paw"></i>
           </Button>
         </div>

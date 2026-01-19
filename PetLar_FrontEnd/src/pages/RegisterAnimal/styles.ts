@@ -57,19 +57,6 @@ export const AnimalForm = styled.form`
     width: 100%;
     margin-bottom: 4px;
 
-    .input-select {
-      display: flex;
-      gap: 8px;
-
-      .input {
-        flex: 1;
-      }
-
-      .custom-select__control {
-        min-width: 156px;
-      }
-    }
-
     .input {
       min-height: 38px;
       padding-inline: 10px;
@@ -117,6 +104,22 @@ export const AnimalForm = styled.form`
     }
   }
 
+  #image {
+    display: none;
+  }
+
+  .imageBtn {
+    background-color: ${({ theme }) => theme.colors.secondaryColor};
+    border: 1px solid ${({ theme }) => theme.colors.highlightColor};
+    min-height: 38px;
+    padding-inline: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    cursor: pointer;
+  }
+
   @media (max-width: ${variables.breakpoints.tablet}) {
     .animalSelect {
       margin-bottom: 4px;
@@ -129,48 +132,5 @@ export const AnimalForm = styled.form`
         }
       }
     }
-  }
-`
-
-export const StyledSelectWrapper = styled.div`
-  .custom-select__control {
-    min-width: 256px;
-    background-color: ${({ theme }) => theme.colors.secondaryColor};
-    border-radius: 0;
-    border: 1px solid ${({ theme }) => theme.colors.highlightColor};
-    min-height: 38px;
-    box-shadow: none;
-    transition: border 0.3s ease;
-  }
-
-  .custom-select__control--is-focused {
-    border-color: ${({ theme }) => theme.colors.highlightColor};
-
-    &:hover {
-      border-color: ${({ theme }) => theme.colors.highlightColor};
-    }
-  }
-
-  .custom-select__menu {
-    margin-top: 0;
-    border-radius: 0;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: ${({ theme }) => theme.colors.backgroundColor};
-  }
-
-  .custom-select__option {
-    padding: 10px 12px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .custom-select__option--is-focused {
-    background: ${({ theme }) => theme.colors.secondaryColor};
-  }
-
-  .custom-select__option--is-selected {
-    background: ${({ theme }) => theme.colors.highlightColor};
-    color: ${({ theme }) => theme.colors.fontColor};
   }
 `

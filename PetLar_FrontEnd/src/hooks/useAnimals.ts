@@ -1,6 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { getAllAnimals, getAnimalById } from '../services/animalService'
+import {
+  getAllAnimals,
+  getAnimalById,
+  postAnimal
+} from '../services/animalService'
+
+import type { ApiError } from '../types/errorType'
 
 type Filter = {
   status?: string
@@ -42,4 +49,12 @@ export const useGetAnimalById = (id: string) => {
     ...query,
     data: query.data ?? null
   }
+}
+
+export const usePostAnimal = () => {
+  return useMutation<any, ApiError, FormData>({
+    mutationFn: postAnimal,
+    onSuccess: () => console.log('Animal registrado com sucesso'),
+    onError: (error) => console.error(error)
+  })
 }
