@@ -4,6 +4,7 @@ import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
+import Modal from '../../components/Modal'
 
 import { useGetAllAnimals } from '../../hooks/useAnimals'
 
@@ -54,6 +55,7 @@ const Home = () => {
 
   return (
     <div>
+      <Modal />
       <Container>
         <div className="filterBox">
           <p className="text--small">

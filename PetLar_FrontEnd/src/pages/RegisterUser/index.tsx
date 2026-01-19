@@ -10,6 +10,7 @@ import type { RootReducer } from '../../store'
 
 import { Button } from '../../styles'
 import { Container } from './styles'
+import Modal from '../../components/Modal'
 
 const RegisterUser = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -51,26 +52,6 @@ const RegisterUser = () => {
   }
 
   if (isAuthenticated) return <Navigate to="/" />
-
-  if (isSuccess)
-    return (
-      <Container>
-        <div className="loginContainer">
-          <p className="text">
-            <i className="fa-solid fa-check"></i>
-          </p>
-          <p className="text">Cadastro realizado com sucesso!</p>
-          <div className="formBox">
-            <div className="btnGroup">
-              <Button type="button" onClick={() => navigate('/login')}>
-                Fazer login{' '}
-                <i className="fa-solid fa-arrow-right-to-bracket"></i>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Container>
-    )
 
   return (
     <Container>
@@ -147,6 +128,15 @@ const RegisterUser = () => {
           </Link>
         </div>
       </div>
+      <Modal
+        onClose={() => navigate('/login')}
+        isOpen={isSuccess}
+        title="Parabéns!"
+      >
+        <div>
+          <p className="text">Cadastro realizado com sucesso!</p>
+        </div>
+      </Modal>
     </Container>
   )
 }

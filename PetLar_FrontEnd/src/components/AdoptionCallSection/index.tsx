@@ -1,10 +1,25 @@
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../../styles'
+import type { RootReducer } from '../../store'
+
+import Modal from '../Modal'
 
 import { CallSection } from './styles'
+import { Button } from '../../styles'
+import { useState } from 'react'
 
 const AdoptionCallSection = () => {
+  const [activeModal, setActiveModal] = useState<boolean>(false)
   const navigate = useNavigate()
+  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
+
+  const handleRedirect = () => {
+    if (isAuthenticated) {
+      navigate('/registerAnimal')
+    } else {
+      setActiveModal(true)
+    }
+  }
 
   return (
     <CallSection>
@@ -22,11 +37,24 @@ const AdoptionCallSection = () => {
           gratuito e pode mudar o destino de um animal.
         </p>
         <div className="btnContainer">
-          <Button onClick={() => navigate('/registerAnimal')}>
+          <Button onClick={handleRedirect}>
             Cadastrar um animalzinho <i className="fa-solid fa-paw"></i>
           </Button>
         </div>
       </div>
+
+      <Modal
+        title="Necessário login!"
+        onClose={() => {
+          setActiveModal(false)
+          navigate('/login')
+        }}
+        isOpen={activeModal}
+      >
+        <p className="text">
+          Para acessar está página <br /> você precisa estar autenticado
+        </p>
+      </Modal>
     </CallSection>
   )
 }

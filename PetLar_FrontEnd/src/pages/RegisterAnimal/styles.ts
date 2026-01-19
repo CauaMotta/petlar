@@ -13,7 +13,12 @@ export const Container = styled.section`
   }
 
   .box {
-    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-block: 16px;
   }
 `
 

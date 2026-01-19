@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { IMaskInput } from 'react-imask'
@@ -6,6 +7,7 @@ import { IMaskInput } from 'react-imask'
 import { formatDateIso } from '../../utils'
 import { usePostAnimal } from '../../hooks/useAnimals'
 
+import Modal from '../../components/Modal'
 import BackButton from '../../components/BackButton'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
@@ -50,7 +52,7 @@ const parseDateString = (originalValue: string) => {
 }
 
 const RegisterAnimal = () => {
-  const { mutate, isPending, error, isSuccess } = usePostAnimal()
+  const { mutate, isPending, error, isSuccess, reset } = usePostAnimal()
 
   const form = useFormik({
     initialValues: {
@@ -153,52 +155,11 @@ const RegisterAnimal = () => {
     return false
   }
 
-  if (isPending)
-    return (
-      <Container>
-        <BackButton path={-1} />
-        <h2 className="title">Cadastre um Pet</h2>
-        <Line />
-        <div className="box">
-          <Loader />
-          <p className="text">
-            Estamos cadastrando o seu bixinho, aguarde um pouquinho...
-          </p>
-        </div>
-      </Container>
-    )
-
-  if (error)
-    return (
-      <Container>
-        <BackButton path={-1} />
-        <h2 className="title">Cadastre um Pet</h2>
-        <Line />
-        <div className="box">
-          <i className="fa-solid fa-triangle-exclamation"></i>
-          <p className="text">
-            Parece que tivemos um problema ao fazer o cadastro, tente novamente
-            mais tarde!
-          </p>
-        </div>
-      </Container>
-    )
-
-  if (isSuccess)
-    return (
-      <Container>
-        <BackButton path={-1} />
-        <h2 className="title">Cadastre um Pet</h2>
-        <Line />
-        <div className="box">
-          <i className="fa-solid fa-check"></i>
-          <p className="text">
-            Seu bixinho foi cadastrado com sucesso. Obrigado por tornar o mundo
-            um lugar melhor!
-          </p>
-        </div>
-      </Container>
-    )
+  useEffect(() => {
+    if (isSuccess) {
+      form.resetForm()
+    }
+  }, [form, isSuccess])
 
   return (
     <Container>
@@ -382,6 +343,32 @@ const RegisterAnimal = () => {
           </Button>
         </div>
       </AnimalForm>
+      <Modal title="Cadastrando..." isOpen={isPending} onClose={() => reset()}>
+        <div className="box">
+          <Loader />
+          <p className="text">
+            Estamos cadastrando o seu bixinho, aguarde um pouquinho...
+          </p>
+        </div>
+      </Modal>
+      <Modal title="Ops..." isOpen={!!error} onClose={() => reset()}>
+        <div className="box">
+          <i className="fa-solid fa-triangle-exclamation"></i>
+          <p className="text">
+            Parece que tivemos um problema ao fazer o cadastro, <br /> tente
+            novamente mais tarde!
+          </p>
+        </div>
+      </Modal>
+      <Modal title="Obrigado!" isOpen={isSuccess} onClose={() => reset()}>
+        <div className="box">
+          <i className="fa-solid fa-check"></i>
+          <p className="text">
+            Seu bixinho foi cadastrado com sucesso. <br /> Obrigado por tornar o
+            mundo um lugar melhor!
+          </p>
+        </div>
+      </Modal>
     </Container>
   )
 }
