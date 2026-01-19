@@ -12,6 +12,8 @@ import type { ApiError } from '../types/errorType'
 type Filter = {
   status?: string
   type?: string
+  page?: number
+  size?: number
 }
 
 const buildQueryString = (filter?: Filter) => {
@@ -21,6 +23,8 @@ const buildQueryString = (filter?: Filter) => {
 
   if (filter.status) params.append('status', filter.status)
   if (filter.type) params.append('type', filter.type)
+  if (filter.page) params.append('page', filter.page.toString())
+  if (filter.size) params.append('size', filter.size.toString())
 
   const query = params.toString()
   return query ? `?${query}` : ''
@@ -35,7 +39,8 @@ export const useGetAllAnimals = (filter: Filter) => {
 
   return {
     ...query,
-    data: query.data?.content ?? []
+    data: query.data?.content ?? [],
+    totalPages: query.data?.totalPages
   }
 }
 

@@ -4,7 +4,6 @@ import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
-import Modal from '../../components/Modal'
 
 import { useGetAllAnimals } from '../../hooks/useAnimals'
 
@@ -22,15 +21,30 @@ const options = [
 const Home = () => {
   const [typeFilter, setTypeFilter] = useState<string>()
   const [showAdopted, setShowAdopted] = useState<boolean>(true)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentAdoptedPage, setCurrentAdoptedPage] = useState<number>(1)
   const {
     data: available,
     isLoading,
-    isError
-  } = useGetAllAnimals({ status: 'disponivel', type: typeFilter })
-  const { data: adopted } = useGetAllAnimals({
-    status: 'adotado',
-    type: typeFilter
+    isError,
+    totalPages
+  } = useGetAllAnimals({
+    status: 'disponivel',
+    type: typeFilter,
+    size: 10,
+    page: currentPage - 1
   })
+  const { data: adopted, totalPages: totalAdoptedPages } = useGetAllAnimals({
+    status: 'adotado',
+    type: typeFilter,
+    size: 4,
+    page: currentAdoptedPage - 1
+  })
+
+  const handlePageClick = (pageNumber: number) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setCurrentPage(pageNumber)
+  }
 
   if (isLoading)
     return (
@@ -55,7 +69,6 @@ const Home = () => {
 
   return (
     <div>
-      <Modal />
       <Container>
         <div className="filterBox">
           <p className="text--small">
@@ -69,6 +82,8 @@ const Home = () => {
             }
             onChange={(option) => {
               setTypeFilter((option?.value as string) ?? '')
+              setCurrentPage(1)
+              setCurrentAdoptedPage(1)
             }}
             options={options}
             fontSize={12}
@@ -109,6 +124,40 @@ const Home = () => {
                 <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
+            {totalPages && totalPages > 1 && (
+              <div className="pagesContainer">
+                <ul>
+                  <li>
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => handlePageClick(currentPage - 1)}
+                      className="navBtn"
+                    >
+                      <i className="fa-solid fa-chevron-left"></i>
+                    </button>
+                  </li>
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <li key={i + 1}>
+                      <button
+                        className={currentPage === i + 1 ? 'active' : ''}
+                        onClick={() => handlePageClick(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+                  <li>
+                    <button
+                      disabled={currentPage === totalPages}
+                      onClick={() => handlePageClick(currentPage + 1)}
+                      className="navBtn"
+                    >
+                      <i className="fa-solid fa-chevron-right"></i>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
           </>
         )}
 
@@ -122,6 +171,40 @@ const Home = () => {
                 <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
+            {totalAdoptedPages && totalAdoptedPages > 1 && (
+              <div className="pagesContainer">
+                <ul>
+                  <li>
+                    <button
+                      disabled={currentAdoptedPage === 1}
+                      onClick={() => handlePageClick(currentAdoptedPage - 1)}
+                      className="navBtn"
+                    >
+                      <i className="fa-solid fa-chevron-left"></i>
+                    </button>
+                  </li>
+                  {Array.from({ length: totalAdoptedPages }, (_, i) => (
+                    <li key={i + 1}>
+                      <button
+                        className={currentAdoptedPage === i + 1 ? 'active' : ''}
+                        onClick={() => handlePageClick(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+                  <li>
+                    <button
+                      disabled={currentAdoptedPage === totalAdoptedPages}
+                      onClick={() => handlePageClick(currentAdoptedPage + 1)}
+                      className="navBtn"
+                    >
+                      <i className="fa-solid fa-chevron-right"></i>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
           </>
         )}
         <Line />
