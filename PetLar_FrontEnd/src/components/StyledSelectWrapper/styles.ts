@@ -1,14 +1,16 @@
 import styled from 'styled-components'
 
 type Props = {
-  fontSize?: number
-  minWidth?: number
+  $fontSize?: number
+  $minWidth?: number
 }
 
 export const StyledSelect = styled.div<Props>`
   .custom-select__control {
-    min-width: ${(props) => (props.minWidth ? `${props.minWidth}px` : 'auto')};
-    font-size: ${(props) => (props.fontSize ? `${props.fontSize}px` : '16px')};
+    min-width: ${(props) =>
+      props.$minWidth ? `${props.$minWidth}px` : 'auto'};
+    font-size: ${(props) =>
+      props.$fontSize ? `${props.$fontSize}px` : '16px'};
     background-color: ${({ theme }) => theme.colors.secondaryColor};
     border-color: ${({ theme }) => theme.colors.highlightColor};
     border-radius: 0;
@@ -28,7 +30,8 @@ export const StyledSelect = styled.div<Props>`
 
   .custom-select__menu {
     background-color: ${({ theme }) => theme.colors.backgroundColor};
-    font-size: ${(props) => (props.fontSize ? `${props.fontSize}px` : '16px')};
+    font-size: ${(props) =>
+      props.$fontSize ? `${props.$fontSize}px` : '16px'};
     border-radius: 0;
     margin-top: 0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

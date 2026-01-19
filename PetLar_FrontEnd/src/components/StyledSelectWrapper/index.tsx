@@ -25,7 +25,7 @@ const StyledSelectWrapper = ({
   minWidth
 }: Props) => {
   return (
-    <StyledSelect fontSize={fontSize} minWidth={minWidth}>
+    <StyledSelect $fontSize={fontSize} $minWidth={minWidth}>
       <Select
         classNamePrefix="custom-select"
         value={value}

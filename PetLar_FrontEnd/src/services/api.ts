@@ -1,8 +1,11 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
+const API_URL = import.meta.env.VITE_API_URL
+const API_PREFIX = import.meta.env.VITE_API_PREFIX
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: API_URL + API_PREFIX
 })
 
 api.interceptors.request.use((config) => {

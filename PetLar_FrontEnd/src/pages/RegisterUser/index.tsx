@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { PulseLoader } from 'react-spinners'
@@ -50,7 +50,7 @@ const RegisterUser = () => {
     return false
   }
 
-  if (isAuthenticated) navigate('/')
+  if (isAuthenticated) return <Navigate to="/" />
 
   if (isSuccess)
     return (

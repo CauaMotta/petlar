@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { PulseLoader } from 'react-spinners'
@@ -44,10 +44,10 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (isSuccess) navigate('/')
+    if (isSuccess) navigate('/', { replace: true })
   }, [navigate, isSuccess])
 
-  if (isAuthenticated) navigate('/')
+  if (isAuthenticated) return <Navigate to="/" />
 
   return (
     <Container>

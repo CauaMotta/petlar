@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { IMaskInput } from 'react-imask'
-import { useSelector } from 'react-redux'
 
-import type { RootReducer } from '../../store'
 import { formatDateIso } from '../../utils'
 import { usePostAnimal } from '../../hooks/useAnimals'
 
@@ -54,8 +51,6 @@ const parseDateString = (originalValue: string) => {
 
 const RegisterAnimal = () => {
   const { mutate, isPending, error, isSuccess } = usePostAnimal()
-  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
-  const navigate = useNavigate()
 
   const form = useFormik({
     initialValues: {
@@ -157,8 +152,6 @@ const RegisterAnimal = () => {
     if (isTouched && isInvalid) return true
     return false
   }
-
-  if (!isAuthenticated) navigate('/login')
 
   if (isPending)
     return (
