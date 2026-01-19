@@ -13,6 +13,13 @@ export const Container = styled.section`
     align-items: center;
     gap: 16px;
     margin-bottom: 24px;
+
+    .btnFilter {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+    }
   }
 `
 

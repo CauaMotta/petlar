@@ -20,6 +20,7 @@ const options = [
 
 const Home = () => {
   const [typeFilter, setTypeFilter] = useState<string>()
+  const [showAdopted, setShowAdopted] = useState<boolean>(true)
   const {
     data: available,
     isLoading,
@@ -56,7 +57,7 @@ const Home = () => {
       <Container>
         <div className="filterBox">
           <p className="text--small">
-            <i className="fa-solid fa-filter"></i> Filtrar:
+            <i className="fa-solid fa-filter"></i> Filtrar
           </p>
           <StyledSelectWrapper
             placeholder="Selecione..."
@@ -70,6 +71,22 @@ const Home = () => {
             options={options}
             fontSize={12}
           />
+          <button
+            onClick={() => setShowAdopted(!showAdopted)}
+            className="btnFilter"
+            type="button"
+          >
+            {showAdopted ? (
+              <>
+                <i className="fa-solid fa-eye-slash"></i> esconder animais
+                adotados
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-eye"></i> mostrar animais adotados
+              </>
+            )}
+          </button>
         </div>
         {available.length == 0 && (
           <div className="box">
@@ -93,7 +110,7 @@ const Home = () => {
           </>
         )}
 
-        {adopted.length > 0 && (
+        {showAdopted && adopted.length > 0 && (
           <>
             <p className="text">
               De uma olhada nestes amiguinhos que já conseguiram um lar:
