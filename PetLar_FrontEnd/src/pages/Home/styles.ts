@@ -8,11 +8,32 @@ export const Container = styled.section`
   margin-bottom: 32px;
   flex: 1;
 
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .image {
+      max-width: 512px;
+      width: 100%;
+
+      img {
+        display: block;
+        width: 100%;
+        object-fit: contain;
+        aspect-ratio: 16/9;
+        opacity: 0.8;
+      }
+    }
+  }
+
   .filterBox {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 24px;
+    margin-block: 24px;
 
     .btnFilter {
       background: transparent;

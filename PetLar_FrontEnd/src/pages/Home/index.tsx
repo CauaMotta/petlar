@@ -70,6 +70,16 @@ const Home = () => {
   return (
     <div>
       <Container>
+        <div className="welcome">
+          <div className="image">
+            <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
+          </div>
+          <h1>Bem-vindo ao PetLar!</h1>
+          <p className="text">
+            Encontre um novo amigo e dê um lar cheio de carinho.
+          </p>
+        </div>
+        <Line />
         <div className="filterBox">
           <p className="text--small">
             <i className="fa-solid fa-filter"></i> Filtrar
@@ -116,8 +126,8 @@ const Home = () => {
         {available.length > 0 && (
           <>
             <p className="text">
-              Então você está em busca de um AUmigo? De uma olhada nessas
-              fofuras que estão a espera de um lar:
+              Você está em busca de um AUmigo para dividir momentos especiais?
+              Esses bichinhos estão esperando por você
             </p>
             <CardContainer>
               {available.map((entity) => (
@@ -164,7 +174,7 @@ const Home = () => {
         {showAdopted && adopted.length > 0 && (
           <>
             <p className="text">
-              De uma olhada nestes amiguinhos que já conseguiram um lar:
+              De uma olhada também nestes amiguinhos que já conseguiram um lar
             </p>
             <CardContainer>
               {adopted.map((entity) => (
