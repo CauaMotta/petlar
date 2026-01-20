@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -246,7 +247,8 @@ public class UserController {
         ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
 
         if (result.newToken() != null) {
-            builder.header("Authorization", "Bearer " + result.newToken());
+            builder.header(HttpHeaders.AUTHORIZATION, "Bearer " + result.newToken());
+            builder.header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization");
         }
 
         return builder.body(result.userResponseDto());
