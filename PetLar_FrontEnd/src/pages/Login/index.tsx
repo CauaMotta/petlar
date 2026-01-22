@@ -6,10 +6,11 @@ import { PulseLoader } from 'react-spinners'
 import { useTheme } from 'styled-components'
 import { useSelector } from 'react-redux'
 
+import StyledButton from '../../components/StyledButton'
+
 import { useLogin } from '../../hooks/useLogin'
 import type { RootReducer } from '../../store'
 
-import { Button } from '../../styles'
 import { Container } from './styles'
 
 const Login = () => {
@@ -93,7 +94,7 @@ const Login = () => {
             </div>
           )}
           <div className="btnGroup">
-            <Button type="button" onClick={() => form.handleSubmit()}>
+            <StyledButton onClick={() => form.handleSubmit()}>
               {isPending ? (
                 <PulseLoader color={theme.colors.fontColor} size={8} />
               ) : (
@@ -101,7 +102,7 @@ const Login = () => {
                   Login <i className="fa-solid fa-arrow-right-to-bracket"></i>
                 </>
               )}
-            </Button>
+            </StyledButton>
           </div>
           <Link className="registerLink" to={'/register'}>
             Ainda não é cadastrado? <br /> <u>Clique aqui</u> e se cadastre!

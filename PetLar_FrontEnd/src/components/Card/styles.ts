@@ -54,21 +54,15 @@ export const Card = styled.div`
       line-height: 1;
     }
 
+    .animalInfo {
+      margin-bottom: 16px;
+    }
+
     .text--small {
       padding-left: 8px;
 
       b {
         font-weight: 600;
-      }
-    }
-
-    ${Button} {
-      width: 100%;
-      margin-top: 16px;
-
-      &:disabled {
-        background-color: ${({ theme }) => theme.colors.highlightColor};
-        border-color: ${({ theme }) => theme.colors.highlightColor};
       }
     }
   }

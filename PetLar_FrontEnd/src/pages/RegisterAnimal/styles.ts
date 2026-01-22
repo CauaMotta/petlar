@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Button, Line } from '../../styles'
+import { Line } from '../../styles'
 import variables from '../../styles/variables'
 
 export const Container = styled.section`
@@ -82,28 +82,14 @@ export const AnimalForm = styled.form`
     display: flex;
     gap: 8px;
 
-    ${Button} {
-      background-color: ${({ theme }) => theme.colors.highlightColor};
-      border-color: ${({ theme }) => theme.colors.highlightColor};
+    .reset {
+      i {
+        transition: transform 0.3s ease;
+      }
 
       &:hover {
-        background-color: ${({ theme }) => theme.colors.primaryColor};
-        border-color: ${({ theme }) => theme.colors.primaryColor};
-
-        &:disabled {
-          background-color: ${({ theme }) => theme.colors.highlightColor};
-          border-color: ${({ theme }) => theme.colors.highlightColor};
-        }
-      }
-      &.reset {
         i {
-          transition: transform 0.3s ease;
-        }
-
-        &:hover {
-          i {
-            transform: rotate(90deg);
-          }
+          transform: rotate(90deg);
         }
       }
     }

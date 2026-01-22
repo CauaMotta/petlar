@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { useTheme } from 'styled-components'
 
 import Modal from '../Modal'
+import StyledButton from '../StyledButton'
 
 import type { RootReducer } from '../../store'
 import {
@@ -15,6 +17,7 @@ import {
 import { Container } from './styles'
 
 const ProfileInfo = () => {
+  const theme = useTheme()
   const { user } = useSelector((state: RootReducer) => state.auth)
   const [editProfile, setEditProfile] = useState<boolean>(false)
   const [editPassword, setEditPassword] = useState<boolean>(false)
@@ -95,22 +98,35 @@ const ProfileInfo = () => {
         <p className="text">{user?.email}</p>
       </div>
       <div className="btnGroup">
-        <button
-          type="button"
+        <StyledButton
+          backgroundColor={theme.colors.highlightColor}
+          paddingBlock="6px"
+          paddingInline="12px"
+          fontSize="14px"
+          maxWidth="fit-content"
           onClick={() => {
             setEditProfile(true)
           }}
         >
-          <i className="fa-solid fa-pen-to-square"></i> Editar perfil
-        </button>
-        <button
-          type="button"
+          <>
+            <i className="fa-solid fa-pen-to-square"></i> Editar perfil
+          </>
+        </StyledButton>
+
+        <StyledButton
+          backgroundColor={theme.colors.highlightColor}
+          paddingBlock="6px"
+          paddingInline="12px"
+          fontSize="14px"
+          maxWidth="fit-content"
           onClick={() => {
             setEditPassword(true)
           }}
         >
-          <i className="fa-solid fa-key"></i> Trocar senha
-        </button>
+          <>
+            <i className="fa-solid fa-key"></i> Trocar senha
+          </>
+        </StyledButton>
       </div>
 
       <Modal
@@ -168,21 +184,29 @@ const ProfileInfo = () => {
             </small>
           )}
           <div className="btnGroup">
-            <button
-              type="button"
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 editProfileForm.resetForm()
                 reset()
               }}
             >
-              Reset <i className="fa-solid fa-arrows-rotate"></i>
-            </button>
-            <button
-              type="button"
+              <>
+                Reset <i className="fa-solid fa-arrows-rotate"></i>
+              </>
+            </StyledButton>
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => editProfileForm.handleSubmit()}
             >
-              Salvar <i className="fa-solid fa-floppy-disk"></i>
-            </button>
+              <>
+                Salvar <i className="fa-solid fa-floppy-disk"></i>
+              </>
+            </StyledButton>
           </div>
           <button
             className="btnDelete"
@@ -232,21 +256,29 @@ const ProfileInfo = () => {
             </small>
           )}
           <div className="btnGroup">
-            <button
-              type="button"
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 editPasswordForm.resetForm()
                 cpReset()
               }}
             >
-              Reset <i className="fa-solid fa-arrows-rotate"></i>
-            </button>
-            <button
-              type="button"
+              <>
+                Reset <i className="fa-solid fa-arrows-rotate"></i>
+              </>
+            </StyledButton>
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => editPasswordForm.handleSubmit()}
             >
-              Salvar <i className="fa-solid fa-floppy-disk"></i>
-            </button>
+              <>
+                Salvar <i className="fa-solid fa-floppy-disk"></i>
+              </>
+            </StyledButton>
           </div>
         </form>
       </Modal>

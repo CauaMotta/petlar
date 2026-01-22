@@ -21,6 +21,7 @@ import Loader from '../../components/Loader'
 
 import { AnimalForm, Container } from './styles'
 import { Button, Line } from '../../styles'
+import StyledButton from '../../components/StyledButton'
 
 const options = [
   { value: 'CACHORRO', label: 'Cachorro' },
@@ -368,20 +369,24 @@ const EditAnimal = () => {
           />
         </div>
         <div className="btnGroup">
-          <Button
+          <StyledButton
+            maxWidth="fit-content"
             className="reset"
-            type="button"
             onClick={() => form.resetForm()}
           >
-            Resetar <i className="fa-solid fa-rotate"></i>
-          </Button>
-          <Button
+            <>
+              Resetar <i className="fa-solid fa-rotate"></i>
+            </>
+          </StyledButton>
+          <StyledButton
+            maxWidth="fit-content"
             disabled={!form.isValid || !form.dirty}
-            type="button"
             onClick={() => form.handleSubmit()}
           >
-            Atualizar <i className="fa-solid fa-paw"></i>
-          </Button>
+            <>
+              Atualizar <i className="fa-solid fa-paw"></i>
+            </>
+          </StyledButton>
         </div>
       </AnimalForm>
       <Modal title="Atualizando..." isOpen={isPending} onClose={() => reset()}>

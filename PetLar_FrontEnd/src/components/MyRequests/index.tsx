@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
+import StyledButton from '../StyledButton'
+import Modal from '../Modal'
 
 import {
   useEditReason,
@@ -10,11 +13,10 @@ import {
   useStatusUpdate
 } from '../../hooks/useAdoption'
 
-import Modal from '../Modal'
-
 import { Container } from './styles'
 
 const MyRequests = () => {
+  const theme = useTheme()
   const [showModal, setShowModal] = useState<boolean>(false)
   const [showEditModal, setShowEditModal] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -56,6 +58,10 @@ const MyRequests = () => {
     return false
   }
 
+  useEffect(() => {
+    if (isSuccess) setShowEditModal(false)
+  }, [isSuccess])
+
   return (
     <Container>
       <div className="animals">
@@ -76,21 +82,27 @@ const MyRequests = () => {
               <div className="btnGroup">
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
-                    <button
-                      type="button"
+                    <StyledButton
+                      fontSize="14px"
                       onClick={() => {
                         setShowModal(true)
                         setAdoption(adoption)
                       }}
                     >
-                      <i className="fa-solid fa-eye"></i> Visualizar
-                    </button>
+                      <>
+                        <i className="fa-solid fa-eye"></i> Visualizar
+                      </>
+                    </StyledButton>
                   </>
                 ) : (
                   <>
-                    <button type="button" disabled>
-                      {adoption.status}!
-                    </button>
+                    <StyledButton
+                      fontSize="14px"
+                      disabled={true}
+                      onClick={() => {}}
+                    >
+                      <>{adoption.status}!</>
+                    </StyledButton>
                   </>
                 )}
               </div>
@@ -143,24 +155,32 @@ const MyRequests = () => {
             Motivo: <br /> {adoption?.reason}
           </p>
           <div className="btnGroup">
-            <button
-              type="button"
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 mutate({ id: adoption!.id, status: 'cancel' })
                 setShowModal(false)
               }}
             >
-              Cancelar <i className="fa-solid fa-xmark"></i>
-            </button>
-            <button
-              type="button"
+              <>
+                Cancelar <i className="fa-solid fa-xmark"></i>
+              </>
+            </StyledButton>
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 setShowEditModal(true)
                 setShowModal(false)
               }}
             >
-              Editar <i className="fa-solid fa-pen-to-square"></i>
-            </button>
+              <>
+                Editar <i className="fa-solid fa-pen-to-square"></i>
+              </>
+            </StyledButton>
           </div>
         </div>
       </Modal>
@@ -195,24 +215,31 @@ const MyRequests = () => {
             </small>
           )}
           <div className="btnGroup">
-            <button
-              type="button"
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 setShowEditModal(false)
                 form.resetForm()
               }}
             >
-              Cancelar <i className="fa-solid fa-xmark"></i>
-            </button>
-            <button
-              type="button"
+              <>
+                Cancelar <i className="fa-solid fa-xmark"></i>
+              </>
+            </StyledButton>
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 form.handleSubmit()
-                setShowEditModal(false)
               }}
             >
-              Salvar <i className="fa-solid fa-floppy-disk"></i>
-            </button>
+              <>
+                Salvar <i className="fa-solid fa-floppy-disk"></i>
+              </>
+            </StyledButton>
           </div>
         </div>
       </Modal>

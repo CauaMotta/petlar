@@ -11,9 +11,10 @@ import Modal from '../../components/Modal'
 import BackButton from '../../components/BackButton'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
+import StyledButton from '../../components/StyledButton'
 
 import { AnimalForm, Container } from './styles'
-import { Button, Line } from '../../styles'
+import { Line } from '../../styles'
 
 const options = [
   { value: 'cachorro', label: 'Cachorro' },
@@ -332,20 +333,24 @@ const RegisterAnimal = () => {
           />
         </div>
         <div className="btnGroup">
-          <Button
+          <StyledButton
+            maxWidth="fit-content"
             className="reset"
-            type="button"
             onClick={() => form.resetForm()}
           >
-            Resetar <i className="fa-solid fa-rotate"></i>
-          </Button>
-          <Button
+            <>
+              Resetar <i className="fa-solid fa-rotate"></i>
+            </>
+          </StyledButton>
+          <StyledButton
+            maxWidth="fit-content"
             disabled={!form.isValid || !form.dirty}
-            type="button"
             onClick={() => form.handleSubmit()}
           >
-            Cadastrar <i className="fa-solid fa-paw"></i>
-          </Button>
+            <>
+              Cadastrar <i className="fa-solid fa-paw"></i>
+            </>
+          </StyledButton>
         </div>
       </AnimalForm>
       <Modal title="Cadastrando..." isOpen={isPending} onClose={() => reset()}>

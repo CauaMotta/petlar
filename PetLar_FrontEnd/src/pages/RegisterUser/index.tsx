@@ -5,12 +5,13 @@ import { PulseLoader } from 'react-spinners'
 import { useTheme } from 'styled-components'
 import { useSelector } from 'react-redux'
 
+import Modal from '../../components/Modal'
+import StyledButton from '../../components/StyledButton'
+
 import { useRegisterUser } from '../../hooks/useUser'
 import type { RootReducer } from '../../store'
 
-import { Button } from '../../styles'
 import { Container } from './styles'
-import Modal from '../../components/Modal'
 
 const RegisterUser = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -113,7 +114,7 @@ const RegisterUser = () => {
             </div>
           )}
           <div className="btnGroup">
-            <Button type="button" onClick={() => form.handleSubmit()}>
+            <StyledButton onClick={() => form.handleSubmit()}>
               {isPending ? (
                 <PulseLoader color={theme.colors.fontColor} size={8} />
               ) : (
@@ -121,7 +122,7 @@ const RegisterUser = () => {
                   Cadastrar <i className="fa-solid fa-paw"></i>
                 </>
               )}
-            </Button>
+            </StyledButton>
           </div>
           <Link className="registerLink" to={'/login'}>
             Já possuí conta? <br /> <u>Clique aqui</u> e faça o login.

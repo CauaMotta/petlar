@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
+import Modal from '../Modal'
+import StyledButton from '../StyledButton'
 
 import { useDeleteAnimal, useGetMyAnimals } from '../../hooks/useAnimals'
-
-import Modal from '../Modal'
 
 import { Container } from './styles'
 
 const MyAnimals = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -36,31 +38,36 @@ const MyAnimals = () => {
             <div className="btnGroup">
               {animal.status.toLowerCase() !== 'adotado' ? (
                 <>
-                  <button
-                    type="button"
+                  <StyledButton
+                    fontSize="14px"
                     onClick={() => navigate('/editAnimal/' + animal.id)}
                   >
-                    <i className="fa-solid fa-pen-to-square"></i> Editar
-                  </button>
-                  <button
-                    type="button"
+                    <>
+                      <i className="fa-solid fa-pen-to-square"></i> Editar
+                    </>
+                  </StyledButton>
+                  <StyledButton
+                    fontSize="14px"
+                    backgroundColor="#E3C1A3"
                     onClick={() => {
                       setShowDeleteModal(true)
                       setAnimal(animal)
                     }}
-                    style={{
-                      borderColor: '#E3C1A3',
-                      backgroundColor: '#E3C1A3'
-                    }}
                   >
-                    <i className="fa-solid fa-ban"></i> Deletar
-                  </button>
+                    <>
+                      <i className="fa-solid fa-ban"></i> Deletar
+                    </>
+                  </StyledButton>
                 </>
               ) : (
                 <>
-                  <button type="button" disabled>
-                    Adotado!
-                  </button>
+                  <StyledButton
+                    fontSize="14px"
+                    disabled={true}
+                    onClick={() => {}}
+                  >
+                    <>Adotado!</>
+                  </StyledButton>
                 </>
               )}
             </div>
@@ -110,18 +117,25 @@ const MyAnimals = () => {
         <div className="modalContainer">
           <p>Você quer excluir este animal?</p>
           <div className="btnGroup">
-            <button
-              type="button"
+            <StyledButton
+              fontSize="14px"
+              backgroundColor={theme.colors.highlightColor}
+              maxWidth="fit-content"
               onClick={() => {
                 mutate(animal!.id)
                 setShowDeleteModal(false)
               }}
             >
-              Sim
-            </button>
-            <button type="button" onClick={() => setShowDeleteModal(false)}>
-              Não
-            </button>
+              <>Sim</>
+            </StyledButton>
+            <StyledButton
+              fontSize="14px"
+              backgroundColor={theme.colors.highlightColor}
+              maxWidth="fit-content"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              <>Não</>
+            </StyledButton>
           </div>
         </div>
       </Modal>

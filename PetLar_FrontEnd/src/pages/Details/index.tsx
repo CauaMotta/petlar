@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useFormik } from 'formik'
+import { useTheme } from 'styled-components'
 import * as Yup from 'yup'
 
 import BackButton from '../../components/BackButton'
 import Loader from '../../components/Loader'
 import Modal from '../../components/Modal'
+import StyledButton from '../../components/StyledButton'
 
 import { API_URL } from '../../main'
 import { useGetAnimalById } from '../../hooks/useAnimals'
@@ -15,13 +17,14 @@ import { formatDateBr, formatWeight } from '../../utils'
 import type { RootReducer } from '../../store'
 
 import { Card, Container, Description } from './styles'
-import { Line, Button } from '../../styles'
+import { Line } from '../../styles'
 
 type Params = {
   id: string
 }
 
 const Details = () => {
+  const theme = useTheme()
   const { id } = useParams() as Params
   const { data, isLoading, isError } = useGetAnimalById(id)
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -66,6 +69,10 @@ const Details = () => {
       setShowErrorModal(true)
     }
   }
+
+  useEffect(() => {
+    if (isSuccess) setShowModal(false)
+  }, [isSuccess])
 
   if (isLoading)
     return (
@@ -124,9 +131,11 @@ const Details = () => {
             <p className="text">
               <b>Registrado por:</b> {data.author.name}
             </p>
-            <Button onClick={handleClick}>
-              Quero Adotar! <i className="fa-solid fa-paw"></i>
-            </Button>
+            <StyledButton maxWidth="fit-content" onClick={handleClick}>
+              <>
+                Quero Adotar! <i className="fa-solid fa-paw"></i>
+              </>
+            </StyledButton>
           </div>
         </div>
       </Card>
@@ -176,25 +185,33 @@ const Details = () => {
             </small>
           )}
           <div className="btnGroup">
-            <button
-              type="button"
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 form.resetForm()
                 reset()
                 setShowModal(false)
               }}
             >
-              Cancelar <i className="fa-solid fa-xmark"></i>
-            </button>
-            <button
-              type="button"
+              <>
+                Cancelar <i className="fa-solid fa-xmark"></i>
+              </>
+            </StyledButton>
+
+            <StyledButton
+              backgroundColor={theme.colors.highlightColor}
+              fontSize="14px"
+              maxWidth="fit-content"
               onClick={() => {
                 form.handleSubmit()
-                setShowModal(false)
               }}
             >
-              Enviar <i className="fa-solid fa-share"></i>
-            </button>
+              <>
+                Enviar <i className="fa-solid fa-share"></i>
+              </>
+            </StyledButton>
           </div>
         </form>
       </Modal>

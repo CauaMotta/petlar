@@ -76,18 +76,22 @@ export const Button = styled.button`
   padding: 8px 16px;
 
   color: ${({ theme }) => theme.colors.fontColor};
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
   line-height: 1;
 
   background-color: ${({ theme }) => theme.colors.primaryColor};
-  border: 2px solid ${({ theme }) => theme.colors.primaryColor};
+  border: 1px solid ${({ theme }) => theme.colors.primaryColor};
   border-radius: 8px;
 
   cursor: pointer;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.hoverColor};
-    border: 2px solid ${({ theme }) => theme.colors.hoverColor};
+    opacity: 0.8;
+  }
+  &:disabled {
+    background-color: ${({ theme }) => theme.colors.highlightColor};
+    border-color: ${({ theme }) => theme.colors.highlightColor};
+    opacity: 1;
   }
 `

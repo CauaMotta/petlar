@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 
+import StyledButton from '../StyledButton'
+
 import { formatDateBr } from '../../utils'
 import { API_URL } from '../../main'
 
 import * as S from './styles'
-import { Button, Line } from '../../styles'
+import { Line } from '../../styles'
 
 type Props = {
   animal: Animal
@@ -27,19 +29,21 @@ const Card = ({ animal }: Props) => {
       <div className="content">
         <h2>{animal.name}</h2>
         <Line />
-        <p className="text--small">
-          <b>data de nascimento:</b> {formatDateBr(animal.birthDate)}
-        </p>
-        <p className="text--small">
-          <b>espécie:</b> {animal.type}
-        </p>
-        <p className="text--small">
-          <b>Porte:</b> {animal.size}
-        </p>
-        <p className="text--small">
-          <b>Sexo:</b> {animal.sex}
-        </p>
-        <Button
+        <div className="animalInfo">
+          <p className="text--small">
+            <b>data de nascimento:</b> {formatDateBr(animal.birthDate)}
+          </p>
+          <p className="text--small">
+            <b>espécie:</b> {animal.type}
+          </p>
+          <p className="text--small">
+            <b>Porte:</b> {animal.size}
+          </p>
+          <p className="text--small">
+            <b>Sexo:</b> {animal.sex}
+          </p>
+        </div>
+        <StyledButton
           disabled={animal.status === 'ADOTADO' ? true : false}
           onClick={() => navigate(`/details/${animal.id}`)}
         >
@@ -50,7 +54,7 @@ const Card = ({ animal }: Props) => {
               Ver mais <i className="fa-solid fa-eye"></i>
             </>
           )}
-        </Button>
+        </StyledButton>
       </div>
     </S.Card>
   )

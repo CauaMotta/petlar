@@ -13,28 +13,6 @@ export const Container = styled.div`
       display: flex;
       flex-direction: column;
       gap: 4px;
-
-      button {
-        background-color: ${({ theme }) => theme.colors.primaryColor};
-        border: 1px solid ${({ theme }) => theme.colors.primaryColor};
-        border-radius: 6px;
-        width: 100%;
-        padding: 4px 0;
-        color: ${({ theme }) => theme.colors.fontColor};
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-
-        &:hover {
-          opacity: 0.8;
-        }
-
-        &:disabled {
-          background-color: ${({ theme }) => theme.colors.highlightColor};
-          border-color: ${({ theme }) => theme.colors.highlightColor};
-          opacity: 1;
-        }
-      }
     }
   }
 
@@ -49,21 +27,6 @@ export const Container = styled.div`
       align-items: end;
       justify-content: center;
       gap: 6px;
-
-      button {
-        padding: 4px 8px;
-        color: ${({ theme }) => theme.colors.fontColor};
-        font-size: 14px;
-        font-weight: 500;
-        background-color: ${({ theme }) => theme.colors.highlightColor};
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-
-        &:hover {
-          opacity: 0.8;
-        }
-      }
     }
   }
 

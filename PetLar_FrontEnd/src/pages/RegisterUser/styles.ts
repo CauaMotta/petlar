@@ -51,10 +51,6 @@ export const Container = styled.section`
       justify-content: center;
       align-items: center;
       margin-top: 16px;
-
-      button {
-        width: 100%;
-      }
     }
   }
 
