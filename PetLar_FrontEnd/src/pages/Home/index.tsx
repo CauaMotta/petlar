@@ -134,7 +134,7 @@ const Home = () => {
                 <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
-            {totalPages && totalPages > 1 && (
+            {!!totalPages && totalPages > 1 && (
               <div className="pagesContainer">
                 <ul>
                   <li>
@@ -181,7 +181,7 @@ const Home = () => {
                 <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
-            {totalAdoptedPages && totalAdoptedPages > 1 && (
+            {!!totalAdoptedPages && totalAdoptedPages > 1 && (
               <div className="pagesContainer">
                 <ul>
                   <li>

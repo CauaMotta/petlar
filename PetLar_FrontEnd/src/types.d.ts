@@ -19,9 +19,24 @@ declare type RegisterPayload = {
 }
 
 declare type User = {
-  id: string
+  id?: string
   name: string
   email: string
+}
+
+type changePasswordPayload = {
+  password: string
+}
+
+// Adoption
+
+declare type Adoption = {
+  id: string
+  status: string
+  animal: Animal
+  animalOwner: Author
+  adopter: Author
+  reason: string
 }
 
 // Animal
@@ -45,8 +60,8 @@ declare type Animal = {
   description?: string
 }
 
-declare type ApiResponse = {
-  content: Animal[]
+declare type ApiResponse<T extends Animal | Adoption> = {
+  content: T[]
   totalPages: number
   totalElements: number
   number: number
@@ -55,15 +70,11 @@ declare type ApiResponse = {
   last: boolean
 }
 
-declare type CreateAnimal = {
-  name: string
-  age: number
-  breed: string
-  sex: string
-  weight: number | null
-  size: string
-  description?: string
-  urlImage?: string
-  author: string
-  phone: string
+// Filter
+
+type Filter = {
+  status?: string
+  type?: string
+  page?: number
+  size?: number
 }

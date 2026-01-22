@@ -1,11 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { IMaskInput } from 'react-imask'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import { formatDateIso } from '../../utils'
-import { usePostAnimal } from '../../hooks/useAnimals'
+import { formatDateBr, formatDateIso } from '../../utils'
+import {
+  useGetAnimalById,
+  usePostAnimal,
+  useUpdateAnimal
+} from '../../hooks/useAnimals'
+import type { RootReducer } from '../../store'
 
 import Modal from '../../components/Modal'
 import BackButton from '../../components/BackButton'
@@ -16,21 +23,21 @@ import { AnimalForm, Container } from './styles'
 import { Button, Line } from '../../styles'
 
 const options = [
-  { value: 'cachorro', label: 'Cachorro' },
-  { value: 'gato', label: 'Gato' },
-  { value: 'passaro', label: 'Pássaro' },
-  { value: 'outro', label: 'Outro' }
+  { value: 'CACHORRO', label: 'Cachorro' },
+  { value: 'GATO', label: 'Gato' },
+  { value: 'PASSARO', label: 'Pássaro' },
+  { value: 'OUTRO', label: 'Outro' }
 ]
 
 const sexOptions = [
-  { value: 'macho', label: 'Macho' },
-  { value: 'femea', label: 'Fêmea' }
+  { value: 'MACHO', label: 'Macho' },
+  { value: 'FEMEA', label: 'Fêmea' }
 ]
 
 const sizeOptions = [
-  { value: 'pequeno', label: 'Pequeno' },
-  { value: 'medio', label: 'Médio' },
-  { value: 'grande', label: 'Grande' }
+  { value: 'PEQUENO', label: 'Pequeno' },
+  { value: 'MEDIO', label: 'Médio' },
+  { value: 'GRANDE', label: 'Grande' }
 ]
 
 const parseDateString = (originalValue: string) => {
@@ -51,20 +58,30 @@ const parseDateString = (originalValue: string) => {
   return date
 }
 
-const RegisterAnimal = () => {
-  const { mutate, isPending, error, isSuccess, reset } = usePostAnimal()
+type Params = {
+  id: string
+}
+
+const EditAnimal = () => {
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate()
+  const { id } = useParams() as Params
+  const { data: animal, isLoading } = useGetAnimalById(id)
+  const { user } = useSelector((state: RootReducer) => state.auth)
+  const { mutate, isPending, error, isSuccess, reset } = useUpdateAnimal()
 
   const form = useFormik({
     initialValues: {
-      name: '',
-      birthDate: '',
-      weight: null,
-      type: '',
-      sex: 'macho',
-      size: 'pequeno',
+      name: animal?.name || '',
+      birthDate: formatDateBr(animal?.birthDate) || '',
+      weight: animal?.weight || null,
+      type: animal?.type || '',
+      sex: animal?.sex || '',
+      size: animal?.size || '',
       image: null as File | null,
-      description: ''
+      description: animal?.description || ''
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup.string()
         .min(3, 'Deve conter no mínimo 3 caracteres.')
@@ -142,7 +159,7 @@ const RegisterAnimal = () => {
         formData.append('image', image)
       }
 
-      mutate(formData)
+      mutate({ id, formData })
     },
     validateOnMount: true
   })
@@ -156,19 +173,34 @@ const RegisterAnimal = () => {
   }
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 100)
+
+    if (animal && user && animal.author.id !== user.id) navigate(-1)
+
     if (isSuccess) {
       form.resetForm()
     }
-  }, [form, isSuccess])
+
+    return () => clearTimeout(timer)
+  }, [animal, user, navigate, form, isSuccess])
+
+  if (loading || isLoading)
+    return (
+      <Container>
+        <div className="box">
+          <Loader />
+        </div>
+      </Container>
+    )
 
   return (
     <Container>
       <BackButton path={-1} />
-      <h2 className="title">Cadastre um Pet</h2>
+      <h2 className="title">Editando um Pet</h2>
       <Line />
-      <p className="text">
-        Que bom ver você aqui! Qual bixinho quer cadastrar?
-      </p>
+      <p className="text">O que você deseja mudar?</p>
       <AnimalForm>
         <div className="animalSelect">
           {isError('type') ? <small>* {form.errors.type}</small> : ''}
@@ -276,7 +308,9 @@ const RegisterAnimal = () => {
         </div>
         <div className="inputGroup">
           <label className="text" htmlFor="image">
-            Adicionar uma imagem:{' '}
+            {animal?.imagePath
+              ? 'Substituir a imagem atual: '
+              : 'Adicionar uma imagem: '}
             {isError('image') ? <small>* {form.errors.image}</small> : ''}
           </label>
           <label htmlFor="image" className="imageBtn">
@@ -309,7 +343,9 @@ const RegisterAnimal = () => {
         </div>
         <div className="inputGroup">
           <label className="text" htmlFor="description">
-            Adicionar uma descrição:
+            {animal?.description
+              ? 'Editar a descrição: '
+              : 'Adicionar uma descrição: '}
             {isError('description') ? (
               <small>* {form.errors.description}</small>
             ) : (
@@ -344,15 +380,15 @@ const RegisterAnimal = () => {
             type="button"
             onClick={() => form.handleSubmit()}
           >
-            Cadastrar <i className="fa-solid fa-paw"></i>
+            Atualizar <i className="fa-solid fa-paw"></i>
           </Button>
         </div>
       </AnimalForm>
-      <Modal title="Cadastrando..." isOpen={isPending} onClose={() => reset()}>
+      <Modal title="Atualizando..." isOpen={isPending} onClose={() => reset()}>
         <div className="box">
           <Loader />
           <p className="text">
-            Estamos cadastrando o seu bixinho, aguarde um pouquinho...
+            Estamos atualizando os dados do seu bixinho, aguarde um pouquinho...
           </p>
         </div>
       </Modal>
@@ -360,22 +396,26 @@ const RegisterAnimal = () => {
         <div className="box">
           <i className="fa-solid fa-triangle-exclamation"></i>
           <p className="text">
-            Parece que tivemos um problema ao fazer o cadastro, <br /> tente
+            Parece que tivemos um problema ao fazer a atualização, <br /> tente
             novamente mais tarde!
           </p>
         </div>
       </Modal>
-      <Modal title="Obrigado!" isOpen={isSuccess} onClose={() => reset()}>
+      <Modal
+        title="Sucesso!"
+        isOpen={isSuccess}
+        onClose={() => {
+          reset()
+          navigate(-1)
+        }}
+      >
         <div className="box">
           <i className="fa-solid fa-check"></i>
-          <p className="text">
-            Seu bixinho foi cadastrado com sucesso. <br /> Obrigado por tornar o
-            mundo um lugar melhor!
-          </p>
+          <p className="text">Seu bixinho foi atualizado com sucesso!</p>
         </div>
       </Modal>
     </Container>
   )
 }
 
-export default RegisterAnimal
+export default EditAnimal

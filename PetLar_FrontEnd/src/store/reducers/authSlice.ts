@@ -37,9 +37,18 @@ const authSlice = createSlice({
 
     setUser(state, action: PayloadAction<User>) {
       state.user = action.payload
+    },
+
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload
+
+      Cookies.set('token', action.payload, {
+        expires: 1,
+        sameSite: 'strict'
+      })
     }
   }
 })
 
-export const { loginSuccess, logout, setUser } = authSlice.actions
+export const { loginSuccess, logout, setUser, setToken } = authSlice.actions
 export default authSlice.reducer

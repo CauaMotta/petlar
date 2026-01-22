@@ -59,7 +59,7 @@ const RegisterUser = () => {
         <p className="title--small">Cadastre-se!</p>
         <div className="formBox">
           <div className="inputGroup">
-            <label className="text" htmlFor="email">
+            <label className="text" htmlFor="name">
               Nome {isError('name') ? <small>* {form.errors.name}</small> : ''}
             </label>
             <input
