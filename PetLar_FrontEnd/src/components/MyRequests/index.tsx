@@ -72,7 +72,7 @@ const MyRequests = () => {
             return 0
           })
           .map((adoption) => (
-            <CardForProfile key={adoption.animal.id} animal={adoption.animal}>
+            <CardForProfile key={adoption.id} animal={adoption.animal}>
               <div className="btnGroup">
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>

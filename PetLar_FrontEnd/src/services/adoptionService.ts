@@ -19,6 +19,11 @@ export const statusUpdate = async (id: string, status: string) => {
   return response.data
 }
 
+export const initAdoption = async (data: AdoptionRequest) => {
+  const response = await api.post<Adoption>('/adoptions', data)
+  return response.data
+}
+
 export const updateReason = async (id: string, reason: string) => {
   const data = {
     reason

@@ -1,11 +1,18 @@
-import { useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 import BackButton from '../../components/BackButton'
 import Loader from '../../components/Loader'
+import Modal from '../../components/Modal'
 
 import { API_URL } from '../../main'
 import { useGetAnimalById } from '../../hooks/useAnimals'
+import { useInitAdoption } from '../../hooks/useAdoption'
 import { formatDateBr, formatWeight } from '../../utils'
+import type { RootReducer } from '../../store'
 
 import { Card, Container, Description } from './styles'
 import { Line, Button } from '../../styles'
@@ -17,6 +24,48 @@ type Params = {
 const Details = () => {
   const { id } = useParams() as Params
   const { data, isLoading, isError } = useGetAnimalById(id)
+  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+  const navigate = useNavigate()
+  const { mutate, error, reset, isSuccess } = useInitAdoption()
+
+  const form = useFormik({
+    initialValues: {
+      reason: ''
+    },
+    validationSchema: Yup.object({
+      reason: Yup.string()
+        .min(3, 'Deve conter no minímo 3 caracteres.')
+        .max(255, 'Excedeu o limite de caracteres.')
+        .required('Este campo é obrigatório.')
+    }),
+    onSubmit: async (values) => {
+      const payload = {
+        animalId: id,
+        reason: values.reason
+      }
+
+      mutate(payload)
+    },
+    validateOnMount: true
+  })
+
+  const isFieldError = (fieldName: string) => {
+    const isTouched = fieldName in form.touched
+    const isInvalid = fieldName in form.errors
+
+    if (isTouched && isInvalid) return true
+    return false
+  }
+
+  const handleClick = () => {
+    if (isAuthenticated) {
+      setShowModal(true)
+    } else {
+      setShowErrorModal(true)
+    }
+  }
 
   if (isLoading)
     return (
@@ -75,8 +124,8 @@ const Details = () => {
             <p className="text">
               <b>Registrado por:</b> {data.author.name}
             </p>
-            <Button>
-              Entrar em contato <i className="fa-brands fa-whatsapp"></i>
+            <Button onClick={handleClick}>
+              Quero Adotar! <i className="fa-solid fa-paw"></i>
             </Button>
           </div>
         </div>
@@ -88,6 +137,93 @@ const Details = () => {
           <p className="text">{data.description}</p>
         </Description>
       )}
+
+      <Modal
+        title="Solicitar adoção"
+        isOpen={showModal}
+        onClose={() => {
+          form.resetForm()
+          reset()
+          setShowModal(false)
+        }}
+      >
+        <form>
+          <div className="inputGroup">
+            <label className="text" htmlFor="reason">
+              Motivo{' '}
+              {isFieldError('reason') ? (
+                <small>* {form.errors.reason}</small>
+              ) : (
+                ''
+              )}
+            </label>
+            <textarea
+              id="reason"
+              rows={3}
+              value={form.values.reason}
+              onChange={form.handleChange}
+              onBlur={(e) => {
+                const trimmedValue = e.target.value.replace(/\s+/g, ' ').trim()
+                form.setFieldValue('reason', trimmedValue)
+                form.handleBlur(e)
+              }}
+            />
+          </div>
+          {error && (
+            <small>
+              <i className="fa-solid fa-circle-exclamation"></i>{' '}
+              {error.response?.data.message}
+            </small>
+          )}
+          <div className="btnGroup">
+            <button
+              type="button"
+              onClick={() => {
+                form.resetForm()
+                reset()
+                setShowModal(false)
+              }}
+            >
+              Cancelar <i className="fa-solid fa-xmark"></i>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                form.handleSubmit()
+                setShowModal(false)
+              }}
+            >
+              Enviar <i className="fa-solid fa-share"></i>
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal
+        onClose={() => {
+          reset()
+          navigate('/')
+        }}
+        isOpen={isSuccess}
+        title="Enviado!"
+      >
+        <p style={{ textAlign: 'center' }}>
+          Solicitação enviada, <br /> agora só aguardar a resposta.
+        </p>
+      </Modal>
+
+      <Modal
+        title="Não autorizado"
+        isOpen={showErrorModal}
+        onClose={() => {
+          setShowErrorModal(false)
+          navigate('/login')
+        }}
+      >
+        <p>
+          Necessário autenticação <br /> para solicitar uma adoção.
+        </p>
+      </Modal>
     </Container>
   )
 }

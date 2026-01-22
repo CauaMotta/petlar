@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   getMyRequests,
   getRequestsForMyAnimals,
+  initAdoption,
   statusUpdate,
   updateReason
 } from '../services/adoptionService'
@@ -43,6 +44,22 @@ export const useStatusUpdate = () => {
 
   return useMutation<Adoption, ApiError, { id: string; status: string }>({
     mutationFn: ({ id, status }) => statusUpdate(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['animals-data']
+      })
+      queryClient.invalidateQueries({ queryKey: ['my-animals-data'] })
+      queryClient.invalidateQueries({ queryKey: ['requests'] })
+      queryClient.invalidateQueries({ queryKey: ['my-requests'] })
+    }
+  })
+}
+
+export const useInitAdoption = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation<Adoption, ApiError, AdoptionRequest>({
+    mutationFn: initAdoption,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['animals-data']

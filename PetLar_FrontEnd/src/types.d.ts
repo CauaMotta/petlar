@@ -39,6 +39,11 @@ declare type Adoption = {
   reason: string
 }
 
+declare type AdoptionRequest = {
+  animalId: string
+  reason: string
+}
+
 // Animal
 
 declare type Author = {
