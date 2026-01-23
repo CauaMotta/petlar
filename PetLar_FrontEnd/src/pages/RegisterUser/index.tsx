@@ -12,6 +12,7 @@ import { useRegisterUser } from '../../hooks/useUser'
 import type { RootReducer } from '../../store'
 
 import { Container } from './styles'
+import { ErrorMessage } from '../../styles'
 
 const RegisterUser = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -61,7 +62,12 @@ const RegisterUser = () => {
         <div className="formBox">
           <div className="inputGroup">
             <label className="text" htmlFor="name">
-              Nome {isError('name') ? <small>* {form.errors.name}</small> : ''}
+              Nome{' '}
+              {isError('name') ? (
+                <ErrorMessage>* {form.errors.name}</ErrorMessage>
+              ) : (
+                ''
+              )}
             </label>
             <input
               id="name"
@@ -78,7 +84,11 @@ const RegisterUser = () => {
           <div className="inputGroup">
             <label className="text" htmlFor="email">
               Email{' '}
-              {isError('email') ? <small>* {form.errors.email}</small> : ''}
+              {isError('email') ? (
+                <ErrorMessage>* {form.errors.email}</ErrorMessage>
+              ) : (
+                ''
+              )}
             </label>
             <input
               id="email"
@@ -92,7 +102,7 @@ const RegisterUser = () => {
             <label className="text" htmlFor="password">
               Senha{' '}
               {isError('password') ? (
-                <small>* {form.errors.password}</small>
+                <ErrorMessage>* {form.errors.password}</ErrorMessage>
               ) : (
                 ''
               )}
@@ -106,11 +116,11 @@ const RegisterUser = () => {
             />
           </div>
           {error && (
-            <div className="errorMessage">
-              <small>
+            <div className="errorWrapper">
+              <ErrorMessage>
                 <i className="fa-solid fa-circle-exclamation"></i>{' '}
                 {error?.response?.data.message}
-              </small>
+              </ErrorMessage>
             </div>
           )}
           <div className="btnGroup">

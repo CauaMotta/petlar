@@ -12,6 +12,7 @@ import { useLogin } from '../../hooks/useLogin'
 import type { RootReducer } from '../../store'
 
 import { Container } from './styles'
+import { ErrorMessage } from '../../styles'
 
 const Login = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -58,7 +59,11 @@ const Login = () => {
           <div className="inputGroup">
             <label className="text" htmlFor="email">
               Email{' '}
-              {isError('email') ? <small>* {form.errors.email}</small> : ''}
+              {isError('email') ? (
+                <ErrorMessage>* {form.errors.email}</ErrorMessage>
+              ) : (
+                ''
+              )}
             </label>
             <input
               id="email"
@@ -72,7 +77,7 @@ const Login = () => {
             <label className="text" htmlFor="password">
               Senha{' '}
               {isError('password') ? (
-                <small>* {form.errors.password}</small>
+                <ErrorMessage>* {form.errors.password}</ErrorMessage>
               ) : (
                 ''
               )}
@@ -86,11 +91,11 @@ const Login = () => {
             />
           </div>
           {error && (
-            <div className="errorMessage">
-              <small>
+            <div className="errorWrapper">
+              <ErrorMessage>
                 <i className="fa-solid fa-circle-exclamation"></i>{' '}
-                {error?.response?.data.message}
-              </small>
+                {error.response?.data.message}
+              </ErrorMessage>
             </div>
           )}
           <div className="btnGroup">

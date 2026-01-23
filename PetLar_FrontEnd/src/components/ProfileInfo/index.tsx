@@ -15,6 +15,7 @@ import {
 } from '../../hooks/useUser'
 
 import { Container } from './styles'
+import { ErrorMessage } from '../../styles'
 
 const ProfileInfo = () => {
   const theme = useTheme()
@@ -143,7 +144,7 @@ const ProfileInfo = () => {
             <label className="text" htmlFor="name">
               Nome{' '}
               {isProfileFormError('name') ? (
-                <small>* {editProfileForm.errors.name}</small>
+                <ErrorMessage>* {editProfileForm.errors.name}</ErrorMessage>
               ) : (
                 ''
               )}
@@ -164,7 +165,7 @@ const ProfileInfo = () => {
             <label className="text" htmlFor="email">
               Email{' '}
               {isProfileFormError('email') ? (
-                <small>* {editProfileForm.errors.email}</small>
+                <ErrorMessage>* {editProfileForm.errors.email}</ErrorMessage>
               ) : (
                 ''
               )}
@@ -178,10 +179,10 @@ const ProfileInfo = () => {
             />
           </div>
           {error && (
-            <small>
+            <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}
               {error.response?.data.message}
-            </small>
+            </ErrorMessage>
           )}
           <div className="btnGroup">
             <StyledButton
@@ -232,7 +233,9 @@ const ProfileInfo = () => {
             <label className="text" htmlFor="password">
               Senha{' '}
               {isPasswordFormError('password') ? (
-                <small>* {editPasswordForm.errors.password}</small>
+                <ErrorMessage>
+                  * {editPasswordForm.errors.password}
+                </ErrorMessage>
               ) : (
                 ''
               )}
@@ -250,10 +253,10 @@ const ProfileInfo = () => {
             />
           </div>
           {cpError && (
-            <small>
+            <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}
               {cpError.response?.data.message}
-            </small>
+            </ErrorMessage>
           )}
           <div className="btnGroup">
             <StyledButton

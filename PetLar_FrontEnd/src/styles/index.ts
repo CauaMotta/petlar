@@ -18,6 +18,10 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.backgroundColor};
   }
 
+  .errorWrapper {
+    text-align: center;
+  }
+
   .title {
     font-size: 24px;
     font-weight: 600;
@@ -70,6 +74,12 @@ export const Line = styled.hr`
   background-color: ${({ theme }) => theme.colors.highlightColor};
   border: none;
   margin: 6px 0;
+`
+
+export const ErrorMessage = styled.small`
+  display: inline-block;
+  max-width: 288px;
+  color: darkred;
 `
 
 export const Button = styled.button`

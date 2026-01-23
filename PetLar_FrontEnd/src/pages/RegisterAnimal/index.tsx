@@ -14,7 +14,7 @@ import Loader from '../../components/Loader'
 import StyledButton from '../../components/StyledButton'
 
 import { AnimalForm, Container } from './styles'
-import { Line } from '../../styles'
+import { ErrorMessage, Line } from '../../styles'
 
 const options = [
   { value: 'cachorro', label: 'Cachorro' },
@@ -172,7 +172,11 @@ const RegisterAnimal = () => {
       </p>
       <AnimalForm>
         <div className="animalSelect">
-          {isError('type') ? <small>* {form.errors.type}</small> : ''}
+          {isError('type') ? (
+            <ErrorMessage>* {form.errors.type}</ErrorMessage>
+          ) : (
+            ''
+          )}
           <StyledSelectWrapper
             placeholder="Selecione um animal"
             value={
@@ -188,7 +192,12 @@ const RegisterAnimal = () => {
         </div>
         <div className="inputGroup">
           <label className="text" htmlFor="name">
-            Nome: {isError('name') ? <small>* {form.errors.name}</small> : ''}
+            Nome:{' '}
+            {isError('name') ? (
+              <ErrorMessage>* {form.errors.name}</ErrorMessage>
+            ) : (
+              ''
+            )}
           </label>
           <input
             id="name"
@@ -208,7 +217,7 @@ const RegisterAnimal = () => {
           <label className="text" htmlFor="birthDate">
             Data de nascimento:{' '}
             {isError('birthDate') ? (
-              <small>* {form.errors.birthDate}</small>
+              <ErrorMessage>* {form.errors.birthDate}</ErrorMessage>
             ) : (
               ''
             )}
@@ -238,7 +247,11 @@ const RegisterAnimal = () => {
         <div className="inputGroup">
           <label className="text" htmlFor="weight">
             Peso:{' '}
-            {isError('weight') ? <small>* {form.errors.weight}</small> : ''}
+            {isError('weight') ? (
+              <ErrorMessage>* {form.errors.weight}</ErrorMessage>
+            ) : (
+              ''
+            )}
           </label>
           <IMaskInput
             id="weight"
@@ -278,7 +291,11 @@ const RegisterAnimal = () => {
         <div className="inputGroup">
           <label className="text" htmlFor="image">
             Adicionar uma imagem:{' '}
-            {isError('image') ? <small>* {form.errors.image}</small> : ''}
+            {isError('image') ? (
+              <ErrorMessage>* {form.errors.image}</ErrorMessage>
+            ) : (
+              ''
+            )}
           </label>
           <label htmlFor="image" className="imageBtn">
             {form.values.image ? (
@@ -312,7 +329,7 @@ const RegisterAnimal = () => {
           <label className="text" htmlFor="description">
             Adicionar uma descrição:
             {isError('description') ? (
-              <small>* {form.errors.description}</small>
+              <ErrorMessage>* {form.errors.description}</ErrorMessage>
             ) : (
               ''
             )}
@@ -353,6 +370,7 @@ const RegisterAnimal = () => {
           </StyledButton>
         </div>
       </AnimalForm>
+
       <Modal title="Cadastrando..." isOpen={isPending} onClose={() => reset()}>
         <div className="box">
           <Loader />
@@ -361,6 +379,7 @@ const RegisterAnimal = () => {
           </p>
         </div>
       </Modal>
+
       <Modal title="Ops..." isOpen={!!error} onClose={() => reset()}>
         <div className="box">
           <i className="fa-solid fa-triangle-exclamation"></i>
@@ -370,6 +389,7 @@ const RegisterAnimal = () => {
           </p>
         </div>
       </Modal>
+
       <Modal title="Obrigado!" isOpen={isSuccess} onClose={() => reset()}>
         <div className="box">
           <i className="fa-solid fa-check"></i>

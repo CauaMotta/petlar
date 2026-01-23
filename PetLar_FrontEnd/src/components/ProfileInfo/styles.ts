@@ -44,12 +44,6 @@ export const Container = styled.div`
   form {
     width: 100%;
 
-    small {
-      display: inline-block;
-      color: darkred;
-      max-width: 288px;
-    }
-
     .inputGroup {
       display: flex;
       flex-direction: column;

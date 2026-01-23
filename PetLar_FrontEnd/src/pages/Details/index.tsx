@@ -17,7 +17,7 @@ import { formatDateBr, formatWeight } from '../../utils'
 import type { RootReducer } from '../../store'
 
 import { Card, Container, Description } from './styles'
-import { Line } from '../../styles'
+import { ErrorMessage, Line } from '../../styles'
 
 type Params = {
   id: string
@@ -161,7 +161,7 @@ const Details = () => {
             <label className="text" htmlFor="reason">
               Motivo{' '}
               {isFieldError('reason') ? (
-                <small>* {form.errors.reason}</small>
+                <ErrorMessage>* {form.errors.reason}</ErrorMessage>
               ) : (
                 ''
               )}
@@ -179,10 +179,10 @@ const Details = () => {
             />
           </div>
           {error && (
-            <small>
+            <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}
               {error.response?.data.message}
-            </small>
+            </ErrorMessage>
           )}
           <div className="btnGroup">
             <StyledButton

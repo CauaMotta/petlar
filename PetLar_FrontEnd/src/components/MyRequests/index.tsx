@@ -14,6 +14,7 @@ import {
 } from '../../hooks/useAdoption'
 
 import { Container } from './styles'
+import { ErrorMessage } from '../../styles'
 
 const MyRequests = () => {
   const theme = useTheme()
@@ -194,7 +195,11 @@ const MyRequests = () => {
           <div className="inputGroup">
             <label className="text" htmlFor="reason">
               Texto{' '}
-              {isError('reason') ? <small>* {form.errors.reason}</small> : ''}
+              {isError('reason') ? (
+                <ErrorMessage>* {form.errors.reason}</ErrorMessage>
+              ) : (
+                ''
+              )}
             </label>
             <textarea
               id="reason"
@@ -209,10 +214,10 @@ const MyRequests = () => {
             />
           </div>
           {editError && (
-            <small>
+            <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}
               {editError.response?.data.message}
-            </small>
+            </ErrorMessage>
           )}
           <div className="btnGroup">
             <StyledButton

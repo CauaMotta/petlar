@@ -7,12 +7,6 @@ export const Container = styled.section`
   flex: 1;
 
   form {
-    small {
-      display: inline-block;
-      color: darkred;
-      max-width: 288px;
-    }
-
     .btnGroup {
       margin-top: 12px;
       display: flex;

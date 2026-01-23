@@ -6,14 +6,6 @@ export const Container = styled.section`
   justify-content: center;
   align-items: center;
 
-  small {
-    color: darkred;
-  }
-
-  .errorMessage {
-    text-align: center;
-  }
-
   .loginContainer {
     background-color: ${({ theme }) => theme.colors.secondaryColor};
     padding: 12px 16px;

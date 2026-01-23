@@ -29,12 +29,6 @@ export const Container = styled.div`
       gap: 6px;
     }
 
-    small {
-      display: inline-block;
-      color: darkred;
-      max-width: 288px;
-    }
-
     .inputGroup {
       display: flex;
       flex-direction: column;

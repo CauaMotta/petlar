@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Button, Line } from '../../styles'
+import { Line } from '../../styles'
 import variables from '../../styles/variables'
 
 export const Container = styled.section`
@@ -39,12 +39,6 @@ export const AnimalForm = styled.form`
 
   ${Line} {
     width: 100%;
-  }
-
-  small {
-    font-size: 12px;
-    font-weight: 500;
-    color: darkred;
   }
 
   .animalSelect {

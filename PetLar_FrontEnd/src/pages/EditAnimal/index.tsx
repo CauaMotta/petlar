@@ -7,21 +7,17 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { formatDateBr, formatDateIso } from '../../utils'
-import {
-  useGetAnimalById,
-  usePostAnimal,
-  useUpdateAnimal
-} from '../../hooks/useAnimals'
+import { useGetAnimalById, useUpdateAnimal } from '../../hooks/useAnimals'
 import type { RootReducer } from '../../store'
 
 import Modal from '../../components/Modal'
 import BackButton from '../../components/BackButton'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
+import StyledButton from '../../components/StyledButton'
 
 import { AnimalForm, Container } from './styles'
-import { Button, Line } from '../../styles'
-import StyledButton from '../../components/StyledButton'
+import { ErrorMessage, Line } from '../../styles'
 
 const options = [
   { value: 'CACHORRO', label: 'Cachorro' },
@@ -204,7 +200,11 @@ const EditAnimal = () => {
       <p className="text">O que você deseja mudar?</p>
       <AnimalForm>
         <div className="animalSelect">
-          {isError('type') ? <small>* {form.errors.type}</small> : ''}
+          {isError('type') ? (
+            <ErrorMessage>* {form.errors.type}</ErrorMessage>
+          ) : (
+            ''
+          )}
           <StyledSelectWrapper
             placeholder="Selecione um animal"
             value={
@@ -220,7 +220,12 @@ const EditAnimal = () => {
         </div>
         <div className="inputGroup">
           <label className="text" htmlFor="name">
-            Nome: {isError('name') ? <small>* {form.errors.name}</small> : ''}
+            Nome:{' '}
+            {isError('name') ? (
+              <ErrorMessage>* {form.errors.name}</ErrorMessage>
+            ) : (
+              ''
+            )}
           </label>
           <input
             id="name"
@@ -240,7 +245,7 @@ const EditAnimal = () => {
           <label className="text" htmlFor="birthDate">
             Data de nascimento:{' '}
             {isError('birthDate') ? (
-              <small>* {form.errors.birthDate}</small>
+              <ErrorMessage>* {form.errors.birthDate}</ErrorMessage>
             ) : (
               ''
             )}
@@ -270,7 +275,11 @@ const EditAnimal = () => {
         <div className="inputGroup">
           <label className="text" htmlFor="weight">
             Peso:{' '}
-            {isError('weight') ? <small>* {form.errors.weight}</small> : ''}
+            {isError('weight') ? (
+              <ErrorMessage>* {form.errors.weight}</ErrorMessage>
+            ) : (
+              ''
+            )}
           </label>
           <IMaskInput
             id="weight"
@@ -312,7 +321,11 @@ const EditAnimal = () => {
             {animal?.imagePath
               ? 'Substituir a imagem atual: '
               : 'Adicionar uma imagem: '}
-            {isError('image') ? <small>* {form.errors.image}</small> : ''}
+            {isError('image') ? (
+              <ErrorMessage>* {form.errors.image}</ErrorMessage>
+            ) : (
+              ''
+            )}
           </label>
           <label htmlFor="image" className="imageBtn">
             {form.values.image ? (
@@ -348,7 +361,7 @@ const EditAnimal = () => {
               ? 'Editar a descrição: '
               : 'Adicionar uma descrição: '}
             {isError('description') ? (
-              <small>* {form.errors.description}</small>
+              <ErrorMessage>* {form.errors.description}</ErrorMessage>
             ) : (
               ''
             )}
@@ -389,6 +402,7 @@ const EditAnimal = () => {
           </StyledButton>
         </div>
       </AnimalForm>
+
       <Modal title="Atualizando..." isOpen={isPending} onClose={() => reset()}>
         <div className="box">
           <Loader />
@@ -397,6 +411,7 @@ const EditAnimal = () => {
           </p>
         </div>
       </Modal>
+
       <Modal title="Ops..." isOpen={!!error} onClose={() => reset()}>
         <div className="box">
           <i className="fa-solid fa-triangle-exclamation"></i>
@@ -406,6 +421,7 @@ const EditAnimal = () => {
           </p>
         </div>
       </Modal>
+
       <Modal
         title="Sucesso!"
         isOpen={isSuccess}

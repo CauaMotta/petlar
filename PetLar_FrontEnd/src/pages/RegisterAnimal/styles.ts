@@ -41,12 +41,6 @@ export const AnimalForm = styled.form`
     width: 100%;
   }
 
-  small {
-    font-size: 12px;
-    font-weight: 500;
-    color: darkred;
-  }
-
   .animalSelect {
     display: flex;
     flex-direction: column;
