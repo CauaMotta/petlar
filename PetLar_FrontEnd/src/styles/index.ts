@@ -76,22 +76,40 @@ export const Line = styled.hr`
   margin: 6px 0;
 `
 
+// Error
+
 export const ErrorMessage = styled.small`
   display: inline-block;
   max-width: 288px;
   color: darkred;
 `
 
-export const Button = styled.button`
-  padding: 8px 16px;
+// Button
+
+type Button = {
+  $backgroundColor?: string
+  $maxWidth?: string
+  $fontSize?: string
+  $paddingBlock?: string
+  $paddingInline?: string
+}
+
+export const StyledButton = styled.button<Button>`
+  max-width: ${({ $maxWidth }) => $maxWidth || 'none'};
+  width: 100%;
+  padding-block: ${({ $paddingBlock }) => $paddingBlock || '8px'};
+  padding-inline: ${({ $paddingInline }) => $paddingInline || '16px'};
 
   color: ${({ theme }) => theme.colors.fontColor};
-  font-weight: 600;
-  font-size: 16px;
+  font-size: ${({ $fontSize }) => $fontSize || '16px'};
+  font-weight: 500;
   line-height: 1;
 
-  background-color: ${({ theme }) => theme.colors.primaryColor};
-  border: 1px solid ${({ theme }) => theme.colors.primaryColor};
+  background-color: ${({ $backgroundColor, theme }) =>
+    $backgroundColor || theme.colors.primaryColor};
+  border: 1px solid
+    ${({ $backgroundColor, theme }) =>
+      $backgroundColor || theme.colors.primaryColor};
   border-radius: 8px;
 
   cursor: pointer;
@@ -99,6 +117,7 @@ export const Button = styled.button`
   &:hover {
     opacity: 0.8;
   }
+
   &:disabled {
     background-color: ${({ theme }) => theme.colors.highlightColor};
     border-color: ${({ theme }) => theme.colors.highlightColor};

@@ -4,7 +4,6 @@ import * as Yup from 'yup'
 import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
-import StyledButton from '../StyledButton'
 import Modal from '../Modal'
 
 import {
@@ -14,7 +13,7 @@ import {
 } from '../../hooks/useAdoption'
 
 import { Container } from './styles'
-import { ErrorMessage } from '../../styles'
+import { ErrorMessage, StyledButton } from '../../styles'
 
 const MyRequests = () => {
   const theme = useTheme()
@@ -84,25 +83,19 @@ const MyRequests = () => {
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
                     <StyledButton
-                      fontSize="14px"
+                      $fontSize="14px"
                       onClick={() => {
                         setShowModal(true)
                         setAdoption(adoption)
                       }}
                     >
-                      <>
-                        <i className="fa-solid fa-eye"></i> Visualizar
-                      </>
+                      <i className="fa-solid fa-eye"></i> Visualizar
                     </StyledButton>
                   </>
                 ) : (
                   <>
-                    <StyledButton
-                      fontSize="14px"
-                      disabled={true}
-                      onClick={() => {}}
-                    >
-                      <>{adoption.status}!</>
+                    <StyledButton $fontSize="14px" disabled>
+                      {adoption.status}!
                     </StyledButton>
                   </>
                 )}
@@ -157,30 +150,26 @@ const MyRequests = () => {
           </p>
           <div className="btnGroup">
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
               onClick={() => {
                 mutate({ id: adoption!.id, status: 'cancel' })
                 setShowModal(false)
               }}
             >
-              <>
-                Cancelar <i className="fa-solid fa-xmark"></i>
-              </>
+              Cancelar <i className="fa-solid fa-xmark"></i>
             </StyledButton>
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
               onClick={() => {
                 setShowEditModal(true)
                 setShowModal(false)
               }}
             >
-              <>
-                Editar <i className="fa-solid fa-pen-to-square"></i>
-              </>
+              Editar <i className="fa-solid fa-pen-to-square"></i>
             </StyledButton>
           </div>
         </div>
@@ -221,29 +210,25 @@ const MyRequests = () => {
           )}
           <div className="btnGroup">
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
               onClick={() => {
                 setShowEditModal(false)
                 form.resetForm()
               }}
             >
-              <>
-                Cancelar <i className="fa-solid fa-xmark"></i>
-              </>
+              Cancelar <i className="fa-solid fa-xmark"></i>
             </StyledButton>
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
               onClick={() => {
                 form.handleSubmit()
               }}
             >
-              <>
-                Salvar <i className="fa-solid fa-floppy-disk"></i>
-              </>
+              Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
           </div>
         </div>

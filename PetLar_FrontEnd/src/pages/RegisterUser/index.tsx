@@ -6,13 +6,12 @@ import { useTheme } from 'styled-components'
 import { useSelector } from 'react-redux'
 
 import Modal from '../../components/Modal'
-import StyledButton from '../../components/StyledButton'
 
 import { useRegisterUser } from '../../hooks/useUser'
 import type { RootReducer } from '../../store'
 
 import { Container } from './styles'
-import { ErrorMessage } from '../../styles'
+import { ErrorMessage, StyledButton } from '../../styles'
 
 const RegisterUser = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)

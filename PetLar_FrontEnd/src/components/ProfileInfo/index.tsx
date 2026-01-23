@@ -5,7 +5,6 @@ import * as Yup from 'yup'
 import { useTheme } from 'styled-components'
 
 import Modal from '../Modal'
-import StyledButton from '../StyledButton'
 
 import type { RootReducer } from '../../store'
 import {
@@ -15,7 +14,7 @@ import {
 } from '../../hooks/useUser'
 
 import { Container } from './styles'
-import { ErrorMessage } from '../../styles'
+import { ErrorMessage, StyledButton } from '../../styles'
 
 const ProfileInfo = () => {
   const theme = useTheme()
@@ -100,33 +99,29 @@ const ProfileInfo = () => {
       </div>
       <div className="btnGroup">
         <StyledButton
-          backgroundColor={theme.colors.highlightColor}
-          paddingBlock="6px"
-          paddingInline="12px"
-          fontSize="14px"
-          maxWidth="fit-content"
+          $backgroundColor={theme.colors.highlightColor}
+          $paddingBlock="6px"
+          $paddingInline="12px"
+          $fontSize="14px"
+          $maxWidth="fit-content"
           onClick={() => {
             setEditProfile(true)
           }}
         >
-          <>
-            <i className="fa-solid fa-pen-to-square"></i> Editar perfil
-          </>
+          <i className="fa-solid fa-pen-to-square"></i> Editar perfil
         </StyledButton>
 
         <StyledButton
-          backgroundColor={theme.colors.highlightColor}
-          paddingBlock="6px"
-          paddingInline="12px"
-          fontSize="14px"
-          maxWidth="fit-content"
+          $backgroundColor={theme.colors.highlightColor}
+          $paddingBlock="6px"
+          $paddingInline="12px"
+          $fontSize="14px"
+          $maxWidth="fit-content"
           onClick={() => {
             setEditPassword(true)
           }}
         >
-          <>
-            <i className="fa-solid fa-key"></i> Trocar senha
-          </>
+          <i className="fa-solid fa-key"></i> Trocar senha
         </StyledButton>
       </div>
 
@@ -186,27 +181,25 @@ const ProfileInfo = () => {
           )}
           <div className="btnGroup">
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
+              type="button"
               onClick={() => {
                 editProfileForm.resetForm()
                 reset()
               }}
             >
-              <>
-                Reset <i className="fa-solid fa-arrows-rotate"></i>
-              </>
+              Reset <i className="fa-solid fa-arrows-rotate"></i>
             </StyledButton>
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
+              type="button"
               onClick={() => editProfileForm.handleSubmit()}
             >
-              <>
-                Salvar <i className="fa-solid fa-floppy-disk"></i>
-              </>
+              Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
           </div>
           <button
@@ -260,27 +253,25 @@ const ProfileInfo = () => {
           )}
           <div className="btnGroup">
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
+              type="button"
               onClick={() => {
                 editPasswordForm.resetForm()
                 cpReset()
               }}
             >
-              <>
-                Reset <i className="fa-solid fa-arrows-rotate"></i>
-              </>
+              Reset <i className="fa-solid fa-arrows-rotate"></i>
             </StyledButton>
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
+              type="button"
               onClick={() => editPasswordForm.handleSubmit()}
             >
-              <>
-                Salvar <i className="fa-solid fa-floppy-disk"></i>
-              </>
+              Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
           </div>
         </form>

@@ -8,7 +8,6 @@ import * as Yup from 'yup'
 import BackButton from '../../components/BackButton'
 import Loader from '../../components/Loader'
 import Modal from '../../components/Modal'
-import StyledButton from '../../components/StyledButton'
 
 import { API_URL } from '../../main'
 import { useGetAnimalById } from '../../hooks/useAnimals'
@@ -17,7 +16,7 @@ import { formatDateBr, formatWeight } from '../../utils'
 import type { RootReducer } from '../../store'
 
 import { Card, Container, Description } from './styles'
-import { ErrorMessage, Line } from '../../styles'
+import { ErrorMessage, StyledButton, Line } from '../../styles'
 
 type Params = {
   id: string
@@ -131,10 +130,8 @@ const Details = () => {
             <p className="text">
               <b>Registrado por:</b> {data.author.name}
             </p>
-            <StyledButton maxWidth="fit-content" onClick={handleClick}>
-              <>
-                Quero Adotar! <i className="fa-solid fa-paw"></i>
-              </>
+            <StyledButton $maxWidth="fit-content" onClick={handleClick}>
+              Quero Adotar! <i className="fa-solid fa-paw"></i>
             </StyledButton>
           </div>
         </div>
@@ -186,31 +183,29 @@ const Details = () => {
           )}
           <div className="btnGroup">
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
+              type="button"
               onClick={() => {
                 form.resetForm()
                 reset()
                 setShowModal(false)
               }}
             >
-              <>
-                Cancelar <i className="fa-solid fa-xmark"></i>
-              </>
+              Cancelar <i className="fa-solid fa-xmark"></i>
             </StyledButton>
 
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              fontSize="14px"
-              maxWidth="fit-content"
+              $backgroundColor={theme.colors.highlightColor}
+              $fontSize="14px"
+              $maxWidth="fit-content"
+              type="button"
               onClick={() => {
                 form.handleSubmit()
               }}
             >
-              <>
-                Enviar <i className="fa-solid fa-share"></i>
-              </>
+              Enviar <i className="fa-solid fa-share"></i>
             </StyledButton>
           </div>
         </form>

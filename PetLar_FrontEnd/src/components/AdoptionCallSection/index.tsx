@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import StyledButton from '../StyledButton'
 import Modal from '../Modal'
 
 import type { RootReducer } from '../../store'
 
 import { CallSection } from './styles'
+import { StyledButton } from '../../styles'
 
 const AdoptionCallSection = () => {
   const [activeModal, setActiveModal] = useState<boolean>(false)
@@ -38,10 +38,8 @@ const AdoptionCallSection = () => {
           gratuito e pode mudar o destino de um animal.
         </p>
         <div className="btnContainer">
-          <StyledButton maxWidth="fit-content" onClick={handleRedirect}>
-            <>
-              Cadastrar um animalzinho <i className="fa-solid fa-paw"></i>
-            </>
+          <StyledButton $maxWidth="fit-content" onClick={handleRedirect}>
+            Cadastrar um animalzinho <i className="fa-solid fa-paw"></i>
           </StyledButton>
         </div>
       </div>

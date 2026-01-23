@@ -11,10 +11,9 @@ import Modal from '../../components/Modal'
 import BackButton from '../../components/BackButton'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
-import StyledButton from '../../components/StyledButton'
 
 import { AnimalForm, Container } from './styles'
-import { ErrorMessage, Line } from '../../styles'
+import { ErrorMessage, StyledButton, Line } from '../../styles'
 
 const options = [
   { value: 'cachorro', label: 'Cachorro' },
@@ -351,22 +350,20 @@ const RegisterAnimal = () => {
         </div>
         <div className="btnGroup">
           <StyledButton
-            maxWidth="fit-content"
+            $maxWidth="fit-content"
             className="reset"
+            type="button"
             onClick={() => form.resetForm()}
           >
-            <>
-              Resetar <i className="fa-solid fa-rotate"></i>
-            </>
+            Resetar <i className="fa-solid fa-rotate"></i>
           </StyledButton>
           <StyledButton
-            maxWidth="fit-content"
+            $maxWidth="fit-content"
             disabled={!form.isValid || !form.dirty}
+            type="button"
             onClick={() => form.handleSubmit()}
           >
-            <>
-              Cadastrar <i className="fa-solid fa-paw"></i>
-            </>
+            Cadastrar <i className="fa-solid fa-paw"></i>
           </StyledButton>
         </div>
       </AnimalForm>

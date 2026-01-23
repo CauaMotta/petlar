@@ -14,10 +14,9 @@ import Modal from '../../components/Modal'
 import BackButton from '../../components/BackButton'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
-import StyledButton from '../../components/StyledButton'
 
 import { AnimalForm, Container } from './styles'
-import { ErrorMessage, Line } from '../../styles'
+import { ErrorMessage, StyledButton, Line } from '../../styles'
 
 const options = [
   { value: 'CACHORRO', label: 'Cachorro' },
@@ -383,22 +382,20 @@ const EditAnimal = () => {
         </div>
         <div className="btnGroup">
           <StyledButton
-            maxWidth="fit-content"
+            $maxWidth="fit-content"
             className="reset"
+            type="button"
             onClick={() => form.resetForm()}
           >
-            <>
-              Resetar <i className="fa-solid fa-rotate"></i>
-            </>
+            Resetar <i className="fa-solid fa-rotate"></i>
           </StyledButton>
           <StyledButton
-            maxWidth="fit-content"
+            $maxWidth="fit-content"
+            type="button"
             disabled={!form.isValid || !form.dirty}
             onClick={() => form.handleSubmit()}
           >
-            <>
-              Atualizar <i className="fa-solid fa-paw"></i>
-            </>
+            Atualizar <i className="fa-solid fa-paw"></i>
           </StyledButton>
         </div>
       </AnimalForm>

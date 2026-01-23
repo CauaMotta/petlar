@@ -4,11 +4,11 @@ import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
-import StyledButton from '../StyledButton'
 
 import { useDeleteAnimal, useGetMyAnimals } from '../../hooks/useAnimals'
 
 import { Container } from './styles'
+import { StyledButton } from '../../styles'
 
 const MyAnimals = () => {
   const theme = useTheme()
@@ -39,34 +39,26 @@ const MyAnimals = () => {
               {animal.status.toLowerCase() !== 'adotado' ? (
                 <>
                   <StyledButton
-                    fontSize="14px"
+                    $fontSize="14px"
                     onClick={() => navigate('/editAnimal/' + animal.id)}
                   >
-                    <>
-                      <i className="fa-solid fa-pen-to-square"></i> Editar
-                    </>
+                    <i className="fa-solid fa-pen-to-square"></i> Editar
                   </StyledButton>
                   <StyledButton
-                    fontSize="14px"
-                    backgroundColor="#E3C1A3"
+                    $fontSize="14px"
+                    $backgroundColor="#E3C1A3"
                     onClick={() => {
                       setShowDeleteModal(true)
                       setAnimal(animal)
                     }}
                   >
-                    <>
-                      <i className="fa-solid fa-ban"></i> Deletar
-                    </>
+                    <i className="fa-solid fa-ban"></i> Deletar
                   </StyledButton>
                 </>
               ) : (
                 <>
-                  <StyledButton
-                    fontSize="14px"
-                    disabled={true}
-                    onClick={() => {}}
-                  >
-                    <>Adotado!</>
+                  <StyledButton $fontSize="14px" disabled>
+                    Adotado!
                   </StyledButton>
                 </>
               )}
@@ -118,23 +110,23 @@ const MyAnimals = () => {
           <p>Você quer excluir este animal?</p>
           <div className="btnGroup">
             <StyledButton
-              fontSize="14px"
-              backgroundColor={theme.colors.highlightColor}
-              maxWidth="fit-content"
+              $fontSize="14px"
+              $backgroundColor={theme.colors.highlightColor}
+              $maxWidth="fit-content"
               onClick={() => {
                 mutate(animal!.id)
                 setShowDeleteModal(false)
               }}
             >
-              <>Sim</>
+              Sim
             </StyledButton>
             <StyledButton
-              fontSize="14px"
-              backgroundColor={theme.colors.highlightColor}
-              maxWidth="fit-content"
+              $fontSize="14px"
+              $backgroundColor={theme.colors.highlightColor}
+              $maxWidth="fit-content"
               onClick={() => setShowDeleteModal(false)}
             >
-              <>Não</>
+              Não
             </StyledButton>
           </div>
         </div>

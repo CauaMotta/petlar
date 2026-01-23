@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 
-import StyledButton from '../StyledButton'
-
 import { formatDateBr } from '../../utils'
 import { API_URL } from '../../main'
 
 import * as S from './styles'
-import { Line } from '../../styles'
+import { StyledButton, Line } from '../../styles'
 
 type Props = {
   animal: Animal

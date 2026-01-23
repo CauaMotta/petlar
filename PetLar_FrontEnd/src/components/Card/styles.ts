@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 
-import { Button } from '../../styles'
-
 export const Card = styled.div`
   display: block;
   padding: 16px;

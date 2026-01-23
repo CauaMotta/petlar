@@ -6,13 +6,11 @@ import { PulseLoader } from 'react-spinners'
 import { useTheme } from 'styled-components'
 import { useSelector } from 'react-redux'
 
-import StyledButton from '../../components/StyledButton'
-
 import { useLogin } from '../../hooks/useLogin'
 import type { RootReducer } from '../../store'
 
 import { Container } from './styles'
-import { ErrorMessage } from '../../styles'
+import { ErrorMessage, StyledButton } from '../../styles'
 
 const Login = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)

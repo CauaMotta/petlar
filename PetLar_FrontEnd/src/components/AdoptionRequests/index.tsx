@@ -3,7 +3,6 @@ import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
-import StyledButton from '../StyledButton'
 
 import {
   useGetRequestsForMyAnimals,
@@ -11,6 +10,7 @@ import {
 } from '../../hooks/useAdoption'
 
 import { Container } from './styles'
+import { StyledButton } from '../../styles'
 
 const AdoptionRequests = () => {
   const theme = useTheme()
@@ -49,25 +49,19 @@ const AdoptionRequests = () => {
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
                     <StyledButton
-                      fontSize="14px"
+                      $fontSize="14px"
                       onClick={() => {
                         setShowModal(true)
                         setAdoption(adoption)
                       }}
                     >
-                      <>
-                        <i className="fa-solid fa-eye"></i> Visualizar
-                      </>
+                      <i className="fa-solid fa-eye"></i> Visualizar
                     </StyledButton>
                   </>
                 ) : (
                   <>
-                    <StyledButton
-                      fontSize="14px"
-                      disabled={true}
-                      onClick={() => {}}
-                    >
-                      <>{adoption.status}!</>
+                    <StyledButton $fontSize="14px" disabled>
+                      {adoption.status}!
                     </StyledButton>
                   </>
                 )}
@@ -124,30 +118,26 @@ const AdoptionRequests = () => {
           </p>
           <div className="btnGroup">
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              maxWidth="fit-content"
-              fontSize="14px"
+              $backgroundColor={theme.colors.highlightColor}
+              $maxWidth="fit-content"
+              $fontSize="14px"
               onClick={() => {
                 mutate({ id: adoption!.id, status: 'deny' })
                 setShowModal(false)
               }}
             >
-              <>
-                Recusar <i className="fa-solid fa-xmark"></i>
-              </>
+              Recusar <i className="fa-solid fa-xmark"></i>
             </StyledButton>
             <StyledButton
-              backgroundColor={theme.colors.highlightColor}
-              maxWidth="fit-content"
-              fontSize="14px"
+              $backgroundColor={theme.colors.highlightColor}
+              $maxWidth="fit-content"
+              $fontSize="14px"
               onClick={() => {
                 mutate({ id: adoption!.id, status: 'accept' })
                 setShowModal(false)
               }}
             >
-              <>
-                Aprovar <i className="fa-solid fa-check"></i>
-              </>
+              Aprovar <i className="fa-solid fa-check"></i>
             </StyledButton>
           </div>
         </div>
