@@ -52,8 +52,8 @@ const AdoptionCallSection = () => {
         }}
         isOpen={activeModal}
       >
-        <p className="text">
-          Para acessar está página <br /> você precisa estar autenticado
+        <p className="text textCenter">
+          Para acessar está página <br /> você precisa estar autenticado.
         </p>
       </Modal>
     </CallSection>

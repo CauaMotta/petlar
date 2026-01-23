@@ -106,8 +106,8 @@ const MyAnimals = () => {
         isOpen={showDeleteModal}
         title={animal?.name ? animal.name : 'Deletar'}
       >
-        <div className="modalContainer">
-          <p>Você quer excluir este animal?</p>
+        <div>
+          <p className="text textCenter">Você quer excluir este animal?</p>
           <ButtonGroup>
             <StyledButton
               $fontSize="14px"

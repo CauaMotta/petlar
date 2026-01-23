@@ -182,12 +182,10 @@ const Details = () => {
             />
           </InputGroup>
           {error && (
-            <div className="errorWrapper">
-              <ErrorMessage>
-                <i className="fa-solid fa-circle-exclamation"></i>{' '}
-                {error.response?.data.message}
-              </ErrorMessage>
-            </div>
+            <ErrorMessage className="textCenter pi-8">
+              <i className="fa-solid fa-circle-exclamation"></i>{' '}
+              {error.response?.data.message}
+            </ErrorMessage>
           )}
           <ButtonGroup $marginTop="12px">
             <StyledButton
@@ -227,7 +225,7 @@ const Details = () => {
         isOpen={isSuccess}
         title="Enviado!"
       >
-        <p style={{ textAlign: 'center' }}>
+        <p className="text textCenter">
           Solicitação enviada, <br /> agora só aguardar a resposta.
         </p>
       </Modal>
@@ -240,7 +238,7 @@ const Details = () => {
           navigate('/login')
         }}
       >
-        <p>
+        <p className="text textCenter">
           Necessário autenticação <br /> para solicitar uma adoção.
         </p>
       </Modal>

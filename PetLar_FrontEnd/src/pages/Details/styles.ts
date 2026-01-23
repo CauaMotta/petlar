@@ -51,6 +51,10 @@ export const Card = styled.div`
     display: flex;
     flex-direction: column;
 
+    .info {
+      padding-inline: 16px;
+    }
+
     .title {
       padding-inline: 16px;
       line-height: 1;
@@ -62,20 +66,15 @@ export const Card = styled.div`
       }
     }
 
-    .info {
-      padding-inline: 16px;
-    }
-
     .contact {
       padding-inline: 16px;
       margin-top: auto;
-      width: 100%;
 
       display: flex;
       align-items: center;
       gap: 8px;
 
-      p {
+      .text {
         flex: 1;
       }
     }

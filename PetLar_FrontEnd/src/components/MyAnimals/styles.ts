@@ -9,12 +9,6 @@ export const Container = styled.div`
     gap: 16px;
   }
 
-  .modalContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .pagesContainer {
     margin-top: 16px;
     width: 100%;

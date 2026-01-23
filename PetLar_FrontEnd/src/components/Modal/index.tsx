@@ -16,14 +16,14 @@ const Modal = ({ isOpen, onClose, title, children }: Props) => {
   return (
     <ModalContainer>
       <ModalCard>
-        <div className="header pi-8">
+        <div className="header">
           <h3 className="title--small">{title}</h3>
           <button className="close" aria-label="Close" onClick={onClose}>
             <i className="fa-solid fa-xmark"></i>
           </button>
         </div>
         <Line />
-        <div className="pi-8">{children}</div>
+        <div>{children}</div>
       </ModalCard>
       <Overlay data-testid="overlay" onClick={onClose} />
     </ModalContainer>

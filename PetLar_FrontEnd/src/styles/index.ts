@@ -18,8 +18,11 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${({ theme }) => theme.colors.backgroundColor};
   }
 
-  .errorWrapper {
+  .textCenter {
     text-align: center;
+  }
+  .pi-8 {
+    padding-inline: 8px;
   }
 
   .title {

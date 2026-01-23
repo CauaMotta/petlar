@@ -135,7 +135,7 @@ const RegisterUser = () => {
             />
           </InputGroup>
           {error && (
-            <div className="errorWrapper">
+            <div className="textCenter">
               <ErrorMessage>
                 <i className="fa-solid fa-circle-exclamation"></i>{' '}
                 {error?.response?.data.message}

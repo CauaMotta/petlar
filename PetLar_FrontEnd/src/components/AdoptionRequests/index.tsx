@@ -110,10 +110,10 @@ const AdoptionRequests = () => {
         title="Solicitação de adoção"
       >
         <div className="modalContainer">
-          <p>
+          <p className="text">
             {adoption?.adopter.name} quer adotar {adoption?.animal.name}.
           </p>
-          <p>
+          <p className="text">
             Motivo: <br /> {adoption?.reason}
           </p>
           <ButtonGroup>

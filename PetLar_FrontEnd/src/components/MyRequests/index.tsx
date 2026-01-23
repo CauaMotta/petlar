@@ -149,8 +149,10 @@ const MyRequests = () => {
         title="Solicitação enviada"
       >
         <>
-          <p>Pedido enviado para {adoption?.animalOwner.name}</p>
-          <p>
+          <p className="text">
+            Pedido enviado para {adoption?.animalOwner.name}
+          </p>
+          <p className="text">
             Motivo: <br /> {adoption?.reason}
           </p>
           <ButtonGroup>
@@ -240,7 +242,7 @@ const MyRequests = () => {
       </Modal>
 
       <Modal onClose={() => reset()} isOpen={isSuccess} title="Sucesso!">
-        <p style={{ textAlign: 'center' }}>Motivo alterado.</p>
+        <p className="text textCenter">Motivo alterado.</p>
       </Modal>
     </Container>
   )

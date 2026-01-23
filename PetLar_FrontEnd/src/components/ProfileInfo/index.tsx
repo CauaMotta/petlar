@@ -73,9 +73,16 @@ const ProfileInfo = () => {
   })
 
   useEffect(() => {
-    if (isSuccess) setEditProfile(false)
-    if (cpIsSuccess) setEditPassword(false)
-  }, [isSuccess, cpIsSuccess])
+    if (isSuccess) {
+      setEditProfile(false)
+      editProfileForm.resetForm()
+    }
+
+    if (cpIsSuccess) {
+      setEditPassword(false)
+      editPasswordForm.resetForm()
+    }
+  }, [isSuccess, cpIsSuccess, editPasswordForm, editProfileForm])
 
   const isProfileFormError = (fieldName: string) => {
     const isTouched = fieldName in editProfileForm.touched
@@ -188,10 +195,12 @@ const ProfileInfo = () => {
             />
           </InputGroup>
           {error && (
-            <ErrorMessage>
-              <i className="fa-solid fa-circle-exclamation"></i>{' '}
-              {error.response?.data.message}
-            </ErrorMessage>
+            <div className="textCenter">
+              <ErrorMessage>
+                <i className="fa-solid fa-circle-exclamation"></i>{' '}
+                {error.response?.data.message}
+              </ErrorMessage>
+            </div>
           )}
           <ButtonGroup $marginTop="12px">
             <StyledButton
@@ -225,6 +234,7 @@ const ProfileInfo = () => {
               $paddingInline="8px"
               type="button"
               className="btnDelete"
+              onClick={() => deleteUser()}
             >
               <i className="fa-solid fa-trash"></i> Apagar conta
             </StyledButton>
@@ -271,10 +281,12 @@ const ProfileInfo = () => {
             />
           </InputGroup>
           {cpError && (
-            <ErrorMessage>
-              <i className="fa-solid fa-circle-exclamation"></i>{' '}
-              {cpError.response?.data.message}
-            </ErrorMessage>
+            <div className="textCenter">
+              <ErrorMessage>
+                <i className="fa-solid fa-circle-exclamation"></i>{' '}
+                {cpError.response?.data.message}
+              </ErrorMessage>
+            </div>
           )}
           <ButtonGroup $marginTop="12px">
             <StyledButton
@@ -302,8 +314,19 @@ const ProfileInfo = () => {
         </form>
       </Modal>
 
-      <Modal isOpen={cpIsSuccess} onClose={() => cpReset()} title="Sucesso">
-        <p>Senha atualizada com sucesso!</p>
+      <Modal
+        isOpen={cpIsSuccess || isSuccess}
+        onClose={() => {
+          cpReset()
+          reset()
+        }}
+        title="Sucesso!"
+      >
+        {cpIsSuccess ? (
+          <p className="text textCenter">Senha atualizada com sucesso!</p>
+        ) : (
+          <p className="text textCenter">Dados atualizados com sucesso!</p>
+        )}
       </Modal>
     </Container>
   )
