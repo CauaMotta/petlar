@@ -5,31 +5,6 @@ export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
   flex: 1;
-
-  form {
-    .inputGroup {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 6px;
-
-      .text {
-        font-size: 14px;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 28px;
-        padding: 8px;
-        background-color: ${({ theme }) => theme.colors.backgroundColor};
-        border: 1px solid ${({ theme }) => theme.colors.highlightColor};
-        outline: none;
-        font-size: 14px;
-        border-radius: 6px;
-        resize: none;
-      }
-    }
-  }
 `
 
 export const Card = styled.div`

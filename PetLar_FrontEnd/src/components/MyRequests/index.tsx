@@ -13,7 +13,12 @@ import {
 } from '../../hooks/useAdoption'
 
 import { Container } from './styles'
-import { ButtonGroup, ErrorMessage, StyledButton } from '../../styles'
+import {
+  ButtonGroup,
+  ErrorMessage,
+  InputGroup,
+  StyledButton
+} from '../../styles'
 
 const MyRequests = () => {
   const theme = useTheme()
@@ -143,7 +148,7 @@ const MyRequests = () => {
         isOpen={showModal}
         title="Solicitação enviada"
       >
-        <div className="modalContainer">
+        <>
           <p>Pedido enviado para {adoption?.animalOwner.name}</p>
           <p>
             Motivo: <br /> {adoption?.reason}
@@ -172,7 +177,7 @@ const MyRequests = () => {
               Editar <i className="fa-solid fa-pen-to-square"></i>
             </StyledButton>
           </ButtonGroup>
-        </div>
+        </>
       </Modal>
 
       <Modal
@@ -180,8 +185,8 @@ const MyRequests = () => {
         isOpen={showEditModal}
         title="Editar motivo"
       >
-        <div className="modalContainer">
-          <div className="inputGroup">
+        <>
+          <InputGroup $fontSize="14px" $borderRadius="6px" $light>
             <label className="text" htmlFor="reason">
               Texto{' '}
               {isError('reason') ? (
@@ -201,7 +206,7 @@ const MyRequests = () => {
                 form.handleBlur(e)
               }}
             />
-          </div>
+          </InputGroup>
           {editError && (
             <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}
@@ -231,13 +236,11 @@ const MyRequests = () => {
               Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
           </ButtonGroup>
-        </div>
+        </>
       </Modal>
 
       <Modal onClose={() => reset()} isOpen={isSuccess} title="Sucesso!">
-        <div className="modalContainer">
-          <p style={{ textAlign: 'center' }}>Motivo alterado.</p>
-        </div>
+        <p style={{ textAlign: 'center' }}>Motivo alterado.</p>
       </Modal>
     </Container>
   )

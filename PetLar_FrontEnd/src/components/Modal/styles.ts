@@ -29,13 +29,11 @@ export const ModalCard = styled.div`
   padding: 16px;
   border-radius: 16px;
 
-  text-align: center;
-  line-height: 1.3;
-
   .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    line-height: 1;
 
     .close {
       background: transparent;
@@ -43,6 +41,7 @@ export const ModalCard = styled.div`
 
       color: ${({ theme }) => theme.colors.fontColor};
       font-size: 24px;
+      line-height: 1;
 
       cursor: pointer;
 

@@ -16,7 +16,13 @@ import { formatDateBr, formatWeight } from '../../utils'
 import type { RootReducer } from '../../store'
 
 import { Card, Container, Description } from './styles'
-import { ErrorMessage, StyledButton, Line, ButtonGroup } from '../../styles'
+import {
+  ErrorMessage,
+  StyledButton,
+  Line,
+  ButtonGroup,
+  InputGroup
+} from '../../styles'
 
 type Params = {
   id: string
@@ -154,7 +160,7 @@ const Details = () => {
         }}
       >
         <form>
-          <div className="inputGroup">
+          <InputGroup $light $fontSize="14px" $borderRadius="6px">
             <label className="text" htmlFor="reason">
               Motivo{' '}
               {isFieldError('reason') ? (
@@ -174,12 +180,14 @@ const Details = () => {
                 form.handleBlur(e)
               }}
             />
-          </div>
+          </InputGroup>
           {error && (
-            <ErrorMessage>
-              <i className="fa-solid fa-circle-exclamation"></i>{' '}
-              {error.response?.data.message}
-            </ErrorMessage>
+            <div className="errorWrapper">
+              <ErrorMessage>
+                <i className="fa-solid fa-circle-exclamation"></i>{' '}
+                {error.response?.data.message}
+              </ErrorMessage>
+            </div>
           )}
           <ButtonGroup $marginTop="12px">
             <StyledButton

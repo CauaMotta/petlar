@@ -79,9 +79,49 @@ export const Line = styled.hr`
 // Error
 
 export const ErrorMessage = styled.small`
-  display: inline-block;
   max-width: 288px;
+  display: inline-block;
+  font-size: 12px;
   color: darkred;
+`
+
+// Input
+
+type InpGroup = {
+  $fontSize?: string
+  $light?: boolean
+  $borderRadius?: string
+  $minHeight?: string
+}
+
+export const InputGroup = styled.div<InpGroup>`
+  max-width: 512px;
+  width: 100%;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+
+  input,
+  label,
+  textarea {
+    font-size: ${({ $fontSize }) => $fontSize || '16px'};
+  }
+
+  input,
+  textarea {
+    min-height: ${({ $minHeight }) => $minHeight || '38px'};
+    padding-inline: 10px;
+    background-color: ${({ $light, theme }) =>
+      $light ? theme.colors.backgroundColor : theme.colors.secondaryColor};
+    border: 1px solid ${({ theme }) => theme.colors.highlightColor};
+    outline: none;
+    border-radius: ${({ $borderRadius }) => $borderRadius || 'none'};
+  }
+
+  textarea {
+    padding-block: 6px;
+    resize: none;
+  }
 `
 
 // Button Group

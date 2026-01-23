@@ -14,7 +14,12 @@ import {
 } from '../../hooks/useUser'
 
 import { Container } from './styles'
-import { ButtonGroup, ErrorMessage, StyledButton } from '../../styles'
+import {
+  ButtonGroup,
+  ErrorMessage,
+  InputGroup,
+  StyledButton
+} from '../../styles'
 
 const ProfileInfo = () => {
   const theme = useTheme()
@@ -134,7 +139,12 @@ const ProfileInfo = () => {
         }}
       >
         <form>
-          <div className="inputGroup">
+          <InputGroup
+            $fontSize="14px"
+            $light
+            $borderRadius="6px"
+            $minHeight="28px"
+          >
             <label className="text" htmlFor="name">
               Nome{' '}
               {isProfileFormError('name') ? (
@@ -154,8 +164,13 @@ const ProfileInfo = () => {
                 editProfileForm.handleBlur(e)
               }}
             />
-          </div>
-          <div className="inputGroup">
+          </InputGroup>
+          <InputGroup
+            $fontSize="14px"
+            $light
+            $borderRadius="6px"
+            $minHeight="28px"
+          >
             <label className="text" htmlFor="email">
               Email{' '}
               {isProfileFormError('email') ? (
@@ -171,7 +186,7 @@ const ProfileInfo = () => {
               onChange={editProfileForm.handleChange}
               onBlur={editProfileForm.handleBlur}
             />
-          </div>
+          </InputGroup>
           {error && (
             <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}
@@ -201,13 +216,19 @@ const ProfileInfo = () => {
               Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
           </ButtonGroup>
-          <button
-            className="btnDelete"
-            type="button"
-            onClick={() => deleteUser()}
-          >
-            <i className="fa-solid fa-trash"></i> Apagar conta
-          </button>
+          <ButtonGroup $marginTop="6px">
+            <StyledButton
+              $backgroundColor="transparent"
+              $fontSize="12px"
+              $maxWidth="fit-content"
+              $paddingBlock="6px"
+              $paddingInline="8px"
+              type="button"
+              className="btnDelete"
+            >
+              <i className="fa-solid fa-trash"></i> Apagar conta
+            </StyledButton>
+          </ButtonGroup>
         </form>
       </Modal>
 
@@ -221,7 +242,12 @@ const ProfileInfo = () => {
         }}
       >
         <form>
-          <div className="inputGroup">
+          <InputGroup
+            $fontSize="14px"
+            $light
+            $borderRadius="6px"
+            $minHeight="28px"
+          >
             <label className="text" htmlFor="password">
               Senha{' '}
               {isPasswordFormError('password') ? (
@@ -243,7 +269,7 @@ const ProfileInfo = () => {
                 editPasswordForm.handleBlur(e)
               }}
             />
-          </div>
+          </InputGroup>
           {cpError && (
             <ErrorMessage>
               <i className="fa-solid fa-circle-exclamation"></i>{' '}

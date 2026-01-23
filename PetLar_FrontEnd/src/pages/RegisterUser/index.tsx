@@ -11,7 +11,12 @@ import { useRegisterUser } from '../../hooks/useUser'
 import type { RootReducer } from '../../store'
 
 import { Container } from './styles'
-import { ButtonGroup, ErrorMessage, StyledButton } from '../../styles'
+import {
+  ButtonGroup,
+  ErrorMessage,
+  InputGroup,
+  StyledButton
+} from '../../styles'
 
 const RegisterUser = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -58,8 +63,13 @@ const RegisterUser = () => {
     <Container>
       <div className="loginContainer">
         <p className="title--small">Cadastre-se!</p>
-        <div className="formBox">
-          <div className="inputGroup">
+        <div>
+          <InputGroup
+            $light
+            $fontSize="14px"
+            $borderRadius="6px"
+            $minHeight="28px"
+          >
             <label className="text" htmlFor="name">
               Nome{' '}
               {isError('name') ? (
@@ -79,8 +89,13 @@ const RegisterUser = () => {
                 form.handleBlur(e)
               }}
             />
-          </div>
-          <div className="inputGroup">
+          </InputGroup>
+          <InputGroup
+            $light
+            $fontSize="14px"
+            $borderRadius="6px"
+            $minHeight="28px"
+          >
             <label className="text" htmlFor="email">
               Email{' '}
               {isError('email') ? (
@@ -96,8 +111,13 @@ const RegisterUser = () => {
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
-          </div>
-          <div className="inputGroup">
+          </InputGroup>
+          <InputGroup
+            $light
+            $fontSize="14px"
+            $borderRadius="6px"
+            $minHeight="28px"
+          >
             <label className="text" htmlFor="password">
               Senha{' '}
               {isError('password') ? (
@@ -113,7 +133,7 @@ const RegisterUser = () => {
               onChange={form.handleChange}
               onBlur={form.handleBlur}
             />
-          </div>
+          </InputGroup>
           {error && (
             <div className="errorWrapper">
               <ErrorMessage>

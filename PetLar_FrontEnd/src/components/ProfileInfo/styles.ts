@@ -37,37 +37,8 @@ export const Container = styled.div`
   form {
     width: 100%;
 
-    .inputGroup {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 6px;
-
-      .text {
-        font-size: 14px;
-      }
-
-      input {
-        width: 100%;
-        min-height: 28px;
-        padding-inline: 8px;
-        background-color: ${({ theme }) => theme.colors.backgroundColor};
-        border: 1px solid ${({ theme }) => theme.colors.highlightColor};
-        outline: none;
-        font-size: 14px;
-        border-radius: 6px;
-      }
-    }
-
     .btnDelete {
-      background-color: transparent;
-      border: none;
-      font-size: 12px;
-      font-weight: 600;
       color: darkred;
-      padding: 4px 8px;
-      margin-top: 4px;
-      cursor: pointer;
     }
   }
 `

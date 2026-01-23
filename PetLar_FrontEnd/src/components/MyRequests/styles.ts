@@ -9,36 +9,6 @@ export const Container = styled.div`
     gap: 16px;
   }
 
-  .modalContainer {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    gap: 8px;
-
-    .inputGroup {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 6px;
-
-      .text {
-        font-size: 14px;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 28px;
-        padding: 8px;
-        background-color: ${({ theme }) => theme.colors.backgroundColor};
-        border: 1px solid ${({ theme }) => theme.colors.highlightColor};
-        outline: none;
-        font-size: 14px;
-        border-radius: 6px;
-        resize: none;
-      }
-    }
-  }
-
   .pagesContainer {
     margin-top: 16px;
     width: 100%;

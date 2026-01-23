@@ -15,27 +15,6 @@ export const Container = styled.section`
     flex-direction: column;
     align-items: center;
     gap: 8px;
-
-    .inputGroup {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-bottom: 6px;
-
-      .text {
-        font-size: 14px;
-      }
-
-      input {
-        min-height: 28px;
-        padding-inline: 8px;
-        background-color: ${({ theme }) => theme.colors.backgroundColor};
-        border: 1px solid ${({ theme }) => theme.colors.highlightColor};
-        outline: none;
-        font-size: 14px;
-        border-radius: 6px;
-      }
-    }
   }
 
   .registerLink {

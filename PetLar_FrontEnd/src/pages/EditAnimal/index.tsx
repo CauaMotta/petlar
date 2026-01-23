@@ -16,7 +16,13 @@ import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
 
 import { AnimalForm, Container } from './styles'
-import { ErrorMessage, StyledButton, Line, ButtonGroup } from '../../styles'
+import {
+  ErrorMessage,
+  StyledButton,
+  Line,
+  ButtonGroup,
+  InputGroup
+} from '../../styles'
 
 const options = [
   { value: 'CACHORRO', label: 'Cachorro' },
@@ -217,7 +223,7 @@ const EditAnimal = () => {
             minWidth={256}
           />
         </div>
-        <div className="inputGroup">
+        <InputGroup>
           <label className="text" htmlFor="name">
             Nome:{' '}
             {isError('name') ? (
@@ -239,8 +245,8 @@ const EditAnimal = () => {
               form.handleBlur(e)
             }}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="birthDate">
             Data de nascimento:{' '}
             {isError('birthDate') ? (
@@ -258,8 +264,8 @@ const EditAnimal = () => {
             onAccept={(value) => form.setFieldValue('birthDate', value)}
             onBlur={form.handleBlur}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text">Sexo:</label>
           <StyledSelectWrapper
             placeholder="Selecione..."
@@ -270,8 +276,8 @@ const EditAnimal = () => {
             onChange={(option) => form.setFieldValue('sex', option?.value)}
             options={sexOptions}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="weight">
             Peso:{' '}
             {isError('weight') ? (
@@ -300,8 +306,8 @@ const EditAnimal = () => {
             }}
             onBlur={form.handleBlur}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="">
             Porte:
           </label>
@@ -314,8 +320,8 @@ const EditAnimal = () => {
             onChange={(option) => form.setFieldValue('size', option?.value)}
             options={sizeOptions}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="image">
             {animal?.imagePath
               ? 'Substituir a imagem atual: '
@@ -353,8 +359,8 @@ const EditAnimal = () => {
               form.validateField('image')
             }}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="description">
             {animal?.description
               ? 'Editar a descrição: '
@@ -379,7 +385,7 @@ const EditAnimal = () => {
               form.handleBlur(e)
             }}
           />
-        </div>
+        </InputGroup>
         <ButtonGroup>
           <StyledButton
             $maxWidth="fit-content"

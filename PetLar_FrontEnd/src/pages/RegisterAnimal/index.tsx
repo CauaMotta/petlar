@@ -13,7 +13,13 @@ import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
 
 import { AnimalForm, Container } from './styles'
-import { ErrorMessage, StyledButton, Line, ButtonGroup } from '../../styles'
+import {
+  ErrorMessage,
+  StyledButton,
+  Line,
+  ButtonGroup,
+  InputGroup
+} from '../../styles'
 
 const options = [
   { value: 'cachorro', label: 'Cachorro' },
@@ -189,7 +195,7 @@ const RegisterAnimal = () => {
             minWidth={256}
           />
         </div>
-        <div className="inputGroup">
+        <InputGroup>
           <label className="text" htmlFor="name">
             Nome:{' '}
             {isError('name') ? (
@@ -201,7 +207,6 @@ const RegisterAnimal = () => {
           <input
             id="name"
             placeholder="Bob"
-            className="input"
             type="text"
             value={form.values.name}
             onChange={form.handleChange}
@@ -211,8 +216,8 @@ const RegisterAnimal = () => {
               form.handleBlur(e)
             }}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="birthDate">
             Data de nascimento:{' '}
             {isError('birthDate') ? (
@@ -225,13 +230,12 @@ const RegisterAnimal = () => {
             id="birthDate"
             mask="00/00/0000"
             placeholder={'01/01/2026'}
-            className="input"
             value={form.values.birthDate}
             onAccept={(value) => form.setFieldValue('birthDate', value)}
             onBlur={form.handleBlur}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text">Sexo:</label>
           <StyledSelectWrapper
             placeholder="Selecione..."
@@ -242,8 +246,8 @@ const RegisterAnimal = () => {
             onChange={(option) => form.setFieldValue('sex', option?.value)}
             options={sexOptions}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="weight">
             Peso:{' '}
             {isError('weight') ? (
@@ -260,7 +264,6 @@ const RegisterAnimal = () => {
             unmask={true}
             min={-1}
             placeholder="2 Kg"
-            className="input"
             value={
               form.values.weight !== null
                 ? String(form.values.weight / 1000)
@@ -272,8 +275,8 @@ const RegisterAnimal = () => {
             }}
             onBlur={form.handleBlur}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="">
             Porte:
           </label>
@@ -286,8 +289,8 @@ const RegisterAnimal = () => {
             onChange={(option) => form.setFieldValue('size', option?.value)}
             options={sizeOptions}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="image">
             Adicionar uma imagem:{' '}
             {isError('image') ? (
@@ -323,8 +326,8 @@ const RegisterAnimal = () => {
               form.validateField('image')
             }}
           />
-        </div>
-        <div className="inputGroup">
+        </InputGroup>
+        <InputGroup>
           <label className="text" htmlFor="description">
             Adicionar uma descrição:
             {isError('description') ? (
@@ -336,7 +339,6 @@ const RegisterAnimal = () => {
           <textarea
             id="description"
             placeholder="Muito dócil."
-            className="input"
             rows={3}
             maxLength={250}
             value={form.values.description}
@@ -347,7 +349,7 @@ const RegisterAnimal = () => {
               form.handleBlur(e)
             }}
           />
-        </div>
+        </InputGroup>
         <ButtonGroup>
           <StyledButton
             $maxWidth="fit-content"

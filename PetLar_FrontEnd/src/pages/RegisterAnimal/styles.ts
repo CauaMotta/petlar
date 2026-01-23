@@ -49,28 +49,6 @@ export const AnimalForm = styled.form`
     min-height: 57px;
   }
 
-  .inputGroup {
-    display: flex;
-    flex-direction: column;
-    max-width: 512px;
-    width: 100%;
-    margin-bottom: 4px;
-
-    .input {
-      min-height: 38px;
-      padding-inline: 10px;
-      background-color: ${({ theme }) => theme.colors.secondaryColor};
-      border: 1px solid ${({ theme }) => theme.colors.highlightColor};
-      outline: none;
-      font-size: 16px;
-    }
-
-    textarea.input {
-      padding-block: 6px;
-      resize: none;
-    }
-  }
-
   .btnReset {
     i {
       transition: transform 0.3s ease;
@@ -102,14 +80,6 @@ export const AnimalForm = styled.form`
   @media (max-width: ${variables.breakpoints.tablet}) {
     .animalSelect {
       margin-bottom: 4px;
-    }
-
-    .inputGroup {
-      .input-select {
-        .input {
-          width: 100%;
-        }
-      }
     }
   }
 `
