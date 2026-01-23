@@ -10,7 +10,7 @@ import {
 } from '../../hooks/useAdoption'
 
 import { Container } from './styles'
-import { StyledButton } from '../../styles'
+import { ButtonGroup, StyledButton } from '../../styles'
 
 const AdoptionRequests = () => {
   const theme = useTheme()
@@ -45,7 +45,7 @@ const AdoptionRequests = () => {
           })
           .map((adoption) => (
             <CardForProfile key={adoption.id} animal={adoption.animal}>
-              <div className="btnGroup">
+              <ButtonGroup $marginTop="8px">
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
                     <StyledButton
@@ -65,7 +65,7 @@ const AdoptionRequests = () => {
                     </StyledButton>
                   </>
                 )}
-              </div>
+              </ButtonGroup>
             </CardForProfile>
           ))}
       </div>
@@ -116,7 +116,7 @@ const AdoptionRequests = () => {
           <p>
             Motivo: <br /> {adoption?.reason}
           </p>
-          <div className="btnGroup">
+          <ButtonGroup>
             <StyledButton
               $backgroundColor={theme.colors.highlightColor}
               $maxWidth="fit-content"
@@ -139,7 +139,7 @@ const AdoptionRequests = () => {
             >
               Aprovar <i className="fa-solid fa-check"></i>
             </StyledButton>
-          </div>
+          </ButtonGroup>
         </div>
       </Modal>
     </Container>

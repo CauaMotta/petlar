@@ -7,13 +7,6 @@ export const Container = styled.div`
     display: flex;
     justify-content: center;
     gap: 16px;
-
-    .btnGroup {
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
   }
 
   .modalContainer {
@@ -21,13 +14,6 @@ export const Container = styled.div`
     flex-direction: column;
     text-align: left;
     gap: 8px;
-
-    .btnGroup {
-      display: flex;
-      align-items: end;
-      justify-content: center;
-      gap: 6px;
-    }
   }
 
   .pagesContainer {

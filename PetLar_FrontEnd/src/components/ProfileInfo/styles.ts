@@ -7,13 +7,6 @@ export const Container = styled.div`
   display: flex;
   gap: 16px;
 
-  .btnGroup {
-    display: flex;
-    align-items: end;
-    justify-content: center;
-    gap: 6px;
-  }
-
   .avatar {
     max-width: 144px;
     width: 100%;
@@ -64,10 +57,6 @@ export const Container = styled.div`
         font-size: 14px;
         border-radius: 6px;
       }
-    }
-
-    .btnGroup {
-      margin-top: 12px;
     }
 
     .btnDelete {

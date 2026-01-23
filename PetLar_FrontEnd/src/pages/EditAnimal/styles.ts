@@ -71,20 +71,14 @@ export const AnimalForm = styled.form`
     }
   }
 
-  .btnGroup {
-    margin-top: 16px;
-    display: flex;
-    gap: 8px;
+  .btnReset {
+    i {
+      transition: transform 0.3s ease;
+    }
 
-    .reset {
+    &:hover {
       i {
-        transition: transform 0.3s ease;
-      }
-
-      &:hover {
-        i {
-          transform: rotate(90deg);
-        }
+        transform: rotate(90deg);
       }
     }
   }
@@ -108,14 +102,6 @@ export const AnimalForm = styled.form`
   @media (max-width: ${variables.breakpoints.tablet}) {
     .animalSelect {
       margin-bottom: 4px;
-    }
-
-    .inputGroup {
-      .input-select {
-        .input {
-          width: 100%;
-        }
-      }
     }
   }
 `

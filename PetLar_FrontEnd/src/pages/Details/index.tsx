@@ -16,7 +16,7 @@ import { formatDateBr, formatWeight } from '../../utils'
 import type { RootReducer } from '../../store'
 
 import { Card, Container, Description } from './styles'
-import { ErrorMessage, StyledButton, Line } from '../../styles'
+import { ErrorMessage, StyledButton, Line, ButtonGroup } from '../../styles'
 
 type Params = {
   id: string
@@ -181,7 +181,7 @@ const Details = () => {
               {error.response?.data.message}
             </ErrorMessage>
           )}
-          <div className="btnGroup">
+          <ButtonGroup $marginTop="12px">
             <StyledButton
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
@@ -207,7 +207,7 @@ const Details = () => {
             >
               Enviar <i className="fa-solid fa-share"></i>
             </StyledButton>
-          </div>
+          </ButtonGroup>
         </form>
       </Modal>
 

@@ -8,7 +8,7 @@ import Modal from '../Modal'
 import { useDeleteAnimal, useGetMyAnimals } from '../../hooks/useAnimals'
 
 import { Container } from './styles'
-import { StyledButton } from '../../styles'
+import { ButtonGroup, StyledButton } from '../../styles'
 
 const MyAnimals = () => {
   const theme = useTheme()
@@ -35,7 +35,7 @@ const MyAnimals = () => {
         )}
         {data.map((animal) => (
           <CardForProfile key={animal.id} animal={animal}>
-            <div className="btnGroup">
+            <ButtonGroup $marginTop="8px" $flexDirection="column" $gap="4px">
               {animal.status.toLowerCase() !== 'adotado' ? (
                 <>
                   <StyledButton
@@ -62,7 +62,7 @@ const MyAnimals = () => {
                   </StyledButton>
                 </>
               )}
-            </div>
+            </ButtonGroup>
           </CardForProfile>
         ))}
       </div>
@@ -108,7 +108,7 @@ const MyAnimals = () => {
       >
         <div className="modalContainer">
           <p>Você quer excluir este animal?</p>
-          <div className="btnGroup">
+          <ButtonGroup>
             <StyledButton
               $fontSize="14px"
               $backgroundColor={theme.colors.highlightColor}
@@ -128,7 +128,7 @@ const MyAnimals = () => {
             >
               Não
             </StyledButton>
-          </div>
+          </ButtonGroup>
         </div>
       </Modal>
     </Container>

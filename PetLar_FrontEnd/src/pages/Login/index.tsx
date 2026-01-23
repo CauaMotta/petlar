@@ -10,7 +10,7 @@ import { useLogin } from '../../hooks/useLogin'
 import type { RootReducer } from '../../store'
 
 import { Container } from './styles'
-import { ErrorMessage, StyledButton } from '../../styles'
+import { ButtonGroup, ErrorMessage, StyledButton } from '../../styles'
 
 const Login = () => {
   const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
@@ -96,7 +96,7 @@ const Login = () => {
               </ErrorMessage>
             </div>
           )}
-          <div className="btnGroup">
+          <ButtonGroup>
             <StyledButton onClick={() => form.handleSubmit()}>
               {isPending ? (
                 <PulseLoader color={theme.colors.fontColor} size={8} />
@@ -106,7 +106,7 @@ const Login = () => {
                 </>
               )}
             </StyledButton>
-          </div>
+          </ButtonGroup>
           <Link className="registerLink" to={'/register'}>
             Ainda não é cadastrado? <br /> <u>Clique aqui</u> e se cadastre!
           </Link>

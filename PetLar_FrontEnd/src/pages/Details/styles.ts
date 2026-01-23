@@ -7,14 +7,6 @@ export const Container = styled.section`
   flex: 1;
 
   form {
-    .btnGroup {
-      margin-top: 12px;
-      display: flex;
-      align-items: end;
-      justify-content: center;
-      gap: 6px;
-    }
-
     .inputGroup {
       display: flex;
       flex-direction: column;

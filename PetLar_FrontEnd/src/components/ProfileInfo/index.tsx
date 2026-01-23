@@ -14,7 +14,7 @@ import {
 } from '../../hooks/useUser'
 
 import { Container } from './styles'
-import { ErrorMessage, StyledButton } from '../../styles'
+import { ButtonGroup, ErrorMessage, StyledButton } from '../../styles'
 
 const ProfileInfo = () => {
   const theme = useTheme()
@@ -97,7 +97,7 @@ const ProfileInfo = () => {
         <h3 className="title">{user?.name}</h3>
         <p className="text">{user?.email}</p>
       </div>
-      <div className="btnGroup">
+      <ButtonGroup $alignItems="flex-end">
         <StyledButton
           $backgroundColor={theme.colors.highlightColor}
           $paddingBlock="6px"
@@ -110,7 +110,6 @@ const ProfileInfo = () => {
         >
           <i className="fa-solid fa-pen-to-square"></i> Editar perfil
         </StyledButton>
-
         <StyledButton
           $backgroundColor={theme.colors.highlightColor}
           $paddingBlock="6px"
@@ -123,7 +122,7 @@ const ProfileInfo = () => {
         >
           <i className="fa-solid fa-key"></i> Trocar senha
         </StyledButton>
-      </div>
+      </ButtonGroup>
 
       <Modal
         title="Editar perfil"
@@ -179,7 +178,7 @@ const ProfileInfo = () => {
               {error.response?.data.message}
             </ErrorMessage>
           )}
-          <div className="btnGroup">
+          <ButtonGroup $marginTop="12px">
             <StyledButton
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
@@ -201,7 +200,7 @@ const ProfileInfo = () => {
             >
               Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
-          </div>
+          </ButtonGroup>
           <button
             className="btnDelete"
             type="button"
@@ -251,7 +250,7 @@ const ProfileInfo = () => {
               {cpError.response?.data.message}
             </ErrorMessage>
           )}
-          <div className="btnGroup">
+          <ButtonGroup $marginTop="12px">
             <StyledButton
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
@@ -273,7 +272,7 @@ const ProfileInfo = () => {
             >
               Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
-          </div>
+          </ButtonGroup>
         </form>
       </Modal>
 

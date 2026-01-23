@@ -7,26 +7,12 @@ export const Container = styled.div`
     display: flex;
     justify-content: center;
     gap: 16px;
-
-    .btnGroup {
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
   }
 
   .modalContainer {
     display: flex;
     flex-direction: column;
     gap: 8px;
-
-    .btnGroup {
-      display: flex;
-      align-items: end;
-      justify-content: center;
-      gap: 6px;
-    }
   }
 
   .pagesContainer {

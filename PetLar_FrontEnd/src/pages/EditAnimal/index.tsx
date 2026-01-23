@@ -16,7 +16,7 @@ import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
 
 import { AnimalForm, Container } from './styles'
-import { ErrorMessage, StyledButton, Line } from '../../styles'
+import { ErrorMessage, StyledButton, Line, ButtonGroup } from '../../styles'
 
 const options = [
   { value: 'CACHORRO', label: 'Cachorro' },
@@ -380,10 +380,10 @@ const EditAnimal = () => {
             }}
           />
         </div>
-        <div className="btnGroup">
+        <ButtonGroup>
           <StyledButton
             $maxWidth="fit-content"
-            className="reset"
+            className="btnReset"
             type="button"
             onClick={() => form.resetForm()}
           >
@@ -397,7 +397,7 @@ const EditAnimal = () => {
           >
             Atualizar <i className="fa-solid fa-paw"></i>
           </StyledButton>
-        </div>
+        </ButtonGroup>
       </AnimalForm>
 
       <Modal title="Atualizando..." isOpen={isPending} onClose={() => reset()}>

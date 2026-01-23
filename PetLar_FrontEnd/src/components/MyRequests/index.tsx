@@ -13,7 +13,7 @@ import {
 } from '../../hooks/useAdoption'
 
 import { Container } from './styles'
-import { ErrorMessage, StyledButton } from '../../styles'
+import { ButtonGroup, ErrorMessage, StyledButton } from '../../styles'
 
 const MyRequests = () => {
   const theme = useTheme()
@@ -79,7 +79,7 @@ const MyRequests = () => {
           })
           .map((adoption) => (
             <CardForProfile key={adoption.id} animal={adoption.animal}>
-              <div className="btnGroup">
+              <ButtonGroup $marginTop="8px">
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
                     <StyledButton
@@ -99,7 +99,7 @@ const MyRequests = () => {
                     </StyledButton>
                   </>
                 )}
-              </div>
+              </ButtonGroup>
             </CardForProfile>
           ))}
       </div>
@@ -148,7 +148,7 @@ const MyRequests = () => {
           <p>
             Motivo: <br /> {adoption?.reason}
           </p>
-          <div className="btnGroup">
+          <ButtonGroup>
             <StyledButton
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
@@ -171,7 +171,7 @@ const MyRequests = () => {
             >
               Editar <i className="fa-solid fa-pen-to-square"></i>
             </StyledButton>
-          </div>
+          </ButtonGroup>
         </div>
       </Modal>
 
@@ -208,7 +208,7 @@ const MyRequests = () => {
               {editError.response?.data.message}
             </ErrorMessage>
           )}
-          <div className="btnGroup">
+          <ButtonGroup>
             <StyledButton
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
@@ -230,7 +230,7 @@ const MyRequests = () => {
             >
               Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
-          </div>
+          </ButtonGroup>
         </div>
       </Modal>
 

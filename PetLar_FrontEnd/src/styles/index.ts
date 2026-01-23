@@ -84,6 +84,25 @@ export const ErrorMessage = styled.small`
   color: darkred;
 `
 
+// Button Group
+
+type BtnGroup = {
+  $marginTop?: string
+  $flexDirection?: 'row' | 'column'
+  $alignItems?: 'center' | 'flex-end' | 'flex-start'
+  $justifyContent?: 'center' | 'flex-end' | 'flex-start'
+  $gap?: string
+}
+
+export const ButtonGroup = styled.div<BtnGroup>`
+  margin-top: ${({ $marginTop }) => $marginTop || '16px'};
+  display: flex;
+  flex-direction: ${({ $flexDirection }) => $flexDirection || 'row'};
+  align-items: ${({ $alignItems }) => $alignItems || 'center'};
+  justify-content: ${({ $justifyContent }) => $justifyContent || 'center'};
+  gap: ${({ $gap }) => $gap || '8px'};
+`
+
 // Button
 
 type Button = {

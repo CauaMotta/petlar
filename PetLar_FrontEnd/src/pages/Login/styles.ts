@@ -36,14 +36,6 @@ export const Container = styled.section`
         border-radius: 6px;
       }
     }
-
-    .btnGroup {
-      margin-top: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 16px;
-    }
   }
 
   .registerLink {
