@@ -11,15 +11,6 @@ export const Container = styled.section`
     margin-top: 24px;
     text-align: center;
   }
-
-  .box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-block: 16px;
-  }
 `
 
 export const AnimalForm = styled.form`

@@ -8,7 +8,7 @@ import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import { useGetAllAnimals } from '../../hooks/useAnimals'
 
 import { Container, CardContainer, CardInfo } from './styles'
-import { Line } from '../../styles'
+import { Line, StyledButton } from '../../styles'
 
 const options = [
   { value: '', label: 'Todos' },
@@ -98,10 +98,11 @@ const Home = () => {
             options={options}
             fontSize={12}
           />
-          <button
+          <StyledButton
+            $maxWidth="fit-content"
+            $fontSize="12px"
+            $backgroundColor="transparent"
             onClick={() => setShowAdopted(!showAdopted)}
-            className="btnFilter"
-            type="button"
           >
             {showAdopted ? (
               <>
@@ -113,7 +114,7 @@ const Home = () => {
                 <i className="fa-solid fa-eye"></i> mostrar animais adotados
               </>
             )}
-          </button>
+          </StyledButton>
         </div>
         {available.length == 0 && (
           <div className="box">

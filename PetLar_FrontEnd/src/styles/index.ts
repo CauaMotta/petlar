@@ -46,7 +46,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .box {
-    margin-bottom: 32px;
+    margin-block: 16px;
     text-align: center;
     i {
       font-size: 24px;

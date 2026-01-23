@@ -32,15 +32,8 @@ export const Container = styled.section`
   .filterBox {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
     margin-block: 24px;
-
-    .btnFilter {
-      background: transparent;
-      border: none;
-      font-size: 12px;
-      cursor: pointer;
-    }
   }
 
   .pagesContainer {
