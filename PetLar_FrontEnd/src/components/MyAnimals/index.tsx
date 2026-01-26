@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 
 import PageCounter from '../PageCounter'
-import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
+import Card from '../Card'
 
 import { useDeleteAnimal, useGetMyAnimals } from '../../hooks/useAnimals'
 
@@ -29,7 +29,7 @@ const MyAnimals = () => {
           <p className="text">Você ainda não cadastrou nenhum animal!</p>
         )}
         {data.map((animal) => (
-          <CardForProfile key={animal.id} animal={animal}>
+          <Card key={animal.id} animal={animal}>
             <ButtonGroup $marginTop="8px" $flexDirection="column" $gap="4px">
               {animal.status.toLowerCase() !== 'adotado' ? (
                 <>
@@ -58,7 +58,7 @@ const MyAnimals = () => {
                 </>
               )}
             </ButtonGroup>
-          </CardForProfile>
+          </Card>
         ))}
       </CardContainer>
       <PageCounter

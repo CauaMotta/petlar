@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Card = styled.div`
+export const Container = styled.div`
   display: block;
   padding: 16px;
   max-width: 280px;

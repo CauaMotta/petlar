@@ -3,9 +3,9 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { useTheme } from 'styled-components'
 
-import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
 import PageCounter from '../PageCounter'
+import Card from '../Card'
 
 import {
   useEditReason,
@@ -79,7 +79,7 @@ const MyRequests = () => {
             return 0
           })
           .map((adoption) => (
-            <CardForProfile key={adoption.id} animal={adoption.animal}>
+            <Card key={adoption.id} animal={adoption.animal}>
               <ButtonGroup $marginTop="8px">
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
@@ -101,7 +101,7 @@ const MyRequests = () => {
                   </>
                 )}
               </ButtonGroup>
-            </CardForProfile>
+            </Card>
           ))}
       </CardContainer>
       <PageCounter

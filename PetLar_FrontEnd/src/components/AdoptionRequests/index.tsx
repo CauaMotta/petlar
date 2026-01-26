@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useTheme } from 'styled-components'
 
-import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
 import PageCounter from '../PageCounter'
+import Card from '../Card'
 
 import {
   useGetRequestsForMyAnimals,
@@ -39,7 +39,7 @@ const AdoptionRequests = () => {
             return 0
           })
           .map((adoption) => (
-            <CardForProfile key={adoption.id} animal={adoption.animal}>
+            <Card key={adoption.id} animal={adoption.animal}>
               <ButtonGroup $marginTop="8px">
                 {adoption.status.toLowerCase() === 'pendente' ? (
                   <>
@@ -61,7 +61,7 @@ const AdoptionRequests = () => {
                   </>
                 )}
               </ButtonGroup>
-            </CardForProfile>
+            </Card>
           ))}
       </CardContainer>
       <PageCounter
