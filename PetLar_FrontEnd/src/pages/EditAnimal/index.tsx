@@ -200,7 +200,7 @@ const EditAnimal = () => {
   return (
     <Container>
       <BackButton path={-1} />
-      <h2 className="title">Editando um Pet</h2>
+      <h2 className="title--big textCenter">Editando um Pet</h2>
       <Line />
       <p className="text">O que você deseja mudar?</p>
       <AnimalForm>

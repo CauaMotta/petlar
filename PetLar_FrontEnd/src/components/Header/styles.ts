@@ -27,10 +27,6 @@ export const Container = styled.div`
     gap: 8px;
 
     cursor: pointer;
-
-    h1 {
-      font-size: 24px;
-    }
   }
 
   .nav {

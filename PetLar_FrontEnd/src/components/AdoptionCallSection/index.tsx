@@ -29,8 +29,9 @@ const AdoptionCallSection = () => {
       </div>
       <div className="call">
         <h2 className="title">
-          <b className="title--small">Compartilhe amor:</b> <br /> anuncie um
-          pet para adoção!
+          Compartilhe amor:
+          <br />
+          <b className="title--big">anuncie um pet para adoção!</b>
         </h2>
         <p className="text">
           Se você conhece um cão, gato ou outro bichinho que precisa de uma nova

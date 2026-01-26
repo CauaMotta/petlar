@@ -57,7 +57,6 @@ export const Card = styled.div`
 
     .title {
       padding-inline: 16px;
-      line-height: 1;
     }
 
     .text {
@@ -125,7 +124,6 @@ export const Description = styled.div`
 
   .title--small {
     padding-inline: 16px;
-    line-height: 1;
   }
 
   .text {

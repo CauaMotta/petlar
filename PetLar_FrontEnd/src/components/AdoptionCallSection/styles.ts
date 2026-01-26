@@ -31,15 +31,6 @@ export const CallSection = styled.section`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    .title {
-      line-height: 1;
-      font-weight: 700;
-    }
-
-    .text {
-      line-height: 1;
-    }
   }
 
   @media (max-width: ${variables.breakpoints.tablet}) {

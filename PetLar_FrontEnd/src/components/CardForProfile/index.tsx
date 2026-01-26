@@ -22,7 +22,7 @@ const CardForProfile = ({ animal, children }: Props) => (
       )}
     </div>
     <div className="content">
-      <h2>{animal.name}</h2>
+      <h2 className="title textCenter">{animal.name}</h2>
       <Line />
       {children}
     </div>

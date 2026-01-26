@@ -27,6 +27,10 @@ export const Container = styled.section`
         opacity: 0.8;
       }
     }
+
+    .title--big {
+      margin-top: 16px;
+    }
   }
 
   .filterBox {

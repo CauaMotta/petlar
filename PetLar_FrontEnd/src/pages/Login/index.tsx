@@ -57,7 +57,7 @@ const Login = () => {
   return (
     <Container>
       <div className="loginContainer">
-        <p className="title--small">Faça o login</p>
+        <p className="title">Faça o login</p>
         <div>
           <InputGroup
             $light

@@ -21,17 +21,26 @@ export const GlobalStyle = createGlobalStyle`
   .textCenter {
     text-align: center;
   }
+
   .pi-8 {
     padding-inline: 8px;
   }
 
   .title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
+    line-height: 1;
+
+    &--big {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+    }
 
     &--small {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
+      line-height: 1;
     }
   }
 

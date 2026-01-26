@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Line } from '../../styles'
+
 import variables from '../../styles/variables'
 
 export const Container = styled.section`
@@ -7,9 +7,8 @@ export const Container = styled.section`
   margin-top: 32px;
   flex: 1;
 
-  .title {
+  .title--big {
     margin-top: 24px;
-    text-align: center;
   }
 
   .box {
@@ -29,17 +28,6 @@ export const AnimalForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .subtitle {
-    margin-top: 24px;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1;
-  }
-
-  ${Line} {
-    width: 100%;
-  }
 
   .animalSelect {
     display: flex;

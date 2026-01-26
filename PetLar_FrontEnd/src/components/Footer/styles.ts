@@ -26,6 +26,11 @@ export const Container = styled.div`
     display: flex;
     gap: 16px;
 
+    .title--small {
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
     hr {
       width: 2px;
       background-color: ${({ theme }) => theme.colors.highlightColor};

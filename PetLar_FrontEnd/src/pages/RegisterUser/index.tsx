@@ -62,7 +62,7 @@ const RegisterUser = () => {
   return (
     <Container>
       <div className="loginContainer">
-        <p className="title--small">Cadastre-se!</p>
+        <p className="title">Cadastre-se!</p>
         <div>
           <InputGroup
             $light

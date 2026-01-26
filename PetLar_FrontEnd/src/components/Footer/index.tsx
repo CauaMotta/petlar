@@ -9,12 +9,12 @@ const Footer = () => (
       <div className="logo">
         <div className="petlar">
           <PetlarLogo width={40} height={40} />
-          <h3>PetLar</h3>
+          <h3 className="title--small">PetLar</h3>
         </div>
         <hr />
         <div className="ocauamotta">
           <CauaLogo width={40} height={40} />
-          <h3>Cauã Motta</h3>
+          <h3 className="title--small">Cauã Motta</h3>
         </div>
       </div>
       <p className="text--small">

@@ -43,14 +43,7 @@ export const Card = styled.div`
   }
 
   .content {
-    margin-top: 8px;
-
-    h2 {
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      line-height: 1;
-    }
+    margin-top: 6px;
 
     .animalInfo {
       margin-bottom: 16px;

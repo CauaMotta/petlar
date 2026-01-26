@@ -70,7 +70,7 @@ const Home = () => {
           <div className="image">
             <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
           </div>
-          <h1>Bem-vindo ao PetLar!</h1>
+          <h1 className="title--big">Bem-vindo ao PetLar!</h1>
           <p className="text">
             Encontre um novo amigo e dê um lar cheio de carinho.
           </p>

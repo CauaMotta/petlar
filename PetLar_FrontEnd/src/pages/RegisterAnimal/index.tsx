@@ -170,7 +170,7 @@ const RegisterAnimal = () => {
   return (
     <Container>
       <BackButton path={-1} />
-      <h2 className="title">Cadastre um Pet</h2>
+      <h2 className="title--big textCenter">Cadastre um Pet</h2>
       <Line />
       <p className="text">
         Que bom ver você aqui! Qual bixinho quer cadastrar?

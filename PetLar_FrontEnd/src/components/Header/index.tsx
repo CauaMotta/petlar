@@ -23,7 +23,7 @@ const Header = () => {
         <S.Container className={isActive ? 'active' : ''}>
           <div onClick={() => navigate('/')} className="logo">
             <PetlarLogo width={40} height={40} />
-            <h1>PetLar</h1>
+            <h1 className="title--big">PetLar</h1>
           </div>
           <button className="menu" onClick={() => setIsActive(!isActive)}>
             <span className="line"></span>
@@ -67,7 +67,7 @@ const Header = () => {
       <S.Container className={isActive ? 'active' : ''}>
         <div onClick={() => navigate('/')} className="logo">
           <PetlarLogo width={40} height={40} />
-          <h1>PetLar</h1>
+          <h1 className="title--big">PetLar</h1>
         </div>
         <button className="menu" onClick={() => setIsActive(!isActive)}>
           <span className="line"></span>
