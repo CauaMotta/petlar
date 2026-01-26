@@ -19,7 +19,8 @@ const AdoptionRequests = () => {
   const [adoption, setAdoption] = useState<Adoption>()
   const { data, totalPages } = useGetRequestsForMyAnimals({
     page: currentPage - 1,
-    size: 4
+    size: 4,
+    sort: 'status,desc'
   })
   const { mutate } = useStatusUpdate()
 

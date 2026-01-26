@@ -25,6 +25,7 @@ export const buildQueryString = (filter?: Filter) => {
   if (filter.type) params.append('type', filter.type)
   if (filter.page) params.append('page', filter.page.toString())
   if (filter.size) params.append('size', filter.size.toString())
+  if (filter.sort) params.append('sort', filter.sort)
 
   const query = params.toString()
   return query ? `?${query}` : ''

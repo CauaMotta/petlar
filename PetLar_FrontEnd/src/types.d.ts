@@ -82,4 +82,5 @@ type Filter = {
   type?: string
   page?: number
   size?: number
+  sort?: string
 }

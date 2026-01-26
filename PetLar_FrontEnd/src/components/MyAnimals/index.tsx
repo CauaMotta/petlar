@@ -17,7 +17,8 @@ const MyAnimals = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const { data, totalPages } = useGetMyAnimals({
     page: currentPage - 1,
-    size: 4
+    size: 4,
+    sort: 'status,desc'
   })
   const [animal, setAnimal] = useState<Animal>()
   const { mutate } = useDeleteAnimal()
