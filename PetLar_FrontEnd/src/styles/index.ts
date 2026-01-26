@@ -72,6 +72,19 @@ export const GlobalStyle = createGlobalStyle`
   }
 `
 
+// Card Container
+
+export const CardContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-block: 32px;
+`
+
+// Line
+
 export const Line = styled.hr`
   height: 2px;
   background-color: ${({ theme }) => theme.colors.highlightColor};

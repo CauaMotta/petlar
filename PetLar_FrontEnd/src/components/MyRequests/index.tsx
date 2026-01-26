@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
+import PageCounter from '../PageCounter'
 
 import {
   useEditReason,
@@ -12,9 +13,9 @@ import {
   useStatusUpdate
 } from '../../hooks/useAdoption'
 
-import { Container } from './styles'
 import {
   ButtonGroup,
+  CardContainer,
   ErrorMessage,
   InputGroup,
   StyledButton
@@ -32,11 +33,6 @@ const MyRequests = () => {
   })
   const { mutate } = useStatusUpdate()
   const { mutate: edit, error: editError, isSuccess, reset } = useEditReason()
-
-  const handlePageClick = (pageNumber: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setCurrentPage(pageNumber)
-  }
 
   const form = useFormik({
     initialValues: {
@@ -68,8 +64,8 @@ const MyRequests = () => {
   }, [isSuccess])
 
   return (
-    <Container>
-      <div className="animals">
+    <>
+      <CardContainer>
         {data.length == 0 && (
           <p className="text">Você ainda não solicitou nenhum animal!</p>
         )}
@@ -107,41 +103,12 @@ const MyRequests = () => {
               </ButtonGroup>
             </CardForProfile>
           ))}
-      </div>
-      {!!totalPages && totalPages > 1 && (
-        <div className="pagesContainer">
-          <ul>
-            <li>
-              <button
-                disabled={currentPage === 1}
-                onClick={() => handlePageClick(currentPage - 1)}
-                className="navBtn"
-              >
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i + 1}>
-                <button
-                  className={currentPage === i + 1 ? 'active' : ''}
-                  onClick={() => handlePageClick(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageClick(currentPage + 1)}
-                className="navBtn"
-              >
-                <i className="fa-solid fa-chevron-right"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+      </CardContainer>
+      <PageCounter
+        totalPages={totalPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
 
       <Modal
         onClose={() => setShowModal(false)}
@@ -244,7 +211,7 @@ const MyRequests = () => {
       <Modal onClose={() => reset()} isOpen={isSuccess} title="Sucesso!">
         <p className="text textCenter">Motivo alterado.</p>
       </Modal>
-    </Container>
+    </>
   )
 }
 

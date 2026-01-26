@@ -2,13 +2,13 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 
+import PageCounter from '../PageCounter'
 import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
 
 import { useDeleteAnimal, useGetMyAnimals } from '../../hooks/useAnimals'
 
-import { Container } from './styles'
-import { ButtonGroup, StyledButton } from '../../styles'
+import { ButtonGroup, CardContainer, StyledButton } from '../../styles'
 
 const MyAnimals = () => {
   const theme = useTheme()
@@ -22,14 +22,9 @@ const MyAnimals = () => {
   const [animal, setAnimal] = useState<Animal>()
   const { mutate } = useDeleteAnimal()
 
-  const handlePageClick = (pageNumber: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setCurrentPage(pageNumber)
-  }
-
   return (
-    <Container>
-      <div className="animals">
+    <>
+      <CardContainer>
         {data.length == 0 && (
           <p className="text">Você ainda não cadastrou nenhum animal!</p>
         )}
@@ -65,41 +60,12 @@ const MyAnimals = () => {
             </ButtonGroup>
           </CardForProfile>
         ))}
-      </div>
-      {!!totalPages && totalPages > 1 && (
-        <div className="pagesContainer">
-          <ul>
-            <li>
-              <button
-                disabled={currentPage === 1}
-                onClick={() => handlePageClick(currentPage - 1)}
-                className="navBtn"
-              >
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i + 1}>
-                <button
-                  className={currentPage === i + 1 ? 'active' : ''}
-                  onClick={() => handlePageClick(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageClick(currentPage + 1)}
-                className="navBtn"
-              >
-                <i className="fa-solid fa-chevron-right"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+      </CardContainer>
+      <PageCounter
+        totalPages={totalPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
 
       <Modal
         onClose={() => setShowDeleteModal(false)}
@@ -131,7 +97,7 @@ const MyAnimals = () => {
           </ButtonGroup>
         </div>
       </Modal>
-    </Container>
+    </>
   )
 }
 

@@ -3,14 +3,14 @@ import { useTheme } from 'styled-components'
 
 import CardForProfile from '../CardForProfile'
 import Modal from '../Modal'
+import PageCounter from '../PageCounter'
 
 import {
   useGetRequestsForMyAnimals,
   useStatusUpdate
 } from '../../hooks/useAdoption'
 
-import { Container } from './styles'
-import { ButtonGroup, StyledButton } from '../../styles'
+import { ButtonGroup, CardContainer, StyledButton } from '../../styles'
 
 const AdoptionRequests = () => {
   const theme = useTheme()
@@ -23,14 +23,9 @@ const AdoptionRequests = () => {
   })
   const { mutate } = useStatusUpdate()
 
-  const handlePageClick = (pageNumber: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setCurrentPage(pageNumber)
-  }
-
   return (
-    <Container>
-      <div className="animals">
+    <>
+      <CardContainer>
         {data.length == 0 && (
           <p className="text">Você ainda não cadastrou nenhum animal!</p>
         )}
@@ -68,48 +63,19 @@ const AdoptionRequests = () => {
               </ButtonGroup>
             </CardForProfile>
           ))}
-      </div>
-      {!!totalPages && totalPages > 1 && (
-        <div className="pagesContainer">
-          <ul>
-            <li>
-              <button
-                disabled={currentPage === 1}
-                onClick={() => handlePageClick(currentPage - 1)}
-                className="navBtn"
-              >
-                <i className="fa-solid fa-chevron-left"></i>
-              </button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i + 1}>
-                <button
-                  className={currentPage === i + 1 ? 'active' : ''}
-                  onClick={() => handlePageClick(i + 1)}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
-            <li>
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageClick(currentPage + 1)}
-                className="navBtn"
-              >
-                <i className="fa-solid fa-chevron-right"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+      </CardContainer>
+      <PageCounter
+        totalPages={totalPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
 
       <Modal
         onClose={() => setShowModal(false)}
         isOpen={showModal}
         title="Solicitação de adoção"
       >
-        <div className="modalContainer">
+        <>
           <p className="text">
             {adoption?.adopter.name} quer adotar {adoption?.animal.name}.
           </p>
@@ -140,9 +106,9 @@ const AdoptionRequests = () => {
               Aprovar <i className="fa-solid fa-check"></i>
             </StyledButton>
           </ButtonGroup>
-        </div>
+        </>
       </Modal>
-    </Container>
+    </>
   )
 }
 

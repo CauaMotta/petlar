@@ -4,11 +4,12 @@ import Card from '../../components/Card'
 import AdoptionCallSection from '../../components/AdoptionCallSection'
 import Loader from '../../components/Loader'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
+import PageCounter from '../../components/PageCounter'
 
 import { useGetAllAnimals } from '../../hooks/useAnimals'
 
-import { Container, CardContainer, CardInfo } from './styles'
-import { Line, StyledButton } from '../../styles'
+import { Container, CardInfo } from './styles'
+import { Line, StyledButton, CardContainer } from '../../styles'
 
 const options = [
   { value: '', label: 'Todos' },
@@ -40,11 +41,6 @@ const Home = () => {
     size: 4,
     page: currentAdoptedPage - 1
   })
-
-  const handlePageClick = (pageNumber: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    setCurrentPage(pageNumber)
-  }
 
   if (isLoading)
     return (
@@ -135,40 +131,11 @@ const Home = () => {
                 <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
-            {!!totalPages && totalPages > 1 && (
-              <div className="pagesContainer">
-                <ul>
-                  <li>
-                    <button
-                      disabled={currentPage === 1}
-                      onClick={() => handlePageClick(currentPage - 1)}
-                      className="navBtn"
-                    >
-                      <i className="fa-solid fa-chevron-left"></i>
-                    </button>
-                  </li>
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <li key={i + 1}>
-                      <button
-                        className={currentPage === i + 1 ? 'active' : ''}
-                        onClick={() => handlePageClick(i + 1)}
-                      >
-                        {i + 1}
-                      </button>
-                    </li>
-                  ))}
-                  <li>
-                    <button
-                      disabled={currentPage === totalPages}
-                      onClick={() => handlePageClick(currentPage + 1)}
-                      className="navBtn"
-                    >
-                      <i className="fa-solid fa-chevron-right"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <PageCounter
+              totalPages={totalPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </>
         )}
 
@@ -182,40 +149,11 @@ const Home = () => {
                 <Card key={entity.id} animal={entity} />
               ))}
             </CardContainer>
-            {!!totalAdoptedPages && totalAdoptedPages > 1 && (
-              <div className="pagesContainer">
-                <ul>
-                  <li>
-                    <button
-                      disabled={currentAdoptedPage === 1}
-                      onClick={() => handlePageClick(currentAdoptedPage - 1)}
-                      className="navBtn"
-                    >
-                      <i className="fa-solid fa-chevron-left"></i>
-                    </button>
-                  </li>
-                  {Array.from({ length: totalAdoptedPages }, (_, i) => (
-                    <li key={i + 1}>
-                      <button
-                        className={currentAdoptedPage === i + 1 ? 'active' : ''}
-                        onClick={() => handlePageClick(i + 1)}
-                      >
-                        {i + 1}
-                      </button>
-                    </li>
-                  ))}
-                  <li>
-                    <button
-                      disabled={currentAdoptedPage === totalAdoptedPages}
-                      onClick={() => handlePageClick(currentAdoptedPage + 1)}
-                      className="navBtn"
-                    >
-                      <i className="fa-solid fa-chevron-right"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <PageCounter
+              totalPages={totalAdoptedPages}
+              currentPage={currentAdoptedPage}
+              setCurrentPage={setCurrentAdoptedPage}
+            />
           </>
         )}
         <Line />
