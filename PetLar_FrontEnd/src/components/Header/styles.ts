@@ -34,13 +34,6 @@ export const Container = styled.div`
     align-items: center;
     gap: 16px;
 
-    hr {
-      align-self: stretch;
-      width: 2px;
-      background-color: ${({ theme }) => theme.colors.highlightColor};
-      border: none;
-    }
-
     .profileBtn {
       display: flex;
       align-items: center;

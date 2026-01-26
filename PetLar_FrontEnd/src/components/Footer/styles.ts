@@ -30,13 +30,6 @@ export const Container = styled.div`
       margin-top: 6px;
       font-weight: 700;
     }
-
-    hr {
-      width: 2px;
-      background-color: ${({ theme }) => theme.colors.highlightColor};
-      border: none;
-      transform: rotate(5deg);
-    }
   }
 
   .petlar {

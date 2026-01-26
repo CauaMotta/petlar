@@ -94,11 +94,17 @@ export const CardContainer = styled.div`
 
 // Line
 
-export const Line = styled.hr`
-  height: 2px;
+type LineProps = {
+  $vertical?: boolean
+}
+
+export const Line = styled.hr<LineProps>`
+  align-self: stretch;
+  width: ${({ $vertical }) => ($vertical ? '2px' : '100%')};
+  height: ${({ $vertical }) => ($vertical ? 'auto' : '2px')};
   background-color: ${({ theme }) => theme.colors.highlightColor};
   border: none;
-  margin: 6px 0;
+  margin-block: ${({ $vertical }) => ($vertical ? '0' : '6px')};
 `
 
 // Error

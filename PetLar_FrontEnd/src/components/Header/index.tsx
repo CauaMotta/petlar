@@ -8,6 +8,7 @@ import type { RootReducer } from '../../store'
 import { logout } from '../../store/reducers/authSlice'
 
 import * as S from './styles'
+import { Line } from '../../styles'
 
 const Header = () => {
   const navigate = useNavigate()
@@ -39,7 +40,7 @@ const Header = () => {
                 </p>
               </div>
             </div>
-            <hr />
+            <Line $vertical />
             <button
               onClick={() => {
                 setIsActive(false)

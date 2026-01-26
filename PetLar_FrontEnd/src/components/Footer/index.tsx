@@ -2,6 +2,7 @@ import CauaLogo from '../CauaLogo'
 import PetlarLogo from '../PetlarLogo'
 
 import * as S from './styles'
+import { Line } from '../../styles'
 
 const Footer = () => (
   <S.Footer>
@@ -11,7 +12,7 @@ const Footer = () => (
           <PetlarLogo width={40} height={40} />
           <h3 className="title--small">PetLar</h3>
         </div>
-        <hr />
+        <Line $vertical />
         <div className="ocauamotta">
           <CauaLogo width={40} height={40} />
           <h3 className="title--small">Cauã Motta</h3>
