@@ -34,11 +34,7 @@ export const Container = styled.div`
     }
   }
 
-  form {
-    width: 100%;
-
-    .btnDelete {
-      color: darkred;
-    }
+  .btnDelete {
+    color: darkred;
   }
 `

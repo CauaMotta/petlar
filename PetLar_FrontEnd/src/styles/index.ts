@@ -208,3 +208,49 @@ export const StyledButton = styled.button<Button>`
     opacity: 1;
   }
 `
+
+// Form
+
+export const AnimalForm = styled.form`
+  margin-top: 16px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .selectAnimal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 57px;
+  }
+
+  .btnReset {
+    i {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      i {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  #image {
+    display: none;
+  }
+
+  .btnImage {
+    background-color: ${({ theme }) => theme.colors.secondaryColor};
+    border: 1px solid ${({ theme }) => theme.colors.highlightColor};
+    min-height: 38px;
+    padding-inline: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    cursor: pointer;
+  }
+`

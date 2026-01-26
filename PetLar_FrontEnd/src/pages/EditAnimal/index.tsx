@@ -15,13 +15,14 @@ import BackButton from '../../components/BackButton'
 import StyledSelectWrapper from '../../components/StyledSelectWrapper'
 import Loader from '../../components/Loader'
 
-import { AnimalForm, Container } from './styles'
+import { Container } from './styles'
 import {
   ErrorMessage,
   StyledButton,
   Line,
   ButtonGroup,
-  InputGroup
+  InputGroup,
+  AnimalForm
 } from '../../styles'
 
 const options = [
@@ -204,7 +205,7 @@ const EditAnimal = () => {
       <Line />
       <p className="text">O que você deseja mudar?</p>
       <AnimalForm>
-        <div className="animalSelect">
+        <div className="selectAnimal">
           {isError('type') ? (
             <ErrorMessage>* {form.errors.type}</ErrorMessage>
           ) : (
@@ -332,7 +333,7 @@ const EditAnimal = () => {
               ''
             )}
           </label>
-          <label htmlFor="image" className="imageBtn">
+          <label htmlFor="image" className="btnImage">
             {form.values.image ? (
               <>
                 <p>

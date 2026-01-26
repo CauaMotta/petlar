@@ -63,7 +63,7 @@ const RegisterUser = () => {
     <Container>
       <div className="loginContainer">
         <p className="title">Cadastre-se!</p>
-        <div>
+        <form>
           <InputGroup
             $light
             $fontSize="14px"
@@ -143,7 +143,7 @@ const RegisterUser = () => {
             </div>
           )}
           <ButtonGroup>
-            <StyledButton onClick={() => form.handleSubmit()}>
+            <StyledButton type="button" onClick={() => form.handleSubmit()}>
               {isPending ? (
                 <PulseLoader color={theme.colors.fontColor} size={8} />
               ) : (
@@ -156,8 +156,9 @@ const RegisterUser = () => {
           <Link className="registerLink" to={'/login'}>
             Já possuí conta? <br /> <u>Clique aqui</u> e faça o login.
           </Link>
-        </div>
+        </form>
       </div>
+
       <Modal
         onClose={() => navigate('/login')}
         isOpen={isSuccess}

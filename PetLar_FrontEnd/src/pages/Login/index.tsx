@@ -58,7 +58,7 @@ const Login = () => {
     <Container>
       <div className="loginContainer">
         <p className="title">Faça o login</p>
-        <div>
+        <form>
           <InputGroup
             $light
             $fontSize="14px"
@@ -112,7 +112,7 @@ const Login = () => {
             </div>
           )}
           <ButtonGroup>
-            <StyledButton onClick={() => form.handleSubmit()}>
+            <StyledButton type="button" onClick={() => form.handleSubmit()}>
               {isPending ? (
                 <PulseLoader color={theme.colors.fontColor} size={8} />
               ) : (
@@ -125,7 +125,7 @@ const Login = () => {
           <Link className="registerLink" to={'/register'}>
             Ainda não é cadastrado? <br /> <u>Clique aqui</u> e se cadastre!
           </Link>
-        </div>
+        </form>
       </div>
     </Container>
   )

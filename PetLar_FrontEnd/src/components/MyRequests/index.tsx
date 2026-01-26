@@ -154,7 +154,7 @@ const MyRequests = () => {
         isOpen={showEditModal}
         title="Editar motivo"
       >
-        <>
+        <form>
           <InputGroup $fontSize="14px" $borderRadius="6px" $light>
             <label className="text" htmlFor="reason">
               Texto{' '}
@@ -187,6 +187,7 @@ const MyRequests = () => {
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
               $maxWidth="fit-content"
+              type="button"
               onClick={() => {
                 setShowEditModal(false)
                 form.resetForm()
@@ -198,6 +199,7 @@ const MyRequests = () => {
               $backgroundColor={theme.colors.highlightColor}
               $fontSize="14px"
               $maxWidth="fit-content"
+              type="button"
               onClick={() => {
                 form.handleSubmit()
               }}
@@ -205,7 +207,7 @@ const MyRequests = () => {
               Salvar <i className="fa-solid fa-floppy-disk"></i>
             </StyledButton>
           </ButtonGroup>
-        </>
+        </form>
       </Modal>
 
       <Modal onClose={() => reset()} isOpen={isSuccess} title="Sucesso!">
