@@ -1,31 +1,19 @@
-const API_URL = 'http://localhost:8080/api'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 
-type RequestOptions = {
-  method?: string
-  headers?: Record<string, string>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body?: any
-}
+const API_URL = import.meta.env.VITE_API_URL
+const API_PREFIX = import.meta.env.VITE_API_PREFIX
 
-export async function apiRequest<T>(
-  endpoint: string,
-  options: RequestOptions = {}
-): Promise<T> {
-  const { method = 'GET', headers = {}, body } = options
+export const api = axios.create({
+  baseURL: API_URL + API_PREFIX
+})
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers
-    },
-    body: body ? JSON.stringify(body) : undefined
-  })
+api.interceptors.request.use((config) => {
+  const token = Cookies.get('token')
 
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(errorText || 'Erro ao fazer a requisição')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
   }
 
-  return response.json()
-}
+  return config
+})

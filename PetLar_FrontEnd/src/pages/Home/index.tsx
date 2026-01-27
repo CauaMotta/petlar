@@ -1,40 +1,169 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
-import { birdTheme, catTheme, dogTheme, otherTheme } from '../../themes'
+import Card from '../../components/Card'
+import AdoptionCallSection from '../../components/AdoptionCallSection'
+import Loader from '../../components/Loader'
+import StyledSelectWrapper from '../../components/StyledSelectWrapper'
+import PageCounter from '../../components/PageCounter'
 
-import { Container, HomeButton } from './styles'
-import { Line } from '../../styles'
+import { useGetAllAnimals } from '../../hooks/useAnimals'
+
+import { Container, CardInfo } from './styles'
+import { Line, StyledButton, CardContainer } from '../../styles'
+
+const options = [
+  { value: '', label: 'Todos' },
+  { value: 'cachorro', label: 'Cachorro' },
+  { value: 'gato', label: 'Gato' },
+  { value: 'passaro', label: 'Pássaro' },
+  { value: 'outro', label: 'Outro' }
+]
 
 const Home = () => {
-  const navigate = useNavigate()
+  const [typeFilter, setTypeFilter] = useState<string>()
+  const [showAdopted, setShowAdopted] = useState<boolean>(true)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentAdoptedPage, setCurrentAdoptedPage] = useState<number>(1)
+  const {
+    data: available,
+    isLoading,
+    isError,
+    totalPages
+  } = useGetAllAnimals({
+    status: 'disponivel',
+    type: typeFilter,
+    size: 10,
+    page: currentPage - 1
+  })
+  const { data: adopted, totalPages: totalAdoptedPages } = useGetAllAnimals({
+    status: 'adotado',
+    type: typeFilter,
+    size: 4,
+    page: currentAdoptedPage - 1
+  })
+
+  if (isLoading)
+    return (
+      <Container>
+        <div className="box">
+          <Loader />
+        </div>
+      </Container>
+    )
+
+  if (isError)
+    return (
+      <Container>
+        <div className="box">
+          <i className="fa-solid fa-file-circle-xmark"></i>
+          <p className="text">
+            Ops...Ocorreu um erro, tente novamente mais tarde!
+          </p>
+        </div>
+      </Container>
+    )
 
   return (
-    <Container>
-      <div className="welcome">
-        <div className="image">
-          <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
+    <div>
+      <Container>
+        <div className="welcome">
+          <div className="image">
+            <img src="/assets/home-image.svg" alt="Garoto rodeado de animais" />
+          </div>
+          <h1 className="title--big">Bem-vindo ao PetLar!</h1>
+          <p className="text">
+            Encontre um novo amigo e dê um lar cheio de carinho.
+          </p>
         </div>
-        <h1>Bem-vindo ao PetLar!</h1>
-        <p className="text">
-          Encontre um novo amigo e dê um lar cheio de carinho.
-        </p>
-      </div>
-      <div className="btnGroup">
-        <HomeButton color={dogTheme} onClick={() => navigate('/dogs')}>
-          <i className="fa-solid fa-dog"></i> Cachorros
-        </HomeButton>
-        <HomeButton color={catTheme} onClick={() => navigate('/cats')}>
-          <i className="fa-solid fa-cat"></i> Gatos
-        </HomeButton>
-        <HomeButton color={birdTheme} onClick={() => navigate('/birds')}>
-          <i className="fa-solid fa-dove"></i> Aves
-        </HomeButton>
-        <HomeButton color={otherTheme} onClick={() => navigate('/others')}>
-          <i className="fa-solid fa-fish-fins"></i> Outros
-        </HomeButton>
-      </div>
-      <div className="info">
-        <h2 className="title--small">Sobre este projeto</h2>
+        <Line />
+        <div className="filterBox">
+          <p className="text--small">
+            <i className="fa-solid fa-filter"></i> Filtrar
+          </p>
+          <StyledSelectWrapper
+            placeholder="Selecione..."
+            value={
+              options.find((option) => option.value === typeFilter) ??
+              options[0]
+            }
+            onChange={(option) => {
+              setTypeFilter((option?.value as string) ?? '')
+              setCurrentPage(1)
+              setCurrentAdoptedPage(1)
+            }}
+            options={options}
+            fontSize={12}
+          />
+          <StyledButton
+            $maxWidth="fit-content"
+            $fontSize="12px"
+            $backgroundColor="transparent"
+            onClick={() => setShowAdopted(!showAdopted)}
+          >
+            {showAdopted ? (
+              <>
+                <i className="fa-solid fa-eye-slash"></i> esconder animais
+                adotados
+              </>
+            ) : (
+              <>
+                <i className="fa-solid fa-eye"></i> mostrar animais adotados
+              </>
+            )}
+          </StyledButton>
+        </div>
+        {available.length == 0 && (
+          <div className="box">
+            <p className="text">
+              Parece que não temos nenhum pet para adoção no momento, volte
+              outra hora!
+            </p>
+          </div>
+        )}
+        {available.length > 0 && (
+          <>
+            <p className="text">
+              Você está em busca de um AUmigo para dividir momentos especiais?
+              Esses bichinhos estão esperando por você
+            </p>
+            <CardContainer>
+              {available.map((entity) => (
+                <Card key={entity.id} animal={entity} />
+              ))}
+            </CardContainer>
+            <PageCounter
+              totalPages={totalPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </>
+        )}
+
+        {showAdopted && adopted.length > 0 && (
+          <>
+            <p className="text">
+              De uma olhada também nestes amiguinhos que já conseguiram um lar
+            </p>
+            <CardContainer>
+              {adopted.map((entity) => (
+                <Card key={entity.id} animal={entity} />
+              ))}
+            </CardContainer>
+            <PageCounter
+              totalPages={totalAdoptedPages}
+              currentPage={currentAdoptedPage}
+              setCurrentPage={setCurrentAdoptedPage}
+            />
+          </>
+        )}
+        <Line />
+      </Container>
+      <AdoptionCallSection />
+      <CardInfo>
+        <h2 className="title--small">
+          <i className="fa-solid fa-triangle-exclamation"></i> Sobre este
+          projeto
+        </h2>
         <Line />
         <p className="text">
           Este site não representa uma instituição de adoção real. Trata-se de
@@ -45,8 +174,8 @@ const Home = () => {
           como vitrine para demonstrar habilidades em programação, arquitetura
           de software e boas práticas de desenvolvimento.
         </p>
-      </div>
-    </Container>
+      </CardInfo>
+    </div>
   )
 }
 

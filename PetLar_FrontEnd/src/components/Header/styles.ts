@@ -1,10 +1,6 @@
 import styled from 'styled-components'
 import variables from '../../styles/variables'
 
-type Props = {
-  icon: string
-}
-
 export const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.backgroundColor};
   border-bottom: 3px solid ${({ theme }) => theme.colors.primaryColor};
@@ -31,16 +27,25 @@ export const Container = styled.div`
     gap: 8px;
 
     cursor: pointer;
-
-    h1 {
-      font-size: 24px;
-    }
   }
 
   .nav {
     display: flex;
     align-items: center;
     gap: 16px;
+
+    .profileBtn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-align: right;
+      line-height: 1;
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
 
     button {
       color: ${({ theme }) => theme.colors.fontColor};
@@ -49,10 +54,6 @@ export const Container = styled.div`
 
       background-color: transparent;
       border: none;
-
-      display: flex;
-      align-items: center;
-      gap: 4px;
 
       cursor: pointer;
     }
@@ -116,25 +117,27 @@ export const Container = styled.div`
       gap: 0;
       pointer-events: none;
 
+      hr {
+        display: none;
+      }
+
+      .profileBtn {
+        opacity: 0;
+        transition: 0.5s 0.4s;
+
+        .text {
+          font-size: 24px;
+        }
+
+        span {
+          font-size: 18px;
+        }
+      }
+
       button {
         font-size: 18px;
         opacity: 0;
-      }
-
-      button:nth-child(1) {
-        transition: 0.5s 0.2s;
-      }
-
-      button:nth-child(2) {
         transition: 0.5s 0.4s;
-      }
-
-      button:nth-child(3) {
-        transition: 0.5s 0.6s;
-      }
-
-      button:nth-child(4) {
-        transition: 0.5s 0.8s;
       }
     }
 
@@ -166,20 +169,11 @@ export const Container = styled.div`
         clip-path: circle(1500px at 115% -20%);
         pointer-events: all;
 
-        button {
+        button,
+        .profileBtn {
           opacity: 1;
         }
       }
     }
   }
-`
-
-export const Icon = styled.span<Props>`
-  display: block;
-  width: 24px;
-  height: 24px;
-  background-image: url('/assets/icons/dog.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
 `

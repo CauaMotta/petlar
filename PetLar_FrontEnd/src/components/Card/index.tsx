@@ -1,22 +1,25 @@
+import { type JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { convertType, formatAge } from '../../utils'
+import { formatDateBr } from '../../utils'
+import { API_URL } from '../../main'
 
-import * as S from './styles'
-import { Button, Line } from '../../styles'
+import { Container } from './styles'
+import { StyledButton, Line } from '../../styles'
 
 type Props = {
   animal: Animal
+  children?: JSX.Element
 }
 
-const Card = ({ animal }: Props) => {
+const Card = ({ animal, children }: Props) => {
   const navigate = useNavigate()
 
   return (
-    <S.Card>
+    <Container>
       <div className="image">
-        {animal.urlImage != null ? (
-          <img src={animal.urlImage} alt={animal.name} />
+        {animal.imagePath != null ? (
+          <img src={API_URL + animal.imagePath} alt={animal.name} />
         ) : (
           <div data-testid="noImage" className="noImage">
             <i className="fa-solid fa-image"></i>
@@ -24,33 +27,46 @@ const Card = ({ animal }: Props) => {
         )}
       </div>
       <div className="content">
-        <h2>{animal.name}</h2>
-        <Line />
-        <p className="text--small">
-          <b>Idade:</b> {formatAge(animal.age)}
-        </p>
-        <p className="text--small">
-          <b>Sexo:</b> {animal.sex}
-        </p>
-        <p className="text--small">
-          <b>Porte:</b> {animal.size}
-        </p>
-        <Button
-          disabled={animal.status === 'Adotado' ? true : false}
-          onClick={() =>
-            navigate(`/details/${convertType(animal.type)}/${animal.id}`)
-          }
-        >
-          {animal.status === 'Adotado' ? (
-            <>Adotado!</>
-          ) : (
-            <>
-              Ver mais <i className="fa-solid fa-arrow-right"></i>
-            </>
-          )}
-        </Button>
+        {children ? (
+          <>
+            <h2 className="title textCenter">{animal.name}</h2>
+            <Line />
+            {children}
+          </>
+        ) : (
+          <>
+            <h2 className="title textCenter">{animal.name}</h2>
+            <Line />
+            <div className="animalInfo">
+              <p className="text--small">
+                <b>data de nascimento:</b> {formatDateBr(animal.birthDate)}
+              </p>
+              <p className="text--small">
+                <b>espécie:</b> {animal.type}
+              </p>
+              <p className="text--small">
+                <b>Porte:</b> {animal.size}
+              </p>
+              <p className="text--small">
+                <b>Sexo:</b> {animal.sex}
+              </p>
+            </div>
+            <StyledButton
+              disabled={animal.status === 'ADOTADO' ? true : false}
+              onClick={() => navigate(`/details/${animal.id}`)}
+            >
+              {animal.status === 'ADOTADO' ? (
+                <>Adotado!</>
+              ) : (
+                <>
+                  Ver mais <i className="fa-solid fa-eye"></i>
+                </>
+              )}
+            </StyledButton>
+          </>
+        )}
       </div>
-    </S.Card>
+    </Container>
   )
 }
 

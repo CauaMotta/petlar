@@ -26,11 +26,9 @@ export const Container = styled.div`
     display: flex;
     gap: 16px;
 
-    hr {
-      width: 2px;
-      background-color: ${({ theme }) => theme.colors.highlightColor};
-      border: none;
-      transform: rotate(5deg);
+    .title--small {
+      margin-top: 6px;
+      font-weight: 700;
     }
   }
 

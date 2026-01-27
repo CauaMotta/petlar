@@ -5,8 +5,6 @@ O backend é construído com **Java** e **Spring**, oferecendo uma API robusta p
 O frontend, construído em React, oferece uma interface moderna, responsiva e de fácil uso.
 Na camada de persistência, utiliza **MongoDB** para garantir flexibilidade e alta performance no armazenamento de dados.
 
-> **Nota:** O projeto está em refatoração, no momento o frontend não está mais funcional.
-
 ## 📐 Modelos do Projeto
 
 Os modelos representam as **entidades principais do domínio** da aplicação e definem a estrutura dos dados persistidos no banco, além de servirem como base para regras de negócio.
@@ -49,6 +47,9 @@ Os modelos representam as **entidades principais do domínio** da aplicação e 
 - 📝 [Formik](https://formik.org/) - Gerenciamento de formulários no React
 - 🔽 [React Select](https://react-select.com/) - Componente poderoso e personalizável para seleção
 - 🔢 [React IMask](https://imask.js.org/react.html) - Máscaras de entrada flexíveis e fáceis de integrar em inputs React
+- 🍪 [js-cookie](https://github.com/js-cookie/js-cookie) - Manipulação simples e eficiente de cookies no navegador
+- 🔁 [TanStack Query](https://tanstack.com/query/latest) - Gerenciamento de estado assíncrono, cache e sincronização de dados com APIs
+- 🌐 [Axios](https://axios-http.com/) - Cliente HTTP baseado em Promises para requisições à API
 
 ## 📦 Instalação e Execução
 
@@ -63,17 +64,36 @@ cd petlar
 
 # Pode ser executado via Docker com o seguinte comando
 docker-compose up --build
-# A aplicação fica disponivel através de: http://localhost:8080
+# Backend disponivel em: http://localhost:8080
+# Frontend disponivel em: http://localhost:5173
 
-# Ou manualmente com os passos a seguir:
+# Antes de executar, certifique-se de que:
+# O MongoDB esteja em execução
+# As variáveis de ambiente estejam corretamente configuradas
+
+# Para executar manualmente siga os seguintes passos:
+
 # 1º passo: executar o servidor backend
+
 # Acesse a pasta
-cd ../PetLar_BackEnd/
+cd ./PetLar_BackEnd/
 
 # Compile e execute o projeto com Maven
 mvn spring-boot:run
+# A aplicação backend fica disponivel através de: http://localhost:8080
 
-# Não se esqueça de:
-# Ter o MongoDB em execução e
-# Configurar as váriaveis de ambiente
+# 2º passo: executar o frontend
+
+# Acesse a pasta
+cd ./PetLar_FrontEnd/
+
+# Instale as dependências
+npm install
+
+# Gere o build do frontend
+npm run build
+
+# Sirva o build localmente
+npm run preview
+# A aplicação frontend fica disponivel através de: http://localhost:4173
 ```

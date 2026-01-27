@@ -1,9 +1,26 @@
 services:
-  petlar-app:
-    build: .
-    container_name: petlar-app-container
+  petlar-frontend:
+    build:
+      context: ./PetLar_FrontEnd
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8080
+        - VITE_API_PREFIX=/api
+    container_name: petlar-frontend-container
     ports:
-      - "8080:8080"
+      - '5173:80'
+    networks:
+      - petlar_network
+    depends_on:
+      - petlar-backend
+
+  petlar-backend:
+    build:
+      context: ./PetLar_BackEnd
+      dockerfile: Dockerfile
+    container_name: petlar-backend-container
+    ports:
+      - '8080:8080'
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://petlaruser:petlarpass@petlar-mongo:27017/petlardb?authSource=admin
       - TOKEN_SECRET=secret
@@ -16,7 +33,7 @@ services:
     image: mongo:latest
     container_name: petlar-mongo-container
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
       - MONGO_INITDB_ROOT_USERNAME=petlaruser
       - MONGO_INITDB_ROOT_PASSWORD=petlarpass

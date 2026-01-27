@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
-import { Button } from '../../styles'
-
-export const Card = styled.div`
+export const Container = styled.div`
   display: block;
   padding: 16px;
   max-width: 280px;
@@ -45,13 +43,10 @@ export const Card = styled.div`
   }
 
   .content {
-    margin-top: 8px;
+    margin-top: 6px;
 
-    h2 {
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      line-height: 1;
+    .animalInfo {
+      margin-bottom: 16px;
     }
 
     .text--small {
@@ -59,16 +54,6 @@ export const Card = styled.div`
 
       b {
         font-weight: 600;
-      }
-    }
-
-    ${Button} {
-      width: 100%;
-      margin-top: 16px;
-
-      &:disabled {
-        background-color: ${({ theme }) => theme.colors.highlightColor};
-        border-color: ${({ theme }) => theme.colors.highlightColor};
       }
     }
   }

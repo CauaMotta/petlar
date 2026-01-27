@@ -1,31 +1,32 @@
 export const formatWeight = (weight: number) => {
-  return weight / 100
+  return weight / 1000
 }
 
-export const formatDate = (dateString: string) => {
-  if (dateString) {
-    const [year, month, day] = dateString.split('-')
-    return `${day}/${month}/${year}`
-  }
+export const formatDateBr = (dateString?: string) => {
+  if (!dateString) return null
+
+  const [year, month, day] = dateString.split('-')
+  return `${day}/${month}/${year}`
 }
 
-export const formatAge = (ageInMonths: number) => {
-  if (ageInMonths < 12) {
-    return `${ageInMonths} ${ageInMonths === 1 ? 'mês' : 'meses'}`
-  }
-  const years = Math.floor(ageInMonths / 12)
-  return `${years} ${years === 1 ? 'ano' : 'anos'}`
+export const formatDateIso = (dateString?: string) => {
+  if (!dateString) return null
+
+  const [day, month, year] = dateString.split('/')
+  return `${year}-${month}-${day}`
 }
 
-export const convertType = (type: string) => {
-  switch (type) {
-    case 'Cachorro':
-      return 'dogs'
-    case 'Gato':
-      return 'cats'
-    case 'Ave':
-      return 'birds'
-    case 'Outro':
-      return 'others'
-  }
+export const buildQueryString = (filter?: Filter) => {
+  if (!filter) return ''
+
+  const params = new URLSearchParams()
+
+  if (filter.status) params.append('status', filter.status)
+  if (filter.type) params.append('type', filter.type)
+  if (filter.page) params.append('page', filter.page.toString())
+  if (filter.size) params.append('size', filter.size.toString())
+  if (filter.sort) params.append('sort', filter.sort)
+
+  const query = params.toString()
+  return query ? `?${query}` : ''
 }

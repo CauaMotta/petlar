@@ -1,25 +1,27 @@
+import { useSelector } from 'react-redux'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { useSelector } from 'react-redux'
 
-import Layout from './pages/Layout'
+import Layout from './layouts/DefaultLayout'
+import ProtectedLayout from './layouts/ProtectedLayout'
 import Home from './pages/Home'
-import Dog from './pages/Dog'
-import Cat from './pages/Cat'
-import Bird from './pages/Bird'
-import Other from './pages/Other'
+import Login from './pages/Login'
+import RegisterUser from './pages/RegisterUser'
 import Details from './pages/Details'
-import NewAnimal from './pages/NewAnimal'
+import EditAnimal from './pages/EditAnimal'
+import RegisterAnimal from './pages/RegisterAnimal'
+import Profile from './pages/Profile'
 
 import type { RootReducer } from './store'
 
 import { GlobalStyle } from './styles'
+import { principalTheme } from './themes'
 
 function App() {
-  const { theme } = useSelector((state: RootReducer) => state.theme)
+  const { isAuthenticated } = useSelector((state: RootReducer) => state.auth)
+
   const routes = createBrowserRouter([
     {
-      path: '/',
       element: <Layout />,
       children: [
         {
@@ -27,35 +29,40 @@ function App() {
           element: <Home />
         },
         {
-          path: '/dogs',
-          element: <Dog />
-        },
-        {
-          path: '/cats',
-          element: <Cat />
-        },
-        {
-          path: '/birds',
-          element: <Bird />
-        },
-        {
-          path: '/others',
-          element: <Other />
-        },
-        {
-          path: '/details/:type/:id',
-          element: <Details />
+          path: '/login',
+          element: <Login />
         },
         {
           path: '/register',
-          element: <NewAnimal />
+          element: <RegisterUser />
+        },
+        {
+          path: '/details/:id',
+          element: <Details />
+        },
+        {
+          element: <ProtectedLayout isAuthenticated={isAuthenticated} />,
+          children: [
+            {
+              path: '/profile',
+              element: <Profile />
+            },
+            {
+              path: '/registerAnimal',
+              element: <RegisterAnimal />
+            },
+            {
+              path: '/editAnimal/:id',
+              element: <EditAnimal />
+            }
+          ]
         }
       ]
     }
   ])
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={principalTheme}>
       <GlobalStyle />
       <RouterProvider router={routes} />
     </ThemeProvider>

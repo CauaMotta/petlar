@@ -9,6 +9,8 @@ import br.com.ocauamotta.PetLar.models.Animal;
 import br.com.ocauamotta.PetLar.models.User;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+
 /**
  * Classe utilitária responsável por converter objetos entre a camada de Entidade
  * {@code Adoption} e os objetos de Transferência de Dados (DTOs).
@@ -31,6 +33,11 @@ public class AdoptionMapper {
      */
     public static AdoptionResponseDto toDTO(Adoption entity, Animal animal, User animalOwner, User adopter) {
         if (entity == null) return null;
+
+        if (animal.getImagePath() != null) {
+            String publicUrl = "/public/animals/" + new File(animal.getImagePath()).getName();
+            animal.setImagePath(publicUrl);
+        }
 
         return new AdoptionResponseDto(
                 entity.getId(),

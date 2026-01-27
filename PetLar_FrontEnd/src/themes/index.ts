@@ -7,42 +7,11 @@ const defaultTheme = {
   }
 }
 
-export const dogTheme = {
-  name: 'dogs',
+export const principalTheme = {
+  name: 'principal',
   colors: {
     ...defaultTheme.colors,
     primaryColor: '#D9A066',
     hoverColor: '#c9925bff'
   }
 }
-
-export const catTheme = {
-  name: 'cats',
-  colors: {
-    ...defaultTheme.colors,
-    primaryColor: '#95A5A6',
-    hoverColor: '#859394ff'
-  }
-}
-
-export const birdTheme = {
-  name: 'birds',
-  colors: {
-    ...defaultTheme.colors,
-    primaryColor: '#06923E',
-    hoverColor: '#068338ff'
-  }
-}
-
-export const otherTheme = {
-  name: 'others',
-  colors: {
-    ...defaultTheme.colors,
-    primaryColor: '#0288D1',
-    hoverColor: '#0277BD'
-  }
-}
-
-export const themes = [dogTheme, catTheme, birdTheme, otherTheme]
-
-export const themesMap = Object.fromEntries(themes.map((t) => [t.name, t]))

@@ -2,3 +2,5 @@ node_modules
 .gitignore
 .prettierrc
 .editorconfig
+.env
+dist

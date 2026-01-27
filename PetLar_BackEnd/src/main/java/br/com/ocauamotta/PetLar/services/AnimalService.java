@@ -155,6 +155,9 @@ public class AnimalService {
 
         Animal updated = AnimalMapper.toEntity(dto);
         updated.setUpdatedAt(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+        if (imagePath != null) {
+            deleteImage(entity.getImagePath());
+        }
         updated.setImagePath(imagePath);
 
         updateAnimalFields(updated, entity);
@@ -287,6 +290,8 @@ public class AnimalService {
      * @param imagePath O caminho relativo do arquivo a ser removido.
      */
     private void deleteImage(String imagePath) {
+        if(imagePath == null) return;
+
         try {
             Path path = Paths.get(imagePath);
             Files.deleteIfExists(path);

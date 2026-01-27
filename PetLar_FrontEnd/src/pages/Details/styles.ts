@@ -4,6 +4,7 @@ import variables from '../../styles/variables'
 export const Container = styled.section`
   padding-inline: 16px;
   margin-top: 32px;
+  flex: 1;
 `
 
 export const Card = styled.div`
@@ -50,9 +51,12 @@ export const Card = styled.div`
     display: flex;
     flex-direction: column;
 
+    .info {
+      padding-inline: 16px;
+    }
+
     .title {
       padding-inline: 16px;
-      line-height: 1;
     }
 
     .text {
@@ -61,20 +65,15 @@ export const Card = styled.div`
       }
     }
 
-    .info {
-      padding-inline: 16px;
-    }
-
     .contact {
       padding-inline: 16px;
       margin-top: auto;
-      width: 100%;
 
       display: flex;
       align-items: center;
       gap: 8px;
 
-      p {
+      .text {
         flex: 1;
       }
     }
@@ -125,7 +124,6 @@ export const Description = styled.div`
 
   .title--small {
     padding-inline: 16px;
-    line-height: 1;
   }
 
   .text {
