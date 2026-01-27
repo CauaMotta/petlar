@@ -17,6 +17,7 @@ const PageCounter = ({ totalPages, currentPage, setCurrentPage }: Props) => {
   return (
     <Container>
       <button
+        aria-label="previous-page"
         disabled={currentPage === 1}
         onClick={() => handlePageClick(currentPage - 1)}
         className="navBtn"
@@ -33,6 +34,7 @@ const PageCounter = ({ totalPages, currentPage, setCurrentPage }: Props) => {
         </button>
       ))}
       <button
+        aria-label="next-page"
         disabled={currentPage === totalPages}
         onClick={() => handlePageClick(currentPage + 1)}
         className="navBtn"

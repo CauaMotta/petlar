@@ -21,12 +21,19 @@ const Header = () => {
   if (isAuthenticated)
     return (
       <S.Header>
-        <S.Container className={isActive ? 'active' : ''}>
+        <S.Container
+          data-testid="header-container"
+          className={isActive ? 'active' : ''}
+        >
           <div onClick={() => navigate('/')} className="logo">
             <PetlarLogo width={40} height={40} />
             <h1 className="title--big">PetLar</h1>
           </div>
-          <button className="menu" onClick={() => setIsActive(!isActive)}>
+          <button
+            className="menu"
+            aria-label="Abrir menu"
+            onClick={() => setIsActive(!isActive)}
+          >
             <span className="line"></span>
             <span className="line"></span>
             <span className="line"></span>
@@ -65,12 +72,19 @@ const Header = () => {
 
   return (
     <S.Header>
-      <S.Container className={isActive ? 'active' : ''}>
+      <S.Container
+        data-testid="header-container"
+        className={isActive ? 'active' : ''}
+      >
         <div onClick={() => navigate('/')} className="logo">
           <PetlarLogo width={40} height={40} />
           <h1 className="title--big">PetLar</h1>
         </div>
-        <button className="menu" onClick={() => setIsActive(!isActive)}>
+        <button
+          aria-label="Abrir menu"
+          className="menu"
+          onClick={() => setIsActive(!isActive)}
+        >
           <span className="line"></span>
           <span className="line"></span>
           <span className="line"></span>
